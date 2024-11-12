@@ -10,14 +10,21 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname, 'views'));
+// app.set('view engine', 'ejs');
+
+// 設置靜態文件夾為 client 資料夾
+app.use(express.static(path.join(__dirname, '../client')));
+
+// 設置根路由來返回 client/index.html
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, '../client/index.html'));
+});
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
