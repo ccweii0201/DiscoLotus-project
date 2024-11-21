@@ -10,7 +10,9 @@
     "debug": "~2.6.9",
     "ejs": "^3.1.10",
     "express": "^4.21.1",
+    "firmata": "^2.3.0",
     "http-errors": "~1.6.3",
+    "johnny-five": "^2.1.0",
     "morgan": "~1.9.1",
     "uuid": "^11.0.3"
   }
