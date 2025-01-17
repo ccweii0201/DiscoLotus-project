@@ -89,7 +89,7 @@
         grid-template-columns: repeat(3, 1fr);
         width: 60%;
         height: 168px;
-        border: 1.5px solid #908e8d;
+        border: 1.5px solid #cba38e;
         border-radius: 8px;
         column-gap: 10px;
         padding: 8px;
@@ -101,6 +101,7 @@
         padding: 0;
         cursor: pointer;
         height: auto;
+        
     }
 
     #lightButton img {
@@ -109,6 +110,7 @@
         object-fit: cover;
         pointer-events: none;
         display: block;
+        filter: drop-shadow(0 3px 0 #b7b7b6)
     }
 
     #discImg {

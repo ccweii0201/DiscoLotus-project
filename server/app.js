@@ -32,15 +32,14 @@ app.use('/users', usersRouter);
 let currentSessionId = null;  // 儲存當前會話ID
 let currentSessionCreatedAt = null; //
 
-// 每 5 秒檢查一次 currentSessionId 是否有變化
+// 每 10 秒檢查一次會話是否超過 10 分鐘
 setInterval(() => {
   if (currentSessionId && currentSessionCreatedAt) {
-    // 檢查當前 session 是否超過 30 秒
-    if (Date.now() - currentSessionCreatedAt > 30000) {
-      // 清空 currentSessionId 和 currentSessionCreatedAt
+    
+    if (Date.now() - currentSessionCreatedAt > 600000) { 
       currentSessionId = null;
       currentSessionCreatedAt = null;
-      console.log('id已過期');
+      console.log('Session expired after 10 minutes');
     }
   }
 }, 10000);
@@ -61,16 +60,16 @@ app.post('/validate-session', (req, res) => {
     return res.status(400).send('Session ID is required');
   } //沒有id 回傳錯誤
   if (sessionId === currentSessionId) {
+    // 檢查會話是否超過 10 分鐘
+    if (Date.now() - currentSessionCreatedAt > 600000) {  // 10 分鐘過期
+      // currentSessionId = null;
+      currentSessionCreatedAt = null;
+      return res.status(401).send('Session has expired');
+    }
     res.send('Session is valid');
   } else {
-    res.status(401).send('Session is invalid'+currentSessionId);
+    res.status(401).send('Session is invalid'+'+'+currentSessionId);
   }
-});
-
-//test
-app.post('/test', (req, res) => {
-  console.log('success');
-  res.send('success');
 });
 
 // catch 404 and forward to error handler
