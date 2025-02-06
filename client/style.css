@@ -13,14 +13,18 @@
     }
 
     #help {
-        width: 32px;
-        height: 32px;
+        width: 40px;
+        height: 40px;
         border-radius: 100%;
         border: 4px solid white;
         background: gray;
+    }
+    #help p{
         text-align:center;
         font-weight: 900;
+        font-size: large;
         color: white;
+        margin: 0;
     }
 
     #on {
@@ -41,7 +45,7 @@
         position: absolute;
         top: -20px;
         left: 0;
-        pointer-events: none;
+        
     }
     /* 容器基礎樣式 */
     .container {
@@ -53,9 +57,11 @@
 
     #disc {
         width: 100%;
-        height: 300px;
+        height: 360px;
         text-align: center;
-        margin-bottom: 80px;
+        margin-bottom: 25px;
+        border-radius:50% ;
+        touch-action: none; 
     }
 
     .row {
@@ -82,6 +88,8 @@
         top: -10px;
         left: -18px;
         transform: translate(-2%, -1%);
+        user-select: none;
+        touch-action: none;
     }
 
     #lightButton {
@@ -117,5 +125,6 @@
         width: 100%;
         height: auto;
         object-fit: cover;
+        transform-origin: center;  
     }
 }
