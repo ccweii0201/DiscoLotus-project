@@ -5,12 +5,16 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var { v4: uuidv4 } = require('uuid');  // 引入 uuid 模組
+const WebSocket =require('ws');
+const http = require('http'); 
 const port = 3000;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
+var server=http.createServer(app)
+const wss=new WebSocket.Server({server});
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));  
@@ -37,49 +41,69 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-// 新增 /start-session 路由
-let currentSessionId = null;  // 儲存當前會話ID
-let currentSessionCreatedAt = null; //
+//websocket 
+wss.on('connection',(ws)=>{
+  console.log('Client connected');
 
-// 每 10 秒檢查一次會話是否超過 10 分鐘
-setInterval(() => {
-  if (currentSessionId && currentSessionCreatedAt) {
-    
-    if (Date.now() - currentSessionCreatedAt > 600000) { 
-      currentSessionId = null;
-      currentSessionCreatedAt = null;
-      console.log('Session expired after 10 minutes');
-    }
+  let currentSessionId = null;  
+  let SessionTimeout = null; 
+  
+  //計時
+  function ResetSessionTimeout(){
+    if (SessionTimeout){
+      clearTimeout(SessionTimeout)
+    } 
+    SessionTimeout=setTimeout(()=>{
+      console.log('過期一分鐘');
+      wss.clients.forEach(client=>{
+        if(client.readyState === WebSocket.OPEN){
+          client.send(JSON.stringify({
+            type:'sessionExpired',
+            message:'舊的id已過期'
+          }))
+        }
+      })
+      sessionId=null;
+    },5 * 60 * 1000)
   }
-}, 10000);
 
-app.post('/start-session', (req, res) => {
-  const newSessionId = uuidv4();  // 生成一個新的 UUID
-  currentSessionId = newSessionId;  // 設定為當前會話ID
-  console.log(currentSessionId);
-  currentSessionCreatedAt = Date.now();
-  // 將新的會話ID返回給前端
-  res.json({ sessionId: newSessionId });
-});
-//驗證ID
-app.post('/validate-session', (req, res) => {
-  console.log(req.body);  // 從前端傳遞的id
-  const { sessionId } = req.body;
-  if (!sessionId) {
-    return res.status(400).send('Session ID is required');
-  } //沒有id 回傳錯誤
-  if (sessionId === currentSessionId) {
-    // 檢查會話是否超過 10 分鐘
-    if (Date.now() - currentSessionCreatedAt > 600000) {  // 10 分鐘過期
-      // currentSessionId = null;
-      currentSessionCreatedAt = null;
-      return res.status(401).send('Session has expired');
+  ws.on('message',(message)=>{
+    try{
+      const data=JSON.parse(message);
+
+      if(data.type==='createNewSessionID'){
+        console.log("create ID")
+        const newSessionId = uuidv4();  // 生成一個新的 UUID
+        currentSessionId = newSessionId;  // 設定為當前會話ID
+        
+        //廣播給舊使用者，他id無法使用
+        wss.clients.forEach(client=>{
+          if(client !== ws && client.readyState === WebSocket.OPEN){
+            client.send(JSON.stringify({
+              type:'sessionExpired',
+              message:'舊的id已失效'
+            }))
+          }
+        })
+
+        console.log('New Session ID:'+currentSessionId);
+        ws.send(JSON.stringify({type:'sessionUpdate',sessionId:currentSessionId}));
+
+        ResetSessionTimeout();
+      }
     }
-    res.send('Session is valid');
-  } else {
-    res.status(401).send('Session is invalid'+'+'+currentSessionId);
-  }
-});
+    catch(error){
+      console.error('錯誤',error);
+    }
+
+  })
+
+  ws.on('close', () => {
+    console.log('Client disconnected');
+    currentSessionId = null; 
+    SessionTimeout = null; 
+  });
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -97,5 +121,8 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+server.listen(3000,()=>{
+  console.log(`Server running at http://localhost:${port}`);
+})
 
 module.exports = app;

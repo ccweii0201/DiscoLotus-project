@@ -1,13 +1,15 @@
 let apiUrl;
-apiUrl='http://'+window.location.hostname+':3000/'
+apiUrl='ws://'+window.location.hostname+':3000/'
 
 document.addEventListener('DOMContentLoaded', function () {
   let isOpne = false //關閉狀態
   const open = document.getElementById('on');
-  let validationInterval;
+  let ws;
+
   //更新狀態
   function updateOpenStatus(status) {
     isOpne = status;
+    //切換開關按鈕圖片
     const statusImg = open.querySelector('img');
     statusImg.setAttribute('src', `img/dj台-${status ? '開啟' : '關閉'}.png`)
 
@@ -20,93 +22,83 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
   //一開始都為關閉狀態(初始化)
   updateOpenStatus(false);
   sessionStorage.removeItem('sessionId')
-
-  function handleSessionError(error, message) {
-    console.error(`${message}:`, error);
-    updateOpenStatus(false); //發生錯誤會直接關閉並移除id
-    sessionStorage.removeItem('sessionId');
-    if (validationInterval) {
-      clearInterval(validationInterval); //停止請求
+  
+  //websocket連線
+  function connectWebSocket(){
+    if (ws) {
+      console.warn("WebSocket 已經存在，避免重複連線");
+      return;
     }
-  }
-  // 如果沒有 sessionId，發送請求創建新的 sessionId
-  async function createNewSession() {
-    try {
-      const response = await fetch(`${apiUrl}start-session`, {
-        method: 'POST',
-      });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+    ws=new WebSocket(apiUrl);
+
+    ws.onopen=function(){
+      console.log('連線成功');
+      let sessionID=sessionStorage.getItem('sessionId')
+      //沒有id創一個
+      if(!sessionID){
+        console.log("沒有id 創建一個")
+        ws.send(JSON.stringify({type:'createNewSessionID'}));
+      }
+    };
+
+    ws.onmessage=function(event){
+      const data=JSON.parse(event.data);
+
+      if(data.type==='sessionUpdate'){
+        console.log(data)
+        console.log('獲取新id:',data.sessionId)
+        sessionStorage.setItem('sessionId', data.sessionId);
+        updateOpenStatus(true);
       }
 
-      const data = await response.json();
-      sessionStorage.setItem('sessionId', data.sessionId);
-
-      // 儲存 interval ID
-      validationInterval = setInterval(() => {
-        validateSession(data.sessionId);
-        console.log('驗證請求已發送'); // 用來確認驗證是否在進行
-      }, 10000);
-
-      return true;
-    } catch (error) {
-      handleSessionError(error, 'Error starting session');
-      return false;
-    }
-  }
-  // 驗證id
-  async function validateSession(sessionId) {
-    try {
-      const response = await fetch(`${apiUrl}validate-session`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ sessionId })
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      console.log('Session is valid');
-      return true;
-    } catch (error) {
-      handleSessionError(error, 'Session validation failed');
-      return false;
-    }
-  }
-  //開啟/關閉dj台
-  open.addEventListener('touchstart', async function (e) {
-    e.preventDefault();
-    const sessionId = sessionStorage.getItem('sessionId');
-    if (!isOpne) { //狀態非開啟
-      updateOpenStatus(false);
-      if (!sessionId) {
-        const success = await createNewSession();      //沒有id 產生id
-        if (success) {
-          updateOpenStatus(true);
+      if(data.type==='sessionExpired'){
+        console.log(data)
+        console.log('id已失效')
+        updateOpenStatus(false);
+        sessionStorage.removeItem('sessionId')
+        if(ws){
+          ws.close();
+          ws=null
         }
       }
     }
-    else { //狀態非關閉
-      if (validationInterval) {
-        clearInterval(validationInterval); //停止驗證
-        console.log('已停止驗證請求');
-      }
-      sessionStorage.removeItem('sessionId');
+
+
+    ws.onclose=function(){
+      console.log("連線關閉");
+      sessionStorage.removeItem('sessionId')
+      ws=null;
+    };
+    ws.onerror=function(error){
+      console.error("錯誤"+error);
+    }
+  }
+
+  //開啟/關閉dj台
+  open.addEventListener('touchstart',function (e) {
+    e.preventDefault();
+
+    if (!isOpne) { //關閉狀態
+      console.log('開啟dj台')
+      connectWebSocket()
+    }
+    else{ //開啟狀態
       updateOpenStatus(false);
+      console.log('關閉dj台')
+      if(ws){
+        ws.close();
+        ws=null
+      }
     }
   })
 
-  window.addEventListener('beforeunload', function () {
-    if (validationInterval) {
-      clearInterval(validationInterval);
-    }
-  });
-  //按鈕切換
+
+  //六個功能按鈕切換 ->控制燈光
   function toggleButtonImg(buttonId, defaultSrc, activeSrc, buttonConfigs) {
     const button = document.getElementById(buttonId);
     let touchStarted = false;
@@ -153,7 +145,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
   }
-
   const buttonConfigs = [
     { id: 'greenlight', defaultSrc: 'img/dj台-13.png', activeSrc: 'img/dj台-按鈕-04.png' },
     { id: 'pinklight', defaultSrc: 'img/dj台-14.png', activeSrc: 'img/dj台-按鈕-05.png' },
@@ -162,12 +153,11 @@ document.addEventListener('DOMContentLoaded', function () {
     { id: 'function2', defaultSrc: 'img/dj台-按鈕-16.png', activeSrc: 'img/dj台-按鈕-08.png' },
     { id: 'function3', defaultSrc: 'img/dj台-按鈕-16.png', activeSrc: 'img/dj台-按鈕-09.png' }
   ];
-
   buttonConfigs.forEach(config => {
     toggleButtonImg(config.id, config.defaultSrc, config.activeSrc, buttonConfigs);
   });
 
-  //slider滑動
+  //slider滑動 ->蓮花開合 
   const sliders = document.querySelectorAll('.slider img');
   sliders.forEach((slider) => {
     let isDragging = false; //是否在拖移
@@ -197,7 +187,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
       e.preventDefault();
 
-      const deltaY = e.touches[0].clientY - startY;
+      const deltaY = (e.touches[0].clientY - startY)/1.8;
       let newTop = initialTop + deltaY;
 
       if (newTop < minTop) newTop = minTop;
@@ -210,7 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
     })
   })
 
-  //disc轉動
+  //disc轉動 ->蓮花旋轉
   let isTouching = false; //是否觸碰照片
   let lastAngle = 0 //初始角度
   let startX = 0 
