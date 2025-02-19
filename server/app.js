@@ -13,7 +13,8 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
-var server=http.createServer(app)
+var server=http.createServer(app);
+const ws_unity =new WebSocket.Server({port:8080})
 const wss=new WebSocket.Server({server});
 
 app.set('view engine', 'ejs');
@@ -41,7 +42,7 @@ app.use(cookieParser());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-//websocket 
+//websocket ->web
 wss.on('connection',(ws)=>{
   console.log('Client connected');
 
@@ -102,6 +103,19 @@ wss.on('connection',(ws)=>{
     console.log('Client disconnected');
     currentSessionId = null; 
     SessionTimeout = null; 
+  });
+})
+
+//websocket ->unity
+ws_unity.on('connection',(ws)=>{
+  console.log('unity connected');
+
+  ws.on('message',(message)=>{
+    console.log('收到訊息: ' + message);
+  })
+
+  ws.on('close', () => {
+    console.log('unity disconnected');
   });
 })
 

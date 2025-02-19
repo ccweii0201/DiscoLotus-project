@@ -4,8 +4,11 @@
     #Instructions {
         height: 36px;
         padding: 4px;
+        /* display: none; */
     }
+
     body {
+        margin: 0;
         background-color: #363533;
         /* background-image: linear-gradient(to bottom left, #000000, #363533); */
         /* background-image: url(img/dj台-bg_工作區域\ 1.jpg);
@@ -13,14 +16,16 @@
     }
 
     #help {
+        margin-left: 6px;
         width: 40px;
         height: 40px;
         border-radius: 100%;
         border: 4px solid white;
         background: gray;
     }
-    #help p{
-        text-align:center;
+
+    #help p {
+        text-align: center;
         font-weight: 900;
         font-size: large;
         color: white;
@@ -30,14 +35,15 @@
     #on {
         width: 48px;
         height: 48px;
-        border-radius: 100%; 
-        border: 0; 
+        border-radius: 100%;
+        border: 0;
         float: right;
-        padding: 0; 
+        padding: 0;
         display: block;
         position: relative;
+        margin-right: 12px;
     }
-    
+
     #on img {
         width: 100%;
         height: 84px;
@@ -45,23 +51,28 @@
         position: absolute;
         top: -20px;
         left: 0;
-        
+
     }
+
     /* 容器基礎樣式 */
     .container {
         display: flex;
         flex-direction: column;
         width: 100%;
         height: auto;
+        margin: 0 0 auto;
+        padding: 2%;
+        padding-left: 0%;
+        /* display: none; */
     }
 
     #disc {
         width: 100%;
         height: 360px;
         text-align: center;
-        margin-bottom: 25px;
-        border-radius:50% ;
-        touch-action: none; 
+        margin-bottom: 24px;
+        border-radius: 50%;
+        touch-action: none;
     }
 
     .row {
@@ -69,7 +80,8 @@
         justify-content: space-between;
         align-items: center;
     }
-    .slider{
+
+    .slider {
         width: 24px;
         height: 208px;
         background-color: #eaeaea;
@@ -77,8 +89,9 @@
         overflow: visible;
         position: relative;
     }
+
     #slider1 {
-        margin: 0 0 0 16px;
+        margin: 0 0 0 24px;
     }
 
     #slider1 img,
@@ -95,12 +108,13 @@
     #lightButton {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        width: 60%;
+        width: 52%;
         height: 168px;
         border: 1.5px solid #cba38e;
         border-radius: 8px;
         column-gap: 10px;
         padding: 8px;
+        margin-right: 16px;
     }
 
     #lightButton button {
@@ -109,7 +123,7 @@
         padding: 0;
         cursor: pointer;
         height: auto;
-        
+
     }
 
     #lightButton img {
@@ -122,9 +136,33 @@
     }
 
     #discImg {
-        width: 100%;
+        width: 95%;
         height: auto;
         object-fit: cover;
-        transform-origin: center;  
+        transform-origin: center;
+    }
+
+    #Tutorial {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        background-color: white;
+        opacity: 0.8;
+        position: fixed;
+        z-index: 999;
+        border: 0;
+        /* background-image: url(img/spet0.jpg);
+        background-size: cover; */
+    }
+
+    #Tutorial p {
+        position: absolute;
+        right: 12px;
+        top: 57px;
+        font-size: larger;
+        font-weight: bolder;
+    }
+    div#test{
+        display: none;
     }
 }
