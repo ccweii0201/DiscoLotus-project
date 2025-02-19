@@ -62,7 +62,7 @@ export function setupButton(){
 }
 
 export function setupSlider(){
-      //slider滑動 ->蓮花開合 
+      //slider滑動 ->蓮花開合 ， 瀑布速度
   const sliders = document.querySelectorAll('.slider img');
   sliders.forEach((slider) => {
     let isDragging = false; //是否在拖移
@@ -84,8 +84,6 @@ export function setupSlider(){
       isDragging = true;
       startY = e.touches[0].clientY;
       initialTop = parseInt(window.getComputedStyle(slider).top) || 0;
-      console.log("containerHeight:" + containerHeight)
-      console.log("imageHeight" + imageHeight)
     });
     slider.addEventListener('touchmove', (e) => {
       if (!isDragging) return;
@@ -99,6 +97,34 @@ export function setupSlider(){
       if (newTop > maxTop) newTop = maxTop;
 
       slider.style.top = `${newTop}px`;
+      switch (true) {
+        case (newTop > -10 && newTop <= 10):
+          window.ws.send('1');
+          break;
+        case (newTop > 10 && newTop <= 30):
+          window.ws.send('2');
+          break;
+        case (newTop > 30 && newTop <= 50):
+          window.ws.send('3');
+          break;
+        case (newTop > 50 && newTop <= 70):
+          window.ws.send('4');
+          break;
+        case (newTop > 70 && newTop <= 90):
+          window.ws.send('5');
+          break;
+        case (newTop > 90 && newTop <= 110):
+          window.ws.send('6');
+          break;
+        case (newTop > 110 && newTop <= 130):
+          window.ws.send('7');
+          break;
+        case (newTop > 130 && newTop <= 150):
+          window.ws.send('8');
+          break;
+        default:
+          break;
+      }
     });
     slider.addEventListener('touchend', () => {
       isDragging = false;
