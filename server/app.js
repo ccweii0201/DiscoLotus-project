@@ -6,14 +6,25 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var { v4: uuidv4 } = require('uuid');  // 引入 uuid 模組
 const WebSocket = require('ws');
-const http = require('http');
+const https = require('https');
+const fs = require('fs');
 const port = 3000;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
+
+// 讀取 SSL 憑證，Render 會提供 SSL 設定
+const privateKey = fs.readFileSync('path/to/private-key.pem', 'utf8');
+const certificate = fs.readFileSync('path/to/certificate.pem', 'utf8');
+const ca = fs.readFileSync('path/to/ca.pem', 'utf8');
+
+const credentials = { key: privateKey, cert: certificate, ca: ca };
+
+
 var app = express();
-var server = http.createServer(app);
+const server = https.createServer(credentials, app);
+
 const ws_unity = new WebSocket.Server({ port: 8080 })
 const wss = new WebSocket.Server({ server });
 

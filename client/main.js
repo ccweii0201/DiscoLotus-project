@@ -1,5 +1,6 @@
 import { updateOpenStatus, connectWebSocket } from "./session.js";
 import { tutorial, setupButton, setupSlider, setupDisc} from "./control.js";
+import AudioManager from "./audio.js";
 
 let apiUrl;
 apiUrl = 'ws://' + window.location.hostname + ':3000/'
@@ -10,14 +11,14 @@ document.addEventListener('DOMContentLoaded', function () {
   window.open = document.getElementById('on');
   window.ws;
   let wss;
-
+  
   //一開始都為關閉狀態(初始化)
     tutorial()
     updateOpenStatus(false);
     sessionStorage.removeItem('sessionId')
   //esp32 websocket test
   function connectESP32(){
-    wss=new WebSocket("ws://172.20.10.3:81")
+    wss= new WebSocket('wss://colian.onrender.com:3000/');
     wss.onopen=()=>{
       document.getElementById("status").innerText="連接狀態:已連接";
       console.log('esp32連接成功')
@@ -31,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById("status").innerText = "連線狀態: 已斷線";
       console.log("WebSocket 連線關閉");
     }
-    wss.onerror= function (error){
-      console.error("錯誤" + error);
+    wss.onerror=(error)=>{
+      console.error("錯誤" , error);
     }
   }
     //開啟/關閉dj台
@@ -43,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('開啟dj台')
         connectWebSocket(apiUrl);
         connectESP32();
+        AudioManager.playSound("djOn");
       }
       else { //開啟狀態
         updateOpenStatus(false);
@@ -51,6 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
           ws.close();
           ws = null
         }
+        AudioManager.playSound("djOn");
       }
     })
 

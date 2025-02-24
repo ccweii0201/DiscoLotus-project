@@ -1,4 +1,4 @@
-
+import AudioManager from "./audio.js";
 
 export function setupButton(){
     //六個功能按鈕切換 ->控制燈光
@@ -24,6 +24,9 @@ export function setupButton(){
         button.addEventListener('touchstart', function (e) {
           e.preventDefault(); // 防止觸發點擊事件
           touchStarted = true;
+          if(!this.disabled){
+            AudioManager.playSound("buttonClick");
+          }
         });
         button.addEventListener('touchend', function (e) {
           e.preventDefault(); // 防止觸發點擊事件
@@ -84,12 +87,14 @@ export function setupSlider(){
       isDragging = true;
       startY = e.touches[0].clientY;
       initialTop = parseInt(window.getComputedStyle(slider).top) || 0;
+      AudioManager.playSound("sliderMove");
     });
     slider.addEventListener('touchmove', (e) => {
       if (!isDragging) return;
 
       e.preventDefault();
 
+   
       const deltaY = (e.touches[0].clientY - startY) / 1.8;
       let newTop = initialTop + deltaY;
 
@@ -128,6 +133,7 @@ export function setupSlider(){
     });
     slider.addEventListener('touchend', () => {
       isDragging = false;
+      AudioManager.pauseSound("sliderMove");
     })
   })
 
@@ -150,6 +156,8 @@ export function setupDisc(){
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
     lastTime = Date.now();
+    AudioManager.playSound("discSpin");
+   
   });
   rotateDisc.addEventListener('touchmove', (e) => {
     if (!isTouching) return;
@@ -178,6 +186,7 @@ export function setupDisc(){
   });
   rotateDisc.addEventListener('touchend', (e) => {
     isTouching = false;
+    AudioManager.pauseSound("discSpin");
   });
 }
 
