@@ -11,14 +11,14 @@ document.addEventListener('DOMContentLoaded', function () {
   window.open = document.getElementById('on');
   window.ws;
   let wss;
-  
+
   //一開始都為關閉狀態(初始化)
     tutorial()
     updateOpenStatus(false);
     sessionStorage.removeItem('sessionId')
   //esp32 websocket test
   function connectESP32(){
-    wss= new WebSocket('wss://colian.onrender.com:3000/');
+    wss=new WebSocket("ws://172.20.10.4:81")
     wss.onopen=()=>{
       document.getElementById("status").innerText="連接狀態:已連接";
       console.log('esp32連接成功')
