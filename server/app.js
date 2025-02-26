@@ -7,7 +7,7 @@ var logger = require('morgan');
 var { v4: uuidv4 } = require('uuid');  // 引入 uuid 模組
 const WebSocket = require('ws');
 const http = require('http');
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
