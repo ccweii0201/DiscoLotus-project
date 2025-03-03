@@ -2,119 +2,116 @@
 /* 要再客製化一點 */
 @media(max-width: 767px) {
     #Instructions {
-        height: 36px;
-        padding: 4px;
-        /* display: none; */
+        height: 100px;
+        float: left;
+        width: 39%;
+        position: relative;
     }
 
     body {
+        width: auto;
         margin: 0;
-        background-color: #363533;
-        /* background-image: linear-gradient(to bottom left, #000000, #363533); */
-        /* background-image: url(img/dj台-bg_工作區域\ 1.jpg);
-        background-size: cover; */
+        background-image: url(img/BG-01.jpg);
+        background-size: cover;
     }
 
-    #help {
-        margin-left: 6px;
-        width: 40px;
-        height: 40px;
-        border-radius: 100%;
-        border: 4px solid white;
-        background: gray;
+    #open_bg {
+        width: 100%;
+        height: 100%;
     }
 
-    #help p {
-        text-align: center;
-        font-weight: 900;
-        font-size: large;
-        color: white;
-        margin: 0;
+    #open_bg img {
+        width: 58%;
+        height: auto;
+        top: -16%;
+        left: 22%;
+        position: absolute;
+        
     }
 
     #on {
-        width: 48px;
-        height: 48px;
+        width: 60%;
+        height: 58%;
         border-radius: 100%;
         border: 0;
-        float: right;
         padding: 0;
         display: block;
-        position: relative;
-        margin-right: 12px;
+        position: absolute;
+        top: 8%;
+        left: 14%;
+        background: none;
     }
 
     #on img {
         width: 100%;
-        height: 84px;
-        object-fit: cover;
-        position: absolute;
-        top: -20px;
-        left: 0;
 
+        pointer-events: none;
     }
 
     /* 容器基礎樣式 */
     .container {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: auto;
+        width: fit-content;
+        height: fit-content;
         margin: 0 0 auto;
-        padding: 2%;
-        padding-left: 0%;
         /* display: none; */
     }
 
     #disc {
         width: 100%;
-        height: 360px;
-        text-align: center;
-        margin-bottom: 24px;
-        border-radius: 50%;
+        clear: both;
+        height: auto;
         touch-action: none;
+        margin-bottom: 8%;
     }
 
-    .row {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+    .slider_container {
+        width: 60%;
+        height: 100px;
+        float: right;
+        margin-bottom: 10%;
     }
-
-    .slider {
-        width: 24px;
-        height: 208px;
-        background-color: #eaeaea;
-        border: 2px solid #aaaaaa;
-        overflow: visible;
-        position: relative;
-    }
-
-    #slider1 {
-        margin: 0 0 0 24px;
+    .slider_container p{
+        font-weight: 900;
+        font-family: sans-serif;
+        font-size: xx-small;
+        position: absolute;
+        left: 41%;
+        color: #5a5a5a;
     }
 
     #slider1 img,
     #slider2 img {
-        width: 64px;
+        left: 36%;
+        width: 62%;
         position: absolute;
-        top: 70px;
-        left: -18px;
-        transform: translate(-2%, -1%);
         user-select: none;
         touch-action: none;
     }
 
-    #lightButton {
+    #slider1 img {
+        top: 2%;
+    }
+
+    #slider2 img {
+        top: 12%;
+    }
+    #slider1 p {
+       
+        top: -0.7%;
+    }
+    #slider2 p {
+       
+        top: 9.3%;
+    }
+    #lightButton{
         display: grid;
         grid-template-columns: repeat(3, 1fr);
-        width: 52%;
-        height: 168px;
-        border: 1.5px solid #cba38e;
-        border-radius: 8px;
-        column-gap: 10px;
-        padding: 8px;
-        margin-right: 16px;
+        width: 88%;
+        justify-items: center;
+        position: absolute;
+        left: 52%;
+        transform: translateX(-50%);
+        top: 80%;
     }
 
     #lightButton button {
@@ -123,46 +120,118 @@
         padding: 0;
         cursor: pointer;
         height: auto;
-
+        width: 65%;
+        margin-bottom: 4%;
     }
 
     #lightButton img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        max-width: 88%;
+        max-height: 88%;
         pointer-events: none;
+        object-fit: contain;
         display: block;
-        filter: drop-shadow(0 3px 0 #b7b7b6)
+        filter: drop-shadow(5px 4px 4px rgba(0, 0, 0, 0.5));
     }
 
+
     #discImg {
-        width: 95%;
+        width: 97%;
+
         height: auto;
         object-fit: cover;
         transform-origin: center;
     }
 
-    #Tutorial {
-        width: 100%;
-        height: 100%;
-        margin: 0;
-        background-color: white;
-        opacity: 0.8;
-        position: fixed;
-        z-index: 999;
+    .functionBtn {
+        width: 64%;
+        background: none;
         border: 0;
-        /* background-image: url(img/spet0.jpg);
-        background-size: cover; */
+        position: absolute;
+        
     }
 
-    #Tutorial p {
+    #safety {
+        top: 76%;
+        left: 1%;
+    }
+
+    #safetybtn {
+        width: 108%;
+        filter: drop-shadow(3px 3px 1px rgba(0, 0, 0, 0.5));
+        pointer-events: none;
+    }
+
+    #happy {
+        top: 109%;
+        left: 1%;
+
+    }
+
+    #happybtn {
+        width: 96%;
+        filter: drop-shadow(3px 3px 1px rgba(0, 0, 0, 0.5));
+        pointer-events: none;
+    }
+    .fakeBtn{
         position: absolute;
-        right: 12px;
-        top: 57px;
-        font-size: larger;
-        font-weight: bolder;
+        pointer-events: none;
     }
-    div#test{
-        display: none;
+    #fakeBtn1{
+        width: 9%;
+        top: 26%;
+        left: 5%;
+        
     }
+    #fakeBtn2{
+        width: 14%;
+        top: 55%;
+        left: 0%;
+    }
+    #fakeBtn3{
+        width: 11%;
+        top: 63%;
+        left: 9%;
+    }
+    #playBtn{
+        position: absolute;
+        width: 17%;
+        height: 7%;
+        top: 65%;
+        left: 82%;
+        background: none;
+        border: 0;
+    }
+    #playBtn img{
+        width: 100%;
+        pointer-events: none;
+    }
+    svg{
+        position: absolute;
+        top: 75%;
+    }
+    #lightText{
+        font-weight: 800;
+        font-family: sans-serif;
+        font-size: xx-small;
+        position: absolute;
+        left: 50%;
+        top: 72%;
+        color: #5a5a5a;
+        transform: translateX(-50%);
+    }
+
+    /* #fakebtn1 {
+        width: 65%;
+        position: absolute;
+        position: absolute;
+        top: 80%;
+        left: 4%;
+    }
+
+    #fakebtn2 {
+        width: 57%;
+        position: absolute;
+        top: 120%;
+        left: 5%;
+    } */
 }

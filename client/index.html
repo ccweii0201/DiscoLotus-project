@@ -7,37 +7,56 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="test">
-        <button id="esp32Test">傳遞訊息給esp32</button>
-        <p id="status">連線狀態:未連接</p>
-        <p id="messages"></p>
-    </div>
-    <div id="Tutorial">
-        <p id="Tutorial_p">蓮花啟動開關</p>
-    </div>
     <div class="container">
         <div id="Instructions">
-            <button id="help"><p>?</p></button>
-            <button id="on"><img src="img/dj台-關閉.png" alt=""></button>
+            <div  id="open_bg">
+                <img src="img/dj台-17.png" alt="">
+                <button id="on"><img src="img/dj台(1)_開關-關.png" alt=""></button>
+            </div>
+            <div id="functionBtn">
+                    <button id="safety" class="functionBtn">
+                        <img src="img/dj台(1)-15.png" alt="" id="safetybtn">
+                    </button>
+                    <button id="happy"  class="functionBtn">
+                        <img src="img/dj台(1)-14.png" alt="" id="happybtn">
+                    </button>
+            </div>  
         </div>
-        <div id="disc">
-            <img src="img/dj台-按鈕-11.png" alt="" id="discImg">
-        </div>
-        <div class="row">
+        <div class="slider_container">
             <div id="slider1" class="slider">
-                <img src="img/dj台-按鈕-03.png" alt="">
+                <p>WATERFALL</p>
+                <img src="img/dj台(1)-18.png" alt="">
             </div>
             <div id="slider2" class="slider" >
-                <img src="img/dj台-按鈕-10.png" alt="">
+                <p>DOTUS ANGLE</p>
+                <img src="img/dj台(1)-19.png" alt="">
             </div>
-            <div id="lightButton">
-                <button id="greenlight"><img src="img/dj台-13.png" alt="" ></button>
-                <button id="pinklight"><img src="img/dj台-14.png" alt="" ></button>
-                <button id="yellowlight"><img src="img/dj台-15.png" alt="" ></button>
-                <button id="function1"><img src="img/dj台-按鈕-16.png" alt=""></button>
-                <button id="function2"><img src="img/dj台-按鈕-16.png" alt=""></button>
-                <button id="function3"><img src="img/dj台-按鈕-16.png" alt=""></button>
-            </div>
+        </div>
+        <div id="disc">
+            <img src="img/dj台(1)_dj盤.png" alt="" id="discImg">
+            <img src="img/dj台(1)-13.png" alt="" id="fakeBtn1" class="fakeBtn">
+            <img src="img/dj台(1)-11.png" alt="" id="fakeBtn2" class="fakeBtn">
+            <img src="img/dj台(1)-12.png" alt="" id="fakeBtn3" class="fakeBtn">
+            <button id="playBtn">  <img src="img/dj台(1)-16.png" alt="" > </button>
+          
+        </div>
+        <p id="lightText">LIGHT</p>
+        <svg width="375" height="30" viewBox="0 0 375 30">
+            <path d="M 80,90 V 20 Q 80,10 90,10 H 290 Q 300,10 300,20 V 90" 
+                  stroke="gray" stroke-width="2.5" 
+                  fill="none" stroke-linecap="round"/>
+        </svg>
+        
+        
+        
+        
+        <div id="lightButton">
+            <button id="greenlight"><img src="img/dj台(1)-20.png" alt="" class="light"></button>
+            <button id="pinklight"><img src="img/dj台(1)-21.png" alt="" class="light"></button>
+            <button id="yellowlight"><img src="img/dj台(1)-22.png" alt=""  class="light"></button>
+            <button id="function1" class="method"><img src="img/dj台(1)-23.png" alt=""></button>
+            <button id="function2" class="method"><img src="img/dj台(1)-24.png" alt=""></button>
+            <button id="function3" class="method"><img src="img/dj台(1)-25.png" alt="" ></button>
         </div>
     </div>
     <script src="main.js"  type="module"  ></script>

@@ -44,6 +44,7 @@ app.use('/users', usersRouter);
 
 let waterfallLevel = 4;
 let unityClient = null;
+let unity_Text;
 //websocket ->web
 wss.on('connection', (ws) => {
   console.log('Client connected');
@@ -72,7 +73,11 @@ wss.on('connection', (ws) => {
 
   ws.on('message', (message) => {
     try {
-      const data = JSON.parse(message);
+      try {
+        data = JSON.parse(message);
+      } catch (error) {
+        data = message.toString();  // 解析失敗，當作純文字處理
+      }
       console.log('收到訊息:', data);
 
       // 判斷是否為 session 相關的指令
@@ -109,16 +114,23 @@ wss.on('connection', (ws) => {
             console.log('已轉發給 Unity:', waterfallLevel);
           }
         }
-        else{
+        else {
           console.log("原本的num", waterfallLevel);
         }
-      } else {
+      }
+      else {
         console.log('收到非數字訊息，忽略:', data);
       }
-    } catch (error) {
-      console.error('錯誤', error);
+      if (typeof data === 'string') {
+        console.log('收到文字:', data);
+        unity_Text=data;
+        unityClient.send(unity_Text);
+      } 
     }
-  })
+    catch (error) {
+        console.error('錯誤', error);
+      }
+    })
 
   ws.on('close', () => {
     console.log('Client disconnected');

@@ -3,12 +3,12 @@ import AudioManager from "./audio.js";
 export function setupButton(){
     //六個功能按鈕切換 ->控制燈光
     const buttonConfigs = [
-        { id: 'greenlight', defaultSrc: 'img/dj台-13.png', activeSrc: 'img/dj台-按鈕-04.png' },
-        { id: 'pinklight', defaultSrc: 'img/dj台-14.png', activeSrc: 'img/dj台-按鈕-05.png' },
-        { id: 'yellowlight', defaultSrc: 'img/dj台-15.png', activeSrc: 'img/dj台-按鈕-06.png' },
-        { id: 'function1', defaultSrc: 'img/dj台-按鈕-16.png', activeSrc: 'img/dj台-按鈕-07.png' },
-        { id: 'function2', defaultSrc: 'img/dj台-按鈕-16.png', activeSrc: 'img/dj台-按鈕-08.png' },
-        { id: 'function3', defaultSrc: 'img/dj台-按鈕-16.png', activeSrc: 'img/dj台-按鈕-09.png' }
+        { id: 'greenlight', defaultSrc: 'img/dj台(1)-20.png', activeSrc: 'img/dj台(1)_綠燈.png' },
+        { id: 'pinklight', defaultSrc: 'img/dj台(1)-21.png', activeSrc: 'img/dj台(1)_粉燈.png' },
+        { id: 'yellowlight', defaultSrc: 'img/dj台(1)-22.png', activeSrc: 'img/dj台(1)_黃燈.png' },
+        { id: 'function1', defaultSrc: 'img/dj台(1)-23.png', activeSrc: 'img/dj台(1)_白燈.png' },
+        { id: 'function2', defaultSrc: 'img/dj台(1)-24.png', activeSrc: 'img/dj台(1)_白燈.png' },
+        { id: 'function3', defaultSrc: 'img/dj台(1)-25.png', activeSrc: 'img/dj台(1)_白燈.png' }
       ];
       buttonConfigs.forEach(config => {
         toggleButtonImg(config.id, config.defaultSrc, config.activeSrc, buttonConfigs);
@@ -46,17 +46,17 @@ export function setupButton(){
     
           if (currentSrc === activeSrc) {
             img.setAttribute('src', defaultSrc);
-            img.style.filter = 'drop-shadow(0 3px 0 #b7b7b6)';
+          
           } else {
             buttonConfigs.forEach(config => {
               const otherButton = document.getElementById(config.id);
               const otherImg = otherButton.querySelector('img');
               if (config.id === buttonId) {
                 img.setAttribute('src', activeSrc);
-                img.style.filter = 'drop-shadow(0 0px 0 #b7b7b6)';
+               
               } else {
                 otherImg.setAttribute('src', config.defaultSrc);
-                otherImg.style.filter = 'drop-shadow(0 3px 0 #b7b7b6)';
+               img.style.width="78%"
               }
             });
           }
@@ -190,164 +190,42 @@ export function setupDisc(){
   });
 }
 
-export function tutorial(){
+export function setupText(){
+  let safety =document.getElementById('safety');
+  let happy =document.getElementById('happy');
+  let touchStarted = false;
 
-//教學介面
-const tutorial = document.getElementById('Tutorial');
-const content=document.getElementById('Tutorial_p');
-const t_btn=document.getElementById('help');
-let spet=0;
-function updateMask(targetID) {
+  safety.addEventListener('touchstart', function (e) {
 
-  let target = document.getElementById(targetID);
-  
-  if (!targetID) {
-      console.log('not found!')
-      return;
-  }
-  
-  const rect = target.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-  let radius=0;
-  let maskCSS="";
-  
-  //圓形
-  if(targetID==="on"){
-      radius = Math.max(rect.width, rect.height) / 2 + 45;
-      maskCSS = `radial-gradient(circle ${radius}px at ${centerX}px ${centerY}px, 
-      transparent 40%, rgba(0, 0, 0, 1) 41%)`;
-      content.textContent='蓮花啟動開關'
-      content.style.top='8%'
-      content.style.right='3%'
-  }
-  else if(targetID==="discImg"){
-      radius = Math.max(rect.width, rect.height) / 2 + 280;
-      maskCSS = `radial-gradient(circle ${radius}px at ${centerX}px ${centerY}px, 
-      transparent 40%, rgba(0, 0, 0, 1) 41%)`;
-      content.textContent='轉動調整蓮花速度'
-      content.style.top='63%'
-      content.style.right='0%'
-      content.style.left='3%'
-  }
-  //方形
-  else if(targetID==="slider1"){
-      let maskSize = `${rect.width + 30}px ${rect.height + 40}px`;
-      let maskPosition = `${rect.left - 15}px ${rect.top - 20}px`;
-  
-      tutorial.style.maskImage = "linear-gradient(black, black), linear-gradient(black, black)";
-      // tutorial.style.webkitMaskImage = "linear-gradient(black, black), linear-gradient(black, black)";
-      tutorial.style.maskSize = `100% 100%, ${maskSize}`;
-      // tutorial.style.webkitMaskSize = `100% 100%, ${maskSize}`;
-      tutorial.style.maskPosition = `0 0, ${maskPosition}`;
-      // tutorial.style.webkitMaskPosition = `0 0, ${maskPosition}`;
-      tutorial.style.maskRepeat = "no-repeat";
-      // tutorial.style.webkitMaskRepeat = "no-repeat";
-      tutorial.style.maskComposite = "exclude";
-      // tutorial.style.webkitMaskComposite = "destination-out";
-      content.textContent='滑動調整蓮花開合角度'
-      content.style.top='90%'
-      content.style.right='0%'
-      content.style.left='20%'
-      return;
-  }
-  else if(targetID==="slider2"){
-      let maskSize = `${rect.width + 30}px ${rect.height + 40}px`;
-      let maskPosition = `${rect.left - 15}px ${rect.top - 20}px`;
-  
-      tutorial.style.maskImage = "linear-gradient(black, black), linear-gradient(black, black)";
-      // tutorial.style.webkitMaskImage = "linear-gradient(black, black), linear-gradient(black, black)";
-      tutorial.style.maskSize = `100% 100%, ${maskSize}`;
-      // tutorial.style.webkitMaskSize = `100% 100%, ${maskSize}`;
-      tutorial.style.maskPosition = `0 0, ${maskPosition}`;
-      // tutorial.style.webkitMaskPosition = `0 0, ${maskPosition}`;
-      tutorial.style.maskRepeat = "no-repeat";
-      // tutorial.style.webkitMaskRepeat = "no-repeat";
-      tutorial.style.maskComposite = "exclude";
-      // tutorial.style.webkitMaskComposite = "destination-out";
-      content.textContent='滑動調整瀑布流水速度'
-      content.style.top='53%'
-      content.style.right='0%'
-      content.style.left='6%'
-      return;
-  }
-  else if(targetID==="lightButton"&&spet===3){
-      let maskSize = `${rect.width -10}px ${rect.height - 100}px`;
-      let maskPosition = `${rect.left +5}px ${rect.top +10}px`;
-  
-      tutorial.style.maskImage = "linear-gradient(black, black), linear-gradient(black, black)";
-      // tutorial.style.webkitMaskImage = "linear-gradient(black, black), linear-gradient(black, black)";
-      tutorial.style.maskSize = `100% 100%, ${maskSize}`;
-      // tutorial.style.webkitMaskSize = `100% 100%, ${maskSize}`;
-      tutorial.style.maskPosition = `0 0, ${maskPosition}`;
-      // tutorial.style.webkitMaskPosition = `0 0, ${maskPosition}`;
-      tutorial.style.maskRepeat = "no-repeat";
-      // tutorial.style.webkitMaskRepeat = "no-repeat";
-      tutorial.style.maskComposite = "exclude";
-      // tutorial.style.webkitMaskComposite = "destination-out";
-      content.textContent='燈光顏色'
-      content.style.top='61%'
-      content.style.left='73%'
-      return;
-  }
-  else if(targetID==="lightButton"&&spet===4){
-      let maskSize = `${rect.width -10}px ${rect.height - 100}px`;
-      let maskPosition = `${rect.left +5}px ${rect.top +93}px`;
-  
-      tutorial.style.maskImage = "linear-gradient(black, black), linear-gradient(black, black)";
-      // tutorial.style.webkitMaskImage = "linear-gradient(black, black), linear-gradient(black, black)";
-      tutorial.style.maskSize = `100% 100%, ${maskSize}`;
-      // tutorial.style.webkitMaskSize = `100% 100%, ${maskSize}`;
-      tutorial.style.maskPosition = `0 0, ${maskPosition}`;
-      // tutorial.style.webkitMaskPosition = `0 0, ${maskPosition}`;
-      tutorial.style.maskRepeat = "no-repeat";
-      // tutorial.style.webkitMaskRepeat = "no-repeat";
-      tutorial.style.maskComposite = "exclude";
-      // tutorial.style.webkitMaskComposite = "destination-out";
-      content.textContent='隨機閃爍方式'
-      content.style.top='73%'
-      content.style.left='65%'
-      return;
-  }
-  
-  tutorial.style.maskImage = maskCSS;
+    touchStarted = true;
+    if(!this.disabled){
+      AudioManager.playSound("buttonClick");
     }
-
-updateMask('on');
+    console.log("傳遞平安")
+    window.ws.send('平安');
+  });
+  safety.addEventListener('touchend', function (e) {
+   
+    if (touchStarted) {
+      touchStarted = false;
+    }
+  });
   
-    // 自動找物件位置
-  tutorial.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    if(spet===0){
-      spet++;
-      updateMask('discImg');
+  happy.addEventListener('touchstart', function (e) {
+  
+    touchStarted = true;
+    if(!this.disabled){
+      AudioManager.playSound("buttonClick");
     }
-    else if(spet===1){
-      spet++;
-      updateMask('slider1');
+    console.log("傳遞喜樂")
+    window.ws.send('喜樂');
+  });
+  happy.addEventListener('touchend', function (e) {
+   
+    if (touchStarted) {
+      touchStarted = false;
     }
-    else if(spet===2){
-      spet++;
-      updateMask('slider2');
-    }
-    else if(spet===3){
-      updateMask('lightButton');
-      spet++;
-    }
-    else if(spet===4){
-      updateMask('lightButton');
-      spet++;
-    }
-    else{
-      tutorial.style.display='none'
-      spet=0;
-    }
-  })
-  t_btn.addEventListener('touchstart',(e)=>{
-    tutorial.style.display='block';
-    updateMask('on');
-  })
-
+  });
 }
 
 

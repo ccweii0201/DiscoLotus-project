@@ -1,5 +1,5 @@
 import { updateOpenStatus, connectWebSocket } from "./session.js";
-import { tutorial, setupButton, setupSlider, setupDisc} from "./control.js";
+import { setupButton, setupSlider, setupDisc,setupText} from "./control.js";
 import AudioManager from "./audio.js";
 
 let apiUrl;
@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
   let wss;
 
   //一開始都為關閉狀態(初始化)
-    tutorial()
     updateOpenStatus(false);
     sessionStorage.removeItem('sessionId')
   //esp32 websocket test
@@ -60,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupButton()
     setupSlider()
     setupDisc()
-  
+    setupText()
   })
 
  

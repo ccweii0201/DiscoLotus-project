@@ -56,8 +56,18 @@ export function connectWebSocket(apiUrl) {
   window.isOpne = status;
   //切換開關按鈕圖片
   const statusImg = window.open.querySelector('img');
-  statusImg.setAttribute('src', `img/dj台-${status ? '開啟' : '關閉'}.png`)
-  
+  statusImg.setAttribute('src', `img/dj台(1)_${status ? '開關-開' : '開關-關'}.png`)
+  const btn = document.getElementById('on')
+  if(status){
+    btn.style.left="10%"
+    btn.style.width="63%"
+  }
+  else{
+     btn.style.width="61%"
+      btn.style.left="14%"
+  }
+
+ 
   const elements = document.querySelectorAll('button');
   const disc = document.getElementById('discImg')
   // 只選取可交互的元素
