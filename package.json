@@ -18,6 +18,7 @@
     "ios-webkit-debug-proxy": "^0.0.3",
     "johnny-five": "^2.1.0",
     "morgan": "~1.9.1",
+    "python": "^0.0.4",
     "scoop": "^0.0.2",
     "uuid": "^11.0.3",
     "ws": "^8.18.0"
