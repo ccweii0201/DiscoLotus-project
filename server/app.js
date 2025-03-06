@@ -1,5 +1,6 @@
 var createError = require('http-errors');
-var express = require('express');
+// var express = require('express');
+const express = require('express');
 const cors = require('cors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
@@ -14,8 +15,20 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 var server = http.createServer(app);
-const ws_unity = new WebSocket.Server({ port: 8080 })
-const wss = new WebSocket.Server({ server });
+const ws_unity = new WebSocket.Server({ noServer: true });
+const wss = new WebSocket.Server({ noServer: true });
+
+server.on('upgrade', (request, socket, head) => {
+  if (request.url === '/unity') {
+    ws_unity.handleUpgrade(request, socket, head, (ws) => {
+      ws_unity.emit('connection', ws, request);
+    });
+  } else {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+      wss.emit('connection', ws, request);
+    });
+  }
+});
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -25,14 +38,14 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-app.use(cors({
-  origin: (origin, callback) => {
-    callback(null, true);
-  },
-  methods: ['GET', 'POST'],
-  allowedHeaders: ['Content-Type'],
+const corsOptions = {
+  origin: "*",
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type"],
   credentials: true,
-}));
+};
+
+app.use(cors(corsOptions));
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -168,7 +181,7 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-server.listen(3000, () => {
+server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 })
 
