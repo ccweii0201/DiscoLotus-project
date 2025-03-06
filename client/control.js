@@ -64,80 +64,141 @@ export function setupButton(){
       }
 }
 
-export function setupSlider(){
-      //slider滑動 ->蓮花開合 ， 瀑布速度
-  const sliders = document.querySelectorAll('.slider img');
-  sliders.forEach((slider) => {
-    let isDragging = false; //是否在拖移
-    let startY = 0; //手指觸碰時的座標
-    let initialTop = 0; //圖片最初的top值
+export function setupSlider1(){
+  //slider滑動 ->蓮花開合 ， 瀑布速度
+  const container = document.getElementById('slider1'); // 滑動區域
+  const track = document.getElementById('slider_BG'); 
+  const fish=document.getElementById('waterfall_fish');
+ let  isDragging = false;
+ let startX = 0; // 手指觸碰時的座標
+ let initialLeft = 0; // 圖片最初的left值
+  let gifSrc = "img/fish.gif";  // GIF 圖片
+  let staticSrc = "img/dj台-滑桿2.png";  // GIF 第一幀的靜態圖片
+  let isPlaying = true;
 
     //抓取範圍
-    const container = slider.parentElement;
-    const containerHeight = container.offsetHeight;
-    const imageHeight = slider.offsetHeight;
+    const trackRect = track.getBoundingClientRect(); // 軌道的範圍
+    const minLeft = trackRect.left-20; // 軌道的最左邊
+    const maxLeft = trackRect.right - fish.offsetWidth; // 軌道的最右邊
+  
 
-
-    const minTop = -10;
-    const maxTop = containerHeight - imageHeight + 15; //+20手動調整
-
-    slider.addEventListener('touchstart', (e) => {
-      const sessionId = sessionStorage.getItem('sessionId')
-      if (!sessionId) return;
+    container.addEventListener('touchstart', (e) => {
+      // const sessionId = sessionStorage.getItem('sessionId')
+      // if (!sessionId) return;
       isDragging = true;
-      startY = e.touches[0].clientY;
-      initialTop = parseInt(window.getComputedStyle(slider).top) || 0;
+      startX = e.touches[0].clientX;
+      initialLeft = fish.offsetLeft;
+      fish.src = gifSrc;
+      isPlaying = true;
       AudioManager.playSound("sliderMove");
     });
-    slider.addEventListener('touchmove', (e) => {
+    container.addEventListener('touchmove', (e) => {
       if (!isDragging) return;
+
+     
 
       e.preventDefault();
 
    
-      const deltaY = (e.touches[0].clientY - startY) / 1.8;
-      let newTop = initialTop + deltaY;
+      const deltaX = (e.touches[0].clientX - startX) / 1.8;
+      let newLeft  = initialLeft  + deltaX;
 
-      if (newTop < minTop) newTop = minTop;
-      if (newTop > maxTop) newTop = maxTop;
+      if (newLeft < minLeft) newLeft = minLeft;
+      if (newLeft > maxLeft) newLeft = maxLeft;
 
-      slider.style.top = `${newTop}px`;
+      fish.style.left = `${newLeft}px`;
+
       switch (true) {
-        case (newTop > -10 && newTop <= 10):
+        case (newLeft > 115 && newLeft <= 131):
           window.ws.send('1');
           break;
-        case (newTop > 10 && newTop <= 30):
+        case (newLeft > 131 && newLeft <= 147):
           window.ws.send('2');
           break;
-        case (newTop > 30 && newTop <= 50):
+        case (newLeft > 147 && newLeft <= 163):
           window.ws.send('3');
           break;
-        case (newTop > 50 && newTop <= 70):
+        case (newLeft > 163 && newLeft <= 179):
           window.ws.send('4');
           break;
-        case (newTop > 70 && newTop <= 90):
+        case (newLeft > 179 && newLeft <= 195):
           window.ws.send('5');
           break;
-        case (newTop > 90 && newTop <= 110):
+        case (newLeft > 195 && newLeft <= 211):
           window.ws.send('6');
           break;
-        case (newTop > 110 && newTop <= 130):
+        case (newLeft > 211 && newLeft <= 227):
           window.ws.send('7');
           break;
-        case (newTop > 130 && newTop <= 150):
+        case (newLeft > 227 && newLeft <= 247):
           window.ws.send('8');
           break;
         default:
           break;
       }
     });
-    slider.addEventListener('touchend', () => {
+    container.addEventListener('touchend', () => {
+      fish.src = staticSrc;
+      isPlaying = false;
       isDragging = false;
       AudioManager.pauseSound("sliderMove");
     })
-  })
+  }
 
-}
+export function setupSlider2(){
+    //slider滑動 ->蓮花開合
+    const container = document.getElementById('slider2'); // 滑動區域
+    const track = document.getElementById('slider_BG'); 
+    const fish=document.getElementById('angle_fish');
+   let  isDragging = false;
+   let startX = 0; // 手指觸碰時的座標
+   let initialLeft = 0; // 圖片最初的left值
+    let gifSrc = "img/fish.gif";  // GIF 圖片
+    let staticSrc = "img/dj台-滑桿2.png";  // GIF 第一幀的靜態圖片
+    let isPlaying = true;
+  
+      //抓取範圍
+      const trackRect = track.getBoundingClientRect(); // 軌道的範圍
+      const minLeft = trackRect.left-20; // 軌道的最左邊
+      const maxLeft = trackRect.right - fish.offsetWidth; // 軌道的最右邊
+    
+  
+      container.addEventListener('touchstart', (e) => {
+        // const sessionId = sessionStorage.getItem('sessionId')
+        // if (!sessionId) return;
+        isDragging = true;
+        startX = e.touches[0].clientX;
+        initialLeft = fish.offsetLeft;
+        fish.src = gifSrc;
+        isPlaying = true;
+        AudioManager.playSound("sliderMove");
+      });
+      container.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+  
+       
+  
+        e.preventDefault();
+  
+     
+        const deltaX = (e.touches[0].clientX - startX) / 1.8;
+        let newLeft  = initialLeft  + deltaX;
+  
+        if (newLeft < minLeft) newLeft = minLeft;
+        if (newLeft > maxLeft) newLeft = maxLeft;
+  
+        fish.style.left = `${newLeft}px`;
+  
+       
+        
+      });
+      container.addEventListener('touchend', () => {
+        fish.src = staticSrc;
+        isPlaying = false;
+        isDragging = false;
+        AudioManager.pauseSound("sliderMove");
+      })
+  }
 
 export function setupDisc(){
 

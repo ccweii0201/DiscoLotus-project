@@ -226,6 +226,13 @@
         top: 1%;
         left: 47%;
     }
+    #slider2 #angle_fish{
+        width: 32%;
+        z-index: 999;
+        position: absolute;
+        top:11%;
+        left: 47%;
+    }
 
 
     /* #fakebtn1 {
