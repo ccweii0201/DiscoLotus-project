@@ -219,6 +219,14 @@
         color: #5a5a5a;
         transform: translateX(-50%);
     }
+    #slider1 #waterfall_fish{
+        width: 32%;
+        z-index: 999;
+        position: absolute;
+        top: 1%;
+        left: 47%;
+    }
+
 
     /* #fakebtn1 {
         width: 65%;

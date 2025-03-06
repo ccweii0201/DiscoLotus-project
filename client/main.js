@@ -3,7 +3,7 @@ import { setupButton, setupSlider, setupDisc,setupText} from "./control.js";
 import AudioManager from "./audio.js";
 
 let apiUrl;
-apiUrl = 'ws://' + window.location.hostname + ':3000/'
+apiUrl = 'wss://' + window.location.hostname + '/'
 
 
 document.addEventListener('DOMContentLoaded', function () {
