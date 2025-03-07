@@ -65,7 +65,7 @@ export function setupButton(){
 }
 
 export function setupSlider1(){
-  //slider滑動 ->蓮花開合 ， 瀑布速度
+  //slider滑動 ->瀑布速度
   const container = document.getElementById('slider1'); // 滑動區域
   const track = document.getElementById('slider_BG'); 
   const fish=document.getElementById('waterfall_fish');
@@ -83,8 +83,8 @@ export function setupSlider1(){
   
 
     container.addEventListener('touchstart', (e) => {
-      // const sessionId = sessionStorage.getItem('sessionId')
-      // if (!sessionId) return;
+      const sessionId = sessionStorage.getItem('sessionId')
+      if (!sessionId) return;
       isDragging = true;
       startX = e.touches[0].clientX;
       initialLeft = fish.offsetLeft;

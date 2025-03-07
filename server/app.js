@@ -58,6 +58,7 @@ app.use('/users', usersRouter);
 let waterfallLevel = 4;
 let unityClient = null;
 let unity_Text;
+const heartbeatInterval = 30000;
 //websocket ->web
 wss.on('connection', (ws) => {
   console.log('Client connected');
@@ -156,8 +157,18 @@ wss.on('connection', (ws) => {
 ws_unity.on('connection', (ws) => {
   console.log('unity connected');
   unityClient = ws;
+  const heartbeat = setInterval(() => {
+    if (ws.readyState === WebSocket.OPEN) {
+      console.log('發送 ping');
+      ws.ping(); // 向客戶端發送 ping 訊息
+    }
+  }, heartbeatInterval);
+
   ws.on('message', (message) => {
     console.log('收到訊息: ' + message);
+    if (message === 'ping') {
+      ws.send('pong'); // 客戶端發送 ping，伺服器回應 pong
+    }
   })
 
   ws.on('close', () => {
