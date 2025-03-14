@@ -200,52 +200,64 @@ export function setupSlider2(){
       })
   }
 
-export function setupDisc(){
-
-  //disc轉動 ->蓮花旋轉
-  let isTouching = false; //是否觸碰照片
-  let lastAngle = 0 //初始角度
-  let startX = 0
-  let startY = 0 //紀錄觸碰時的座標
+export function setupDisc() {
+  let isTouching = false;
+  let lastAngle = 0;
+  let lastTouchAngle = 0; // 記錄上一幀的觸控角度
   let lastTime = 0;
 
   const rotateDisc = document.getElementById('discImg');
+
   rotateDisc.addEventListener('touchstart', (e) => {
-    const sessionId = sessionStorage.getItem('sessionId')
+    const sessionId = sessionStorage.getItem('sessionId');
     if (!sessionId) return;
+    
     isTouching = true;
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
     lastTime = Date.now();
+
+    // 取得觸碰的初始角度
+    const rect = rotateDisc.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY;
+
+    lastTouchAngle = Math.atan2(touchY - centerY, touchX - centerX) * (180 / Math.PI);
+    
     AudioManager.playSound("discSpin");
-   
   });
+
   rotateDisc.addEventListener('touchmove', (e) => {
     if (!isTouching) return;
 
-    let currentX = e.touches[0].clientX;
-    let currentY = e.touches[0].clientY;
-    //一開始的座標與目前的座標所移動的距離
-    const deltaX = currentX - startX;
-    const deltaY = currentY - startY;
-    //計算角度
-    const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
-    const currentTime = Date.now();
-    //計算當前時間和上次移動的時間差
-    //如果時間間隔較短，旋轉速度會快；如果時間間隔較長，旋轉速度會變慢。
-    const timeDiff = currentTime - lastTime;
+    const rect = rotateDisc.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const touchX = e.touches[0].clientX;
+    const touchY = e.touches[0].clientY;
 
-    const rotation = (lastAngle + angle * (timeDiff / 100)) % 360;
+    const currentTouchAngle = Math.atan2(touchY - centerY, touchX - centerX) * (180 / Math.PI);
+    let deltaAngle = currentTouchAngle - lastTouchAngle;
+
+    // 確保角度變化方向正確
+    if (deltaAngle > 180) {
+      deltaAngle -= 360;
+    } else if (deltaAngle < -180) {
+      deltaAngle += 360;
+    }
+
+    const currentTime = Date.now();
+    const timeDiff = currentTime - lastTime;
+    
+    const rotation = (lastAngle + deltaAngle * (timeDiff / 50)) % 360;
     rotateDisc.style.transform = `rotate(${rotation}deg)`;
 
     lastAngle = rotation;
-
-    startX = currentX;
-    startY = currentY;
-
+    lastTouchAngle = currentTouchAngle;
     lastTime = currentTime;
   });
-  rotateDisc.addEventListener('touchend', (e) => {
+
+  rotateDisc.addEventListener('touchend', () => {
     isTouching = false;
     AudioManager.pauseSound("discSpin");
   });

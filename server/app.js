@@ -166,8 +166,8 @@ ws_unity.on('connection', (ws) => {
 
   ws.on('message', (message) => {
     console.log('收到訊息: ' + message);
-    if (message === 'ping') {
-      ws.send('pong'); // 客戶端發送 ping，伺服器回應 pong
+    if (message === 'pong') {
+      ws.send('ping'); // 客戶端發送 ping，伺服器回應 pong
     }
   })
 

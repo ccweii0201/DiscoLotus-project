@@ -13,6 +13,7 @@
     "ejs": "^3.1.10",
     "express": "^4.21.1",
     "firmata": "^2.3.0",
+    "google-auth-library": "^9.15.1",
     "http-errors": "~1.6.3",
     "install": "^0.13.0",
     "ios-webkit-debug-proxy": "^0.0.3",
