@@ -178,7 +178,8 @@ ws_unity.on('connection', (ws) => {
   });
 })
 //test
-const HA_URL = "https://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/services/light/turn_on";
+// const HA_URL = "https://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/services/light/turn_on";
+const HA_URL = "http://127.0.0.1:8123/api/services/light/turn_on"
 const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmZGZhYTM4MWIwMTg0NjEyYTcwMjY1ZjljYWU5YTY4YiIsImlhdCI6MTc0MjIzNTA3MiwiZXhwIjoyMDU3NTk1MDcyfQ.VrgCHHG1GEHyUfSEzjOCwuuFtI0SA-qFLHdGSY9gt1c";
 app.post("/control-light", async (req, res) => {
   try {
@@ -198,6 +199,54 @@ app.post("/control-light", async (req, res) => {
   }
 });
 
+//顏色隨機
+const getRandomColor = () => {
+  const r = Math.floor(Math.random() * 256);  // 隨機 0-255
+  const g = Math.floor(Math.random() * 256);  // 隨機 0-255
+  const b = Math.floor(Math.random() * 256);  // 隨機 0-255
+  return [r, g, b];
+}
+// 控制燈光閃爍
+const controlLightFlash = async () => {
+  try {
+    const color = getRandomColor(); // 獲取隨機顏色
+
+    await axios.post(HA_URL, {
+      "entity_id": [
+        "light.spotlights_green",
+        "light.spotlights_6c1c",
+        "light.spotlights_9eac"
+      ],
+      "rgb_color": color
+    }, {
+      headers: {
+        "Authorization": `Bearer ${API_KEY}`,
+        "Content-Type": "application/json"
+      }
+    });
+
+    console.log("燈光閃爍，顏色:", color);
+  } catch (error) {
+    console.error("錯誤:", error);
+  }
+}
+
+app.post("/control-lightflash", async (req, res) => {
+  try {
+    const interval = setInterval(() => {
+      controlLightFlash();
+    }, 300); // 每500毫秒隨機改變一次顏色
+
+    // 設定時間為10秒鐘後停止閃爍
+    setTimeout(() => {
+      clearInterval(interval); // 停止閃爍
+      res.json({ message: '燈光閃爍結束' });
+    }, 5000); // 閃爍 10 秒鐘
+
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

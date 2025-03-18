@@ -4,7 +4,7 @@ import AudioManager from "./audio.js";
 export function setupButton() {
   async function setlight(r,g,b) {
 
-    fetch("https://colian-b6a895b387f0.herokuapp.com/control-light", {
+    fetch("https://olian-b6a895b387f0.herokuapp.com/control-light", {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
@@ -21,8 +21,21 @@ export function setupButton() {
   .then(response => response.json())
   .then(data => console.log("燈光控制結果:", data))
   .catch(error => console.error("錯誤:", error));
-  
-  
+  }
+  async function setlightMethod(){
+    fetch("http://localhost:3000/control-lightflash", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log("燈光閃爍結果:", data);
+    })
+    .catch(error => {
+      console.error("錯誤:", error);
+    });
   }
   //六個功能按鈕切換 ->控制燈光
   const buttonConfigs = [
@@ -54,6 +67,9 @@ export function setupButton() {
       }
       if(buttonId==='yellowlight'){
         setlight(255,162,0)
+      }
+      if(buttonId==='function1'){
+        setlightMethod()
       }
     });
     button.addEventListener('touchend', function (e) {
