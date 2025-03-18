@@ -178,7 +178,7 @@ ws_unity.on('connection', (ws) => {
   });
 })
 //test
-const HA_URL = "http://127.0.0.1:8123/api/services/light/turn_on";
+const HA_URL = "https://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/services/light/turn_on";
 const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmZGZhYTM4MWIwMTg0NjEyYTcwMjY1ZjljYWU5YTY4YiIsImlhdCI6MTc0MjIzNTA3MiwiZXhwIjoyMDU3NTk1MDcyfQ.VrgCHHG1GEHyUfSEzjOCwuuFtI0SA-qFLHdGSY9gt1c";
 app.post("/control-light", async (req, res) => {
   try {

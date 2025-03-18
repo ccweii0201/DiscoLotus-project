@@ -4,7 +4,7 @@ import AudioManager from "./audio.js";
 export function setupButton() {
   async function setlight(r,g,b) {
 
-    fetch("https://olian-b6a895b387f0.herokuapp.com/control-light", {
+    fetch("https://colian-b6a895b387f0.herokuapp.com/control-light", {
       method: "POST",
       headers: {
           "Content-Type": "application/json"
