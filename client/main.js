@@ -1,5 +1,5 @@
 import { updateOpenStatus, connectWebSocket } from "./session.js";
-import { setupButton, setupSlider1,setupSlider2, setupDisc,setupText} from "./control.js";
+import { setupButton, setupSlider1,setupSlider2, setupDisc,setupText,setlight} from "./control.js";
 import AudioManager from "./audio.js";
 
 let apiUrl;

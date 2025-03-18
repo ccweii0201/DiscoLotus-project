@@ -9,6 +9,8 @@ var { v4: uuidv4 } = require('uuid');  // 引入 uuid 模組
 const WebSocket = require('ws');
 const http = require('http');
 const port = process.env.PORT || 3000;
+const axios = require("axios");
+
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -175,6 +177,27 @@ ws_unity.on('connection', (ws) => {
     console.log('unity disconnected');
   });
 })
+//test
+const HA_URL = "http://127.0.0.1:8123/api/services/light/turn_on";
+const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmZGZhYTM4MWIwMTg0NjEyYTcwMjY1ZjljYWU5YTY4YiIsImlhdCI6MTc0MjIzNTA3MiwiZXhwIjoyMDU3NTk1MDcyfQ.VrgCHHG1GEHyUfSEzjOCwuuFtI0SA-qFLHdGSY9gt1c";
+app.post("/control-light", async (req, res) => {
+  try {
+      const response = await axios.post(
+          HA_URL,
+          req.body,
+          {
+              headers: {
+                  "Authorization": `Bearer ${API_KEY}`,
+                  "Content-Type": "application/json"
+              }
+          }
+      );
+      res.json(response.data);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
