@@ -15,6 +15,10 @@ export function connectWebSocket(apiUrl) {
     if (!sessionID) {
       console.log("沒有id 創建一個")
       window.ws.send(JSON.stringify({ type: 'createNewSessionID' }));
+
+      setTimeout(() => {
+        window.ws.send("open");
+    }, 1000); 
     }
   };
   
