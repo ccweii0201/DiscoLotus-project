@@ -23,7 +23,7 @@ export function connectWebSocket(apiUrl) {
   
     if (data.type === 'sessionUpdate') {
       console.log(data)
-      window.ws.send("open");
+
       console.log('獲取新id:', data.sessionId)
       sessionStorage.setItem('sessionId', data.sessionId);
       updateOpenStatus(true);
@@ -34,7 +34,7 @@ export function connectWebSocket(apiUrl) {
       console.log('id已失效')
       updateOpenStatus(false);
       sessionStorage.removeItem('sessionId');
-      window.ws.send("close")
+     
       if (window.ws) {
         window.ws.close();
         window.ws = null

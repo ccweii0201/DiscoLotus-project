@@ -45,12 +45,14 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('開啟dj台')
       connectWebSocket(apiUrl);
       // connectESP32();
+      window.ws.send("open");
       AudioManager.playSound("djOn");
     }
     else { //開啟狀態
       updateOpenStatus(false);
       console.log('關閉dj台')
       if (ws) {
+        window.ws.send("close");
         ws.close();
         ws = null
       }
