@@ -23,6 +23,7 @@ export function connectWebSocket(apiUrl) {
   
     if (data.type === 'sessionUpdate') {
       console.log(data)
+      window.ws.send("open");
       console.log('獲取新id:', data.sessionId)
       sessionStorage.setItem('sessionId', data.sessionId);
       updateOpenStatus(true);
@@ -32,7 +33,8 @@ export function connectWebSocket(apiUrl) {
       console.log(data)
       console.log('id已失效')
       updateOpenStatus(false);
-      sessionStorage.removeItem('sessionId')
+      sessionStorage.removeItem('sessionId');
+      window.ws.send("close")
       if (window.ws) {
         window.ws.close();
         window.ws = null
@@ -71,11 +73,11 @@ export function connectWebSocket(apiUrl) {
   const elements = document.querySelectorAll('button');
   const disc = document.getElementById('discImg')
   // 只選取可交互的元素
-  elements.forEach(element => {
-    if (element !== open) { // 排除 open 按鈕，其他元素根據狀態禁用或啟用
-      element.disabled = !status; // 如果狀態為關閉，禁用所有元素，否則恢復啟用
-    }
-  });
+  // elements.forEach(element => {
+  //   if (element !== open) { // 排除 open 按鈕，其他元素根據狀態禁用或啟用
+  //     element.disabled = !status; // 如果狀態為關閉，禁用所有元素，否則恢復啟用
+  //   }
+  // });
   }
   
   

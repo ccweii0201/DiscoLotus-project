@@ -1,5 +1,4 @@
 var createError = require('http-errors');
-// var express = require('express');
 const express = require('express');
 const cors = require('cors');
 var path = require('path');
@@ -17,13 +16,18 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 var server = http.createServer(app);
+const ws_esp32 = new WebSocket.Server({ noServer: true });
 const ws_unity = new WebSocket.Server({ noServer: true });
-const wss = new WebSocket.Server({ noServer: true });
+const wss = new WebSocket.Server({ noServer: true }); 
 
 server.on('upgrade', (request, socket, head) => {
   if (request.url === '/unity') {
     ws_unity.handleUpgrade(request, socket, head, (ws) => {
       ws_unity.emit('connection', ws, request);
+    });
+  } else if (request.url === '/esp32') {  
+    ws_esp32.handleUpgrade(request, socket, head, (ws) => {
+      ws_esp32.emit('connection', ws, request);
     });
   } else {
     wss.handleUpgrade(request, socket, head, (ws) => {
@@ -59,12 +63,12 @@ app.use('/users', usersRouter);
 
 let waterfallLevel = 4;
 let unityClient = null;
+let esp32Client = null;
 let unity_Text;
 const heartbeatInterval = 30000;
 //websocket ->web
 wss.on('connection', (ws) => {
   console.log('Client connected');
-
   let currentSessionId = null;
   let SessionTimeout = null;
 
@@ -118,7 +122,7 @@ wss.on('connection', (ws) => {
         ResetSessionTimeout();
         return; // 結束處理
       }
-
+      //瀑布+平安喜樂
       if (typeof data === 'number') {
         if (data != waterfallLevel) {
           console.log('收到數字:', data);
@@ -140,8 +144,19 @@ wss.on('connection', (ws) => {
       if (typeof data === 'string') {
         console.log('收到文字:', data);
         unity_Text=data;
+
+        if (data === "open" || data === "close") {
+          if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
+            esp32Client.send(data);
+            console.log("📤 指令已轉發給 ESP32:", data);
+          } else {
+            console.log("❌ ESP32 未連線，無法傳送指令");
+          }
+        }
+        
         unityClient.send(unity_Text);
       } 
+
     }
     catch (error) {
         console.error('錯誤', error);
@@ -177,75 +192,20 @@ ws_unity.on('connection', (ws) => {
     console.log('unity disconnected');
   });
 })
-//test
-// const HA_URL = "https://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/services/light/turn_on";
-const HA_URL = "http://127.0.0.1:8123/api/services/light/turn_on"
-const API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmZGZhYTM4MWIwMTg0NjEyYTcwMjY1ZjljYWU5YTY4YiIsImlhdCI6MTc0MjIzNTA3MiwiZXhwIjoyMDU3NTk1MDcyfQ.VrgCHHG1GEHyUfSEzjOCwuuFtI0SA-qFLHdGSY9gt1c";
-app.post("/control-light", async (req, res) => {
-  try {
-      const response = await axios.post(
-          HA_URL,
-          req.body,
-          {
-              headers: {
-                  "Authorization": `Bearer ${API_KEY}`,
-                  "Content-Type": "application/json"
-              }
-          }
-      );
-      res.json(response.data);
-  } catch (error) {
-      res.status(500).json({ error: error.message });
-  }
-});
 
-//顏色隨機
-const getRandomColor = () => {
-  const r = Math.floor(Math.random() * 256);  // 隨機 0-255
-  const g = Math.floor(Math.random() * 256);  // 隨機 0-255
-  const b = Math.floor(Math.random() * 256);  // 隨機 0-255
-  return [r, g, b];
-}
-// 控制燈光閃爍
-const controlLightFlash = async () => {
-  try {
-    const color = getRandomColor(); // 獲取隨機顏色
+// WebSocket -> ESP32
+ws_esp32.on('connection', (ws) => {
+  console.log('ESP32 connected');
+  esp32Client = ws;
 
-    await axios.post(HA_URL, {
-      "entity_id": [
-        "light.spotlights_green",
-        "light.spotlights_6c1c",
-        "light.spotlights_9eac"
-      ],
-      "rgb_color": color
-    }, {
-      headers: {
-        "Authorization": `Bearer ${API_KEY}`,
-        "Content-Type": "application/json"
-      }
-    });
+  ws.on('message', (message) => {
+    console.log('收到來自 ESP32 的訊息: ' + message);
+  });
 
-    console.log("燈光閃爍，顏色:", color);
-  } catch (error) {
-    console.error("錯誤:", error);
-  }
-}
-
-app.post("/control-lightflash", async (req, res) => {
-  try {
-    const interval = setInterval(() => {
-      controlLightFlash();
-    }, 300); // 每500毫秒隨機改變一次顏色
-
-    // 設定時間為10秒鐘後停止閃爍
-    setTimeout(() => {
-      clearInterval(interval); // 停止閃爍
-      res.json({ message: '燈光閃爍結束' });
-    }, 5000); // 閃爍 10 秒鐘
-
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
+  ws.on('close', () => {
+    console.log('ESP32 disconnected');
+    esp32Client = null;
+  });
 });
 
 // catch 404 and forward to error handler

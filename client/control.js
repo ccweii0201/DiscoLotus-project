@@ -2,42 +2,78 @@ import AudioManager from "./audio.js";
 
 //button樣式
 export function setupButton() {
-  async function setlight(r,g,b) {
-
-    fetch("https://olian-b6a895b387f0.herokuapp.com/control-light", {
-      method: "POST",
-      headers: {
-          "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        "entity_id": [
-          "light.spotlights_green",
-          "light.spotlights_6c1c",
-          "light.spotlights_9eac"
-        ],
-          "rgb_color": [r,g,b],
-      })
-  })
-  .then(response => response.json())
-  .then(data => console.log("燈光控制結果:", data))
-  .catch(error => console.error("錯誤:", error));
+  
+  let requestId = 1;
+  //燈光顏色(與按鈕id同名)
+  const lightColors = {
+    greenlight: [0, 255, 0],
+    pinklight: [255, 0, 136],
+    yellowlight: [255, 162, 0]
+  };
+  //隨機顏色
+  function getRandomColor() {
+    return [
+      Math.floor(Math.random() * 256), // R
+      Math.floor(Math.random() * 256), // G
+      Math.floor(Math.random() * 256)  // B
+    ];
   }
-  async function setlightMethod(){
-    fetch("http://localhost:3000/control-lightflash", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
+  //燈泡裝置
+  const lights = [
+    "light.spotlights_green",
+    "light.spotlights_6c1c",
+    "light.spotlights_9eac"
+  ];
+  //發送訊息(websocket)
+  function sendLightCommand(rgbColor) {
+    console.log("Sending color command:", rgbColor, "to lights:", lights);
+    window.socket.send(JSON.stringify({
+      id: requestId++,
+      type: 'call_service',
+      domain: 'light',
+      service: 'turn_on',
+      service_data: { rgb_color: rgbColor },
+      target: { entity_id: lights } //所有裝置
+    }));
+  }
+  // 燈光模式
+  function startLightEffect(effectType, intervalTime, duration) {
+    const interval = setInterval(() => {
+      if (effectType === "same") {
+        sendLightCommand(getRandomColor());
+      } else if (effectType === "different") {
+        lights.forEach(light => {
+          window.socket.send(JSON.stringify({
+            id: requestId++,
+            type: 'call_service',
+            domain: 'light',
+            service: 'turn_on',
+            service_data: { rgb_color: getRandomColor() },
+            target: { entity_id: light }
+          }));
+        });
+      
       }
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log("燈光閃爍結果:", data);
-    })
-    .catch(error => {
-      console.error("錯誤:", error);
-    });
+    }, intervalTime);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      console.log(`${effectType} 閃爍停止`);
+    }, duration);
   }
-  //六個功能按鈕切換 ->控制燈光
+
+  function handleButtonClick(buttonId) {
+    if (lightColors[buttonId]) {
+      sendLightCommand(lightColors[buttonId]); 
+    } else if (buttonId === 'function1') {
+      startLightEffect("same", 400, 10000); 
+    } else if (buttonId === 'function2') {
+      startLightEffect("different", 500, 10000); 
+    } else if (buttonId === 'function3') {   
+      startLightEffect("same", 1000, 10000); 
+    }
+  }
+  //六個功能按鈕切換
   const buttonConfigs = [
     { id: 'greenlight', defaultSrc: 'img/dj台(1)-20.png', activeSrc: 'img/dj台(1)_綠燈.png' }, //0,255,0
     { id: 'pinklight', defaultSrc: 'img/dj台(1)-21.png', activeSrc: 'img/dj台(1)_粉燈.png' },//255,0,136
@@ -59,18 +95,7 @@ export function setupButton() {
       if (!this.disabled) {
         AudioManager.playSound("buttonClick");
       }
-      if(buttonId==='greenlight'){
-        setlight(0,255,0)
-      }
-      if(buttonId==='pinklight'){
-        setlight(255,0,136)
-      }
-      if(buttonId==='yellowlight'){
-        setlight(255,162,0)
-      }
-      if(buttonId==='function1'){
-        setlightMethod()
-      }
+      handleButtonClick(buttonId)
     });
     button.addEventListener('touchend', function (e) {
       e.preventDefault(); // 防止觸發點擊事件
@@ -100,7 +125,7 @@ export function setupButton() {
 
           } else {
             otherImg.setAttribute('src', config.defaultSrc);
-            img.style.width = "78%"
+            // img.style.width = "78%"
           }
         });
       }
@@ -203,13 +228,13 @@ export function setupSlider2() {
 
   //抓取範圍
   const trackRect = track.getBoundingClientRect(); // 軌道的範圍
-  const minLeft = trackRect.left - 20; // 軌道的最左邊
-  const maxLeft = trackRect.right - fish.offsetWidth; // 軌道的最右邊
+  const minLeft = trackRect.left - 20; 
+  const maxLeft = trackRect.right - fish.offsetWidth; 
 
 
   container.addEventListener('touchstart', (e) => {
-    // const sessionId = sessionStorage.getItem('sessionId')
-    // if (!sessionId) return;
+    const sessionId = sessionStorage.getItem('sessionId')
+    if (!sessionId) return;
     isDragging = true;
     startX = e.touches[0].clientX;
     initialLeft = fish.offsetLeft;
@@ -364,7 +389,7 @@ export async function setlight() {
         "light.spotlights_6c1c",
         "light.spotlights_9eac"
       ],
-      "rgb_color": [255, 0, 0], 
+      "rgb_color": [255, 0, 0],
     })
   });
 
