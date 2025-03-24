@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function () {
   //esp32 websocket test
   function connectESP32() {
     wss = new WebSocket("ws://172.20.10.4:81")
+    wss = new WebSocket("wss://172.20.10.2:81")
     wss.onopen = () => {
       document.getElementById("status").innerText = "連接狀態:已連接";
       console.log('esp32連接成功')
