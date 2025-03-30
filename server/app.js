@@ -18,14 +18,14 @@ var app = express();
 var server = http.createServer(app);
 const ws_esp32 = new WebSocket.Server({ noServer: true });
 const ws_unity = new WebSocket.Server({ noServer: true });
-const wss = new WebSocket.Server({ noServer: true }); 
+const wss = new WebSocket.Server({ noServer: true });
 
 server.on('upgrade', (request, socket, head) => {
   if (request.url === '/unity') {
     ws_unity.handleUpgrade(request, socket, head, (ws) => {
       ws_unity.emit('connection', ws, request);
     });
-  } else if (request.url === '/esp32') {  
+  } else if (request.url === '/esp32') {
     ws_esp32.handleUpgrade(request, socket, head, (ws) => {
       ws_esp32.emit('connection', ws, request);
     });
@@ -110,7 +110,7 @@ wss.on('connection', (ws) => {
         wss.clients.forEach(client => {
           if (client !== ws && client.readyState === WebSocket.OPEN) {
             client.send(JSON.stringify({
-              type: 'sessionExpired',
+              type: 'sessionUsed',
               message: '舊的 ID 已失效'
             }));
           }
@@ -121,6 +121,15 @@ wss.on('connection', (ws) => {
 
         ResetSessionTimeout();
         return; // 結束處理
+      }
+      //unity的字
+      if (data.type === 'bgText_345') {
+        console.log('收到 bgText_345 文字');
+        let displayText = 'third forth fifth'; // 設置對應的文字
+        if (unityClient && unityClient.readyState === WebSocket.OPEN) {
+          unityClient.send(bgText_345);
+          console.log('已轉發文字給 Unity:', bgText_345);
+        }
       }
       //瀑布+平安喜樂
       if (typeof data === 'number') {
@@ -143,7 +152,7 @@ wss.on('connection', (ws) => {
       }
       if (typeof data === 'string') {
         console.log('收到文字:', data);
-        unity_Text=data;
+        unity_Text = data;
 
         if (data === "open" || data === "close") {
           if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
@@ -153,15 +162,31 @@ wss.on('connection', (ws) => {
             console.log("❌ ESP32 未連線，無法傳送指令");
           }
         }
-        
+        if (data === "openS" || data === "openM" || data === "openL") {
+          if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
+            esp32Client.send(data);
+            console.log("📤 指令已轉發給 ESP32:", data);
+          } else {
+            console.log("❌ ESP32 未連線，無法傳送指令");
+          }
+        }
+        if (data === "closeS" || data === "closeM" || data === "closeL") {
+          if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
+            esp32Client.send(data);
+            console.log("📤 指令已轉發給 ESP32:", data);
+          } else {
+            console.log("❌ ESP32 未連線，無法傳送指令");
+          }
+        }
+
         unityClient.send(unity_Text);
-      } 
+      }
 
     }
     catch (error) {
-        console.error('錯誤', error);
-      }
-    })
+      console.error('錯誤', error);
+    }
+  })
 
   ws.on('close', () => {
     console.log('Client disconnected');
