@@ -104,11 +104,11 @@ export function updateOpenStatus(status) {
 
   const elements = document.querySelectorAll('button');
   const disc = document.getElementById('discImg')
-  // 只選取可交互的元素
-  // elements.forEach(element => {
-  //   if (element !== open) { // 排除 open 按鈕，其他元素根據狀態禁用或啟用
-  //     element.disabled = !status; // 如果狀態為關閉，禁用所有元素，否則恢復啟用
-  //   }
-  // });
+  //只選取可交互的元素
+  elements.forEach(element => {
+    if (element !== open) { // 排除 open 按鈕，其他元素根據狀態禁用或啟用
+      element.disabled = !status; // 如果狀態為關閉，禁用所有元素，否則恢復啟用
+    }
+  });
 }
 
