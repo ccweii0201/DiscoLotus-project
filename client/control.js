@@ -214,64 +214,7 @@ export function setupSlider1() {
   })
 }
 
-export function setupSlider2() {
-  //slider滑動 ->蓮花開合
-  const container = document.getElementById('slider2'); // 滑動區域
-  const track = document.getElementById('slider_BG');
-  const fish = document.getElementById('angle_fish');
-  let isDragging = false;
-  let startX = 0; // 手指觸碰時的座標
-  let initialLeft = 0; // 圖片最初的left值
-  let gifSrc = "img/fish.gif";  // GIF 圖片
-  let staticSrc = "img/dj台-滑桿2.png";  // GIF 第一幀的靜態圖片
-  let isPlaying = true;
-
-  //抓取範圍
-  const trackRect = track.getBoundingClientRect(); // 軌道的範圍
-  const minLeft = trackRect.left - 20; 
-  const maxLeft = trackRect.right - fish.offsetWidth; 
-
-
-  container.addEventListener('touchstart', (e) => {
-    const sessionId = sessionStorage.getItem('sessionId')
-    if (!sessionId) return;
-    isDragging = true;
-    startX = e.touches[0].clientX;
-    initialLeft = fish.offsetLeft;
-    fish.src = gifSrc;
-    isPlaying = true;
-    AudioManager.playSound("sliderMove");
-  });
-  container.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-
-
-
-    e.preventDefault();
-
-
-    const deltaX = (e.touches[0].clientX - startX) / 1.8;
-    let newLeft = initialLeft + deltaX;
-
-    if (newLeft < minLeft) newLeft = minLeft;
-    if (newLeft > maxLeft) newLeft = maxLeft;
-
-    fish.style.left = `${newLeft}px`;
-
-
-
-  });
-  container.addEventListener('touchend', () => {
-    fish.src = staticSrc;
-    isPlaying = false;
-    isDragging = false;
-    AudioManager.pauseSound("sliderMove");
-  })
-}
-
 export function setupDisc() {
-
-
   let isTouching = false;
   let lastAngle = 0;
   let lastTouchAngle = 0; // 記錄上一幀的觸控角度
@@ -322,7 +265,30 @@ export function setupDisc() {
 
     const rotation = (lastAngle + deltaAngle * (timeDiff / 50)) % 360;
     rotateDisc.style.transform = `rotate(${rotation}deg)`;
+    console.log(rotation);
 
+    switch (true) {
+      case (rotation === 90 ):
+        window.ws.send('closeS');
+        break;
+      case (rotation === 180 ):
+        window.ws.send('closeM');
+        break;
+      case (rotation === 270 ):
+        window.ws.send('closeL');
+        break;
+      case (rotation === -90 ):
+        window.ws.send('openS');
+        break;
+      case (rotation === -180 ):
+        window.ws.send('openM');
+        break;
+      case (rotation === -270):
+        window.ws.send('openL');
+        break;
+      default:
+        break;
+    }
     lastAngle = rotation;
     lastTouchAngle = currentTouchAngle;
     lastTime = currentTime;
@@ -372,32 +338,6 @@ export function setupText() {
   });
 }
 
-//燈泡更改
-export async function setlight() {
-
-  const homeAssistantURL = "http://127.0.0.1:8123/api/services/light/turn_on";
-  const apiKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJmZGZhYTM4MWIwMTg0NjEyYTcwMjY1ZjljYWU5YTY4YiIsImlhdCI6MTc0MjIzNTA3MiwiZXhwIjoyMDU3NTk1MDcyfQ.VrgCHHG1GEHyUfSEzjOCwuuFtI0SA-qFLHdGSY9gt1c";
-  const response = await fetch(homeAssistantURL, {
-    method: "POST",
-    headers: {
-      "Authorization": `Bearer ${apiKey}`,
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      "entity_id": [
-        "light.spotlights_green",
-        "light.spotlights_6c1c",
-        "light.spotlights_9eac"
-      ],
-      "rgb_color": [255, 0, 0],
-    })
-  });
-
-  const data = await response.json();
-  console.log("API 回應:", data);
-
-
-}
 
 
 
