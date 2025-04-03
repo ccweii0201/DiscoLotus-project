@@ -329,6 +329,10 @@ export function setPlay(){
   //關音樂
 
   //停止旋轉
+  const btn=document.getElementById('playBtn');
+  btn.addEventListener('touchstart',function(){
+    window.ws.send('close');
+  })
 
   
 }

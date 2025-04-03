@@ -118,7 +118,7 @@ export function updateOpenStatus(status) {
     btn.style.left = "10%"
     btn.style.width = "63%"
     window.socket.send(JSON.stringify({
-      id: 1,
+      id:  state.requestid++,
       type: 'call_service',
       domain: 'light',
       service: 'turn_on',
