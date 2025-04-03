@@ -12,12 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.open = document.getElementById('on'); //開關鍵宣告
   window.ws;
   window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
-  // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境用
-  const lights = [
-    "light.spotlights_green",
-    "light.spotlights_6c1c",
-    "light.spotlights_9eac"
-  ];
+  // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境
 
 
   //一開始都為關閉狀態(初始化)

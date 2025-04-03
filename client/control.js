@@ -18,11 +18,11 @@ export function setupButton() {
     ];
   }
   // //燈泡裝置
-  // const lights = [
-  //   "light.spotlights_green",
-  //   "light.spotlights_6c1c",
-  //   "light.spotlights_9eac"
-  // ];
+  const lights = [
+    "light.spotlights_green",
+    "light.spotlights_6c1c",
+    "light.spotlights_9eac"
+  ];
   //發送訊息(websocket)
   function sendLightCommand(rgbColor) {
     console.log("Sending color command:", rgbColor, "to lights:", lights);

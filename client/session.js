@@ -100,6 +100,12 @@ export function connectWebSocket(apiUrl) {
 }
 
 export function updateOpenStatus(status) {
+  const lights = [
+    "light.spotlights_green",
+    "light.spotlights_6c1c",
+    "light.spotlights_9eac"
+  ];
+
 
   //更新狀態
   window.isOpne = status;
