@@ -88,7 +88,7 @@ wss.on('connection', (ws) => {
         }
       })
       sessionId = null;
-    }, 60 * 1000)
+    },5* 60 * 1000)
   }
 
   ws.on('message', (message) => {
