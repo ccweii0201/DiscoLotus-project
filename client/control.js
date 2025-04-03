@@ -3,7 +3,7 @@ import AudioManager from "./audio.js";
 //button樣式
 export function setupButton() {
   
-  let requestId = 1;
+  let requestId = 2;
   //燈光顏色(與按鈕id同名)
   const lightColors = {
     greenlight: [0, 255, 0],
@@ -240,7 +240,7 @@ export function setupDisc() {
 
     AudioManager.playSound("discSpin");
   });
-
+  let lastDirection = null;
   rotateDisc.addEventListener('touchmove', (e) => {
     if (!isTouching) return;
 
@@ -253,42 +253,30 @@ export function setupDisc() {
     const currentTouchAngle = Math.atan2(touchY - centerY, touchX - centerX) * (180 / Math.PI);
     let deltaAngle = currentTouchAngle - lastTouchAngle;
 
-    // 確保角度變化方向正確
     if (deltaAngle > 180) {
       deltaAngle -= 360;
     } else if (deltaAngle < -180) {
       deltaAngle += 360;
     }
+//傳遞給esp32的
+    if (deltaAngle > 0) { 
+      if (lastDirection !== 'left') {
+          window.ws.send('left');
+          lastDirection = 'left'; 
+      }
+  } else if (deltaAngle < 0) { 
+      if (lastDirection !== 'right') {
+          window.ws.send('right');
+          lastDirection = 'right'; 
+      }
+  }
 
     const currentTime = Date.now();
     const timeDiff = currentTime - lastTime;
 
     const rotation = (lastAngle + deltaAngle * (timeDiff / 50)) % 360;
     rotateDisc.style.transform = `rotate(${rotation}deg)`;
-    console.log(rotation);
-
-    switch (true) {
-      case (rotation === 90 ):
-        window.ws.send('closeS');
-        break;
-      case (rotation === 180 ):
-        window.ws.send('closeM');
-        break;
-      case (rotation === 270 ):
-        window.ws.send('closeL');
-        break;
-      case (rotation === -90 ):
-        window.ws.send('openS');
-        break;
-      case (rotation === -180 ):
-        window.ws.send('openM');
-        break;
-      case (rotation === -270):
-        window.ws.send('openL');
-        break;
-      default:
-        break;
-    }
+    console.log("rotation:",rotation)
     lastAngle = rotation;
     lastTouchAngle = currentTouchAngle;
     lastTime = currentTime;
@@ -336,6 +324,14 @@ export function setupText() {
       touchStarted = false;
     }
   });
+}
+
+export function setPlay(){
+  //關音樂
+
+  //停止旋轉
+
+  
 }
 
 

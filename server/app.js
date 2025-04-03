@@ -88,7 +88,7 @@ wss.on('connection', (ws) => {
         }
       })
       sessionId = null;
-    }, 5 * 60 * 1000)
+    }, 60 * 1000)
   }
 
   ws.on('message', (message) => {
@@ -162,15 +162,7 @@ wss.on('connection', (ws) => {
             console.log("❌ ESP32 未連線，無法傳送指令");
           }
         }
-        if (data === "openS" || data === "openM" || data === "openL") {
-          if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
-            esp32Client.send(data);
-            console.log("📤 指令已轉發給 ESP32:", data);
-          } else {
-            console.log("❌ ESP32 未連線，無法傳送指令");
-          }
-        }
-        if (data === "closeS" || data === "closeM" || data === "closeL") {
+        if (data === "right" || data === "left") {
           if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
             esp32Client.send(data);
             console.log("📤 指令已轉發給 ESP32:", data);

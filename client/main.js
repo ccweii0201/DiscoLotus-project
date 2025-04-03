@@ -12,7 +12,11 @@ document.addEventListener('DOMContentLoaded', function () {
   window.ws;
   window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境用
-  let wss;
+  const lights = [
+    "light.spotlights_green",
+    "light.spotlights_6c1c",
+    "light.spotlights_9eac"
+  ];
 
 
   //一開始都為關閉狀態(初始化)
@@ -39,6 +43,13 @@ document.addEventListener('DOMContentLoaded', function () {
         ws = null
       }
       AudioManager.playSound("djOn");
+      socket.send(JSON.stringify({
+        id: 1,
+        type: 'call_service',
+        domain: 'light',
+        service: 'turn_off',
+        target: { entity_id: lights } //所有裝置
+      }));
     }
   })
   //HA websocket ->setLight
@@ -47,6 +58,13 @@ document.addEventListener('DOMContentLoaded', function () {
     socket.onopen = function () {
       console.log('與 HA 連接成功');
       socket.send(JSON.stringify({ type: 'auth', access_token: `${API_KEY}` }));
+      socket.send(JSON.stringify({
+        id: 1,
+        type: 'call_service',
+        domain: 'light',
+        service: 'turn_on',
+        target: { entity_id: lights } //所有裝置
+      }));
     };
 
     socket.onmessage = function (event) {
