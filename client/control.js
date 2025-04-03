@@ -66,7 +66,7 @@ export function setupButton() {
     if (lightColors[buttonId]) {
       sendLightCommand(lightColors[buttonId]); 
     } else if (buttonId === 'function1') {
-      startLightEffect("same", 400, 10000); 
+      startLightEffect("same", 500, 10000); 
     } else if (buttonId === 'function2') {
       startLightEffect("different", 500, 10000); 
     } else if (buttonId === 'function3') {   

@@ -91,6 +91,22 @@ wss.on('connection', (ws) => {
     },5* 60 * 1000)
   }
 
+  // 設定心跳機制
+  ws.isAlive = true;  // 標記此連線為活躍的
+  ws.on('pong', () => {
+    ws.isAlive = true; // 收到 pong 訊號時標記為存活
+  });
+
+  // 設定心跳檢查間隔（每 10 秒執行一次）
+  const heartbeatInterval = setInterval(() => {
+    if (ws.isAlive === false) {
+      console.log('客戶端未回應，關閉連線');
+      return ws.terminate();
+    }
+    ws.isAlive = false; // 每次檢查時先標記為 false，等收到 pong 再標記為 true
+    ws.ping(); // 發送 ping 訊號
+  }, 10000);
+
   ws.on('message', (message) => {
     try {
       try {

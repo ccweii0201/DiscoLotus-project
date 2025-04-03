@@ -10,7 +10,13 @@ export function connectWebSocket(apiUrl) {
 
   window.ws.onopen = function () {
     console.log('連線成功');
-    let sessionID = sessionStorage.getItem('sessionId')
+    let sessionID = sessionStorage.getItem('sessionId');
+    setInterval(() => {
+      if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ type: 'heartbeat' })); // 傳送心跳
+          console.log("💓 發送 heartbeat");
+      }
+  }, 8000);
     //沒有id創一個
     if (!sessionID) {
       console.log("沒有id 創建一個")
@@ -72,6 +78,10 @@ export function connectWebSocket(apiUrl) {
         window.ws = null
       }
     }
+    if (data.type === 'ping') {
+      console.log("收到伺服器 ping，回應 pong");
+      ws.send(JSON.stringify({ type: 'pong' })); 
+  }
 
     
   }
@@ -90,6 +100,9 @@ export function connectWebSocket(apiUrl) {
 }
 
 export function updateOpenStatus(status) {
+
+
+
   //更新狀態
   window.isOpne = status;
   //切換開關按鈕圖片
@@ -99,6 +112,13 @@ export function updateOpenStatus(status) {
   if (status) {
     btn.style.left = "10%"
     btn.style.width = "63%"
+    window.socket.send(JSON.stringify({
+      id: 1,
+      type: 'call_service',
+      domain: 'light',
+      service: 'turn_on',
+      target: { entity_id: lights } //所有裝置
+    }));
   }
   else {
     btn.style.width = "61%"
