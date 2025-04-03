@@ -128,6 +128,13 @@ export function updateOpenStatus(status) {
   else {
     btn.style.width = "61%"
     btn.style.left = "14%"
+    window.socket.send(JSON.stringify({
+      id: 1,
+      type: 'call_service',
+      domain: 'light',
+      service: 'turn_off',
+      target: { entity_id: lights } //所有裝置
+    }));
   }
 
 
