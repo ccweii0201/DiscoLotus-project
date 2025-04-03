@@ -1,3 +1,4 @@
+import { state } from "./state.js";
 
 export function connectWebSocket(apiUrl) {
   //websocket連線
