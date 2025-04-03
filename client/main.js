@@ -1,6 +1,7 @@
 import { updateOpenStatus, connectWebSocket } from "./session.js";
 import { setupButton, setupSlider1, setupDisc, setupText } from "./control.js";
 import AudioManager from "./audio.js";
+import { state } from "./state.js";
 
 let apiUrl;
 apiUrl = 'wss://' + window.location.hostname+'/';
@@ -12,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
   window.ws;
   window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境用
-
   const lights = [
     "light.spotlights_green",
     "light.spotlights_6c1c",
@@ -38,13 +38,6 @@ document.addEventListener('DOMContentLoaded', function () {
       updateOpenStatus(false);
       console.log('關閉dj台');
       document.body.classList.remove("hide-overlay"); // 顯示遮罩
-      socket.send(JSON.stringify({
-        id: 1,
-        type: 'call_service',
-        domain: 'light',
-        service: 'turn_off',
-        target: { entity_id: lights } //所有裝置
-      }));
       if (ws) {
         window.ws.send("close");
         ws.close();

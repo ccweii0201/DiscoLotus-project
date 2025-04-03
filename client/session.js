@@ -101,13 +101,6 @@ export function connectWebSocket(apiUrl) {
 
 export function updateOpenStatus(status) {
 
-
-  const lights = [
-    "light.spotlights_green",
-    "light.spotlights_6c1c",
-    "light.spotlights_9eac"
-  ];
-
   //更新狀態
   window.isOpne = status;
   //切換開關按鈕圖片
@@ -130,7 +123,7 @@ export function updateOpenStatus(status) {
     btn.style.left = "14%"
     if (window.socket.readyState === WebSocket.OPEN) {
       window.socket.send(JSON.stringify({
-        id: 1,
+        id: state.requestid++,
         type: 'call_service',
         domain: 'light',
         service: 'turn_off',

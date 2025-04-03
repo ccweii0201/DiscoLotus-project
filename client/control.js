@@ -1,9 +1,8 @@
 import AudioManager from "./audio.js";
+import { state } from "./state.js";
 
 //button樣式
 export function setupButton() {
-  
-  let requestId = 2;
   //燈光顏色(與按鈕id同名)
   const lightColors = {
     greenlight: [0, 255, 0],
@@ -18,17 +17,17 @@ export function setupButton() {
       Math.floor(Math.random() * 256)  // B
     ];
   }
-  //燈泡裝置
-  const lights = [
-    "light.spotlights_green",
-    "light.spotlights_6c1c",
-    "light.spotlights_9eac"
-  ];
+  // //燈泡裝置
+  // const lights = [
+  //   "light.spotlights_green",
+  //   "light.spotlights_6c1c",
+  //   "light.spotlights_9eac"
+  // ];
   //發送訊息(websocket)
   function sendLightCommand(rgbColor) {
     console.log("Sending color command:", rgbColor, "to lights:", lights);
     window.socket.send(JSON.stringify({
-      id: requestId++,
+      id: state.requestid++,
       type: 'call_service',
       domain: 'light',
       service: 'turn_on',
