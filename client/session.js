@@ -13,10 +13,10 @@ export function connectWebSocket(apiUrl) {
     let sessionID = sessionStorage.getItem('sessionId');
     setInterval(() => {
       if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify({ type: 'heartbeat' })); // 傳送心跳
-          console.log("💓 發送 heartbeat");
+        ws.send(JSON.stringify({ type: 'heartbeat' })); // 傳送心跳
+        console.log("💓 發送 heartbeat");
       }
-  }, 8000);
+    }, 8000);
     //沒有id創一個
     if (!sessionID) {
       console.log("沒有id 創建一個")
@@ -32,13 +32,13 @@ export function connectWebSocket(apiUrl) {
     }
   };
 
-  
+
   function showSessionMessage(message) {
     const sessionMessageElement = document.getElementById('sessionMessage');
     sessionMessageElement.textContent = message;  // 顯示訊息
     sessionMessageElement.style.display = 'block';  // 顯示提示文字
   }
-  
+
   function hideSessionMessage() {
     const sessionMessageElement = document.getElementById('sessionMessage');
     sessionMessageElement.style.display = 'none';  // 隱藏提示文字
@@ -80,17 +80,17 @@ export function connectWebSocket(apiUrl) {
     }
     if (data.type === 'ping') {
       console.log("收到伺服器 ping，回應 pong");
-      ws.send(JSON.stringify({ type: 'pong' })); 
-  }
+      ws.send(JSON.stringify({ type: 'pong' }));
+    }
 
-    
+
   }
 
 
   window.ws.onclose = function () {
     console.log("連線關閉");
     sessionStorage.removeItem('sessionId');
-    document.body.classList.remove("hide-overlay"); 
+    document.body.classList.remove("hide-overlay");
     updateOpenStatus(false);
     window.ws = null;
   };
@@ -107,7 +107,7 @@ export function updateOpenStatus(status) {
     "light.spotlights_6c1c",
     "light.spotlights_9eac"
   ];
-  
+
   //更新狀態
   window.isOpne = status;
   //切換開關按鈕圖片
@@ -128,13 +128,15 @@ export function updateOpenStatus(status) {
   else {
     btn.style.width = "61%"
     btn.style.left = "14%"
-    window.socket.send(JSON.stringify({
-      id: 1,
-      type: 'call_service',
-      domain: 'light',
-      service: 'turn_off',
-      target: { entity_id: lights } //所有裝置
-    }));
+    if (window.socket.readyState === WebSocket.OPEN) {
+      window.socket.send(JSON.stringify({
+        id: 1,
+        type: 'call_service',
+        domain: 'light',
+        service: 'turn_off',
+        target: { entity_id: lights } //所有裝置
+      }))
+    };
   }
 
 
