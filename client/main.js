@@ -30,7 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('開啟dj台');
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
-      AudioManager.playSound("djOn");
+      musicWs.send('playBG');
+      musicWs.send('djOn');
     }
     else { //開啟狀態
       updateOpenStatus(false);
@@ -71,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function connectLocal(){
     musicWs.onopen=function () {
       console.log('與 本地電腦 連接成功');
-      musicWs.send('play')
+
     };
     musicWs.onclose = function () {
       console.log("本地端連線關閉");
