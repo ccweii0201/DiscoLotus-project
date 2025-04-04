@@ -9,6 +9,7 @@ const WebSocket = require('ws');
 const http = require('http');
 const port = process.env.PORT || 3000;
 const axios = require("axios");
+const { exec } = require("child_process");
 
 
 var indexRouter = require('./routes/index');
@@ -186,6 +187,12 @@ wss.on('connection', (ws) => {
             console.log("❌ ESP32 未連線，無法傳送指令");
           }
         }
+        if (message === "play") {
+          console.log("🎵 播放音樂...");
+          exec('start "" "C:\\Users\\ccwkt\\Project\\DiscoLotus project\\client\\audio\\test.mp3"', (error) => {
+              if (error) console.error(`❌ 播放失敗: ${error.message}`);
+          });
+      }
 
         unityClient.send(unity_Text);
       }

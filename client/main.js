@@ -58,9 +58,12 @@ document.addEventListener('DOMContentLoaded', function () {
       const data = JSON.parse(event.data);
       console.log('收到訊息:', data);
     };
-
+    socket.onclose = function () {
+      console.log("燈光連線關閉");
+      socket = null;
+    };
     socket.onerror = function (error) {
-      console.error('WebSocket 錯誤:', error);
+      console.error('燈光WebSocket 錯誤:', error);
     };
 
   }
@@ -68,7 +71,16 @@ document.addEventListener('DOMContentLoaded', function () {
   function connectLocal(){
     musicWs.onopen=function () {
       console.log('與 本地電腦 連接成功');
+      musicWs.send('play')
     };
+    musicWs.onclose = function () {
+      console.log("本地端連線關閉");
+      musicWs = null;
+    };
+    musicWs.onerror = function (error) {
+      console.error('播放音樂WebSocket 錯誤:', error);
+    };
+
   }
 
   connectLocal()

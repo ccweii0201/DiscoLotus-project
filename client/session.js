@@ -17,7 +17,7 @@ export function connectWebSocket(apiUrl) {
         ws.send(JSON.stringify({ type: 'heartbeat' })); // 傳送心跳
         console.log("💓 發送 heartbeat");
       }
-    }, 8000);
+    }, 10000);
     //沒有id創一個
     if (!sessionID) {
       console.log("沒有id 創建一個")
