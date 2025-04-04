@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.open = document.getElementById('on'); //開關鍵宣告
   window.ws;
   window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
+  window.musicWs= new WebSocket('wss://1da2-2001-b400-e3d2-bd5d-48a2-ffcb-b8a6-6024.ngrok-free.app/')
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境
 
 
@@ -22,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
   //開啟/關閉dj台
   open.addEventListener('touchstart', function (e) {
     e.preventDefault();
+
+
 
     if (!isOpne) { //關閉狀態
       console.log('開啟dj台');
@@ -62,7 +65,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 
+  function connectLocal(){
+    musicWs.onopen=function () {
+      console.log('與 本地電腦 連接成功');
+    };
+  }
 
+  connectLocal()
   connectHA()
   setupButton()
   setupSlider1()
