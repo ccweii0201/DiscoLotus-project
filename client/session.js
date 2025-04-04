@@ -93,6 +93,7 @@ export function connectWebSocket(apiUrl) {
     sessionStorage.removeItem('sessionId');
     document.body.classList.remove("hide-overlay");
     updateOpenStatus(false);
+    window.ws.close();
     window.ws = null;
   };
   window.ws.onerror = function (error) {

@@ -30,8 +30,8 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('開啟dj台');
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
+      AudioManager.playSound("djOn");
       musicWs.send('playBG');
-      musicWs.send('djOn');
     }
     else { //開啟狀態
       updateOpenStatus(false);
@@ -42,8 +42,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ws.close();
         ws = null
       }
-      AudioManager.playSound("djOn");
-
+      AudioManager.playSound("djOff");
     }
   })
   //HA websocket ->setLight

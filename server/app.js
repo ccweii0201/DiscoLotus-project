@@ -89,7 +89,7 @@ wss.on('connection', (ws) => {
         }
       })
       sessionId = null;
-    },5* 60 * 1000)
+    }, 5 * 60 * 1000)
   }
 
   // 設定心跳機制
@@ -187,23 +187,16 @@ wss.on('connection', (ws) => {
             console.log("❌ ESP32 未連線，無法傳送指令");
           }
         }
+        
         if (data === "playBG") {
           console.log("🎵 播放音樂...");
           exec('start "" "C:\\Users\\ccwkt\\Project\\DiscoLotus project\\client\\audio\\test.mp3"', (error) => {
-              if (error) console.error(`❌ 播放失敗: ${error.message}`);
-          });
-        
-      }
-      if (data === "djOn") {
-        console.log("🎵 播放音樂...");
-        exec('start "" "C:\\Users\\ccwkt\\Project\\DiscoLotus project\\client\\audio\\dj-on.mp3"', (error) => {
             if (error) console.error(`❌ 播放失敗: ${error.message}`);
-        });
+          });
 
-        unityClient.send(unity_Text);
+        }
       }
-
-      }}
+    }
     catch (error) {
       console.error('錯誤', error);
     }
