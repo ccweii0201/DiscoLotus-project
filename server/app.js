@@ -89,7 +89,7 @@ wss.on('connection', (ws) => {
         }
       })
       sessionId = null;
-    }, 5 * 60 * 1000)
+    }, 1 * 60 * 1000)
   }
 
   // 設定心跳機制
