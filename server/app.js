@@ -106,7 +106,7 @@ wss.on('connection', (ws) => {
     }
     ws.isAlive = false; // 每次檢查時先標記為 false，等收到 pong 再標記為 true
     ws.ping(); // 發送 ping 訊號
-  }, 10000);
+  }, 100000);
 
   ws.on('message', (message) => {
     try {
@@ -187,7 +187,7 @@ wss.on('connection', (ws) => {
             console.log("❌ ESP32 未連線，無法傳送指令");
           }
         }
-        
+
         if (data === "playBG") {
           console.log("🎵 播放音樂...");
           exec('start "" "C:\\Users\\ccwkt\\Project\\DiscoLotus project\\client\\audio\\test.mp3"', (error) => {

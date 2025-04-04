@@ -51,7 +51,7 @@ export function setupButton() {
             target: { entity_id: light }
           }));
         });
-      
+
       }
     }, intervalTime);
 
@@ -63,13 +63,13 @@ export function setupButton() {
 
   function handleButtonClick(buttonId) {
     if (lightColors[buttonId]) {
-      sendLightCommand(lightColors[buttonId]); 
+      sendLightCommand(lightColors[buttonId]);
     } else if (buttonId === 'function1') {
-      startLightEffect("same", 500, 10000); 
+      startLightEffect("same", 500, 10000);
     } else if (buttonId === 'function2') {
-      startLightEffect("different", 500, 10000); 
-    } else if (buttonId === 'function3') {   
-      startLightEffect("same", 1000, 10000); 
+      startLightEffect("different", 500, 10000);
+    } else if (buttonId === 'function3') {
+      startLightEffect("same", 1000, 10000);
     }
   }
   //六個功能按鈕切換
@@ -90,10 +90,10 @@ export function setupButton() {
     // 處理觸摸事件(手機)
     button.addEventListener('touchstart', function (e) {
       e.preventDefault(); // 防止觸發點擊事件
+      const sessionId = sessionStorage.getItem('sessionId');
+      if (!sessionId) return;
       touchStarted = true;
-      if (!this.disabled) {
-        AudioManager.playSound("buttonClick");
-      }
+      AudioManager.playSound("buttonClick");
       handleButtonClick(buttonId)
     });
     button.addEventListener('touchend', function (e) {
@@ -257,25 +257,25 @@ export function setupDisc() {
     } else if (deltaAngle < -180) {
       deltaAngle += 360;
     }
-//傳遞給esp32的
-    if (deltaAngle > 0) { 
+    //傳遞給esp32的
+    if (deltaAngle > 0) {
       if (lastDirection !== 'left') {
-          window.ws.send('left');
-          lastDirection = 'left'; 
+        window.ws.send('left');
+        lastDirection = 'left';
       }
-  } else if (deltaAngle < 0) { 
+    } else if (deltaAngle < 0) {
       if (lastDirection !== 'right') {
-          window.ws.send('right');
-          lastDirection = 'right'; 
+        window.ws.send('right');
+        lastDirection = 'right';
       }
-  }
+    }
 
     const currentTime = Date.now();
     const timeDiff = currentTime - lastTime;
 
     const rotation = (lastAngle + deltaAngle * (timeDiff / 50)) % 360;
     rotateDisc.style.transform = `rotate(${rotation}deg)`;
-    console.log("rotation:",rotation)
+    console.log("rotation:", rotation)
     lastAngle = rotation;
     lastTouchAngle = currentTouchAngle;
     lastTime = currentTime;
@@ -293,11 +293,12 @@ export function setupText() {
   let touchStarted = false;
 
   safety.addEventListener('touchstart', function (e) {
+    const sessionId = sessionStorage.getItem('sessionId');
+    if (!sessionId) return;
 
     touchStarted = true;
-    if (!this.disabled) {
-      AudioManager.playSound("buttonClick");
-    }
+    AudioManager.playSound("buttonClick");
+
     console.log("傳遞平安")
     window.ws.send('平安');
   });
@@ -325,16 +326,16 @@ export function setupText() {
   });
 }
 
-export function setPlay(){
+export function setPlay() {
   //關音樂
 
   //停止旋轉
-  const btn=document.getElementById('playBtn');
-  btn.addEventListener('touchstart',function(){
+  const btn = document.getElementById('playBtn');
+  btn.addEventListener('touchstart', function () {
     window.ws.send('close');
   })
 
-  
+
 }
 
 
