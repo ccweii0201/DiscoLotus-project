@@ -203,7 +203,7 @@ wss.on('connection', (ws) => {
         unityClient.send(unity_Text);
       }
 
-    }
+      }}
     catch (error) {
       console.error('錯誤', error);
     }
