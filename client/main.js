@@ -37,9 +37,10 @@ document.addEventListener('DOMContentLoaded', function () {
       
       updateOpenStatus(false);
       console.log('關閉dj台');
-      document.body.classList.remove("hide-overlay");
-      window.ws.send("close"); // 顯示遮罩
+      document.body.classList.remove("hide-overlay"); // 顯示遮罩
+      musicWs.send('close');
       if (ws) {
+        window.ws.send("close");
         ws.close();
         ws = null
       }
