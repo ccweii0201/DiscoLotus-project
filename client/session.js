@@ -2,22 +2,16 @@ import { state } from "./state.js";
 
 export function connectWebSocket(apiUrl) {
   //websocket連線
-  if (window.ws) {
-    console.warn("WebSocket 已經存在，避免重複連線");
-    return;
-  }
+  // if (window.ws) {
+  //   console.warn("WebSocket 已經存在，避免重複連線");
+  //   return;
+  // }
 
   window.ws = new WebSocket(apiUrl);
 
   window.ws.onopen = function () {
     console.log('連線成功');
     let sessionID = sessionStorage.getItem('sessionId');
-    setInterval(() => {
-      if (ws.readyState === WebSocket.OPEN) {
-        ws.send(JSON.stringify({ type: 'heartbeat' })); // 傳送心跳
-        console.log("💓 發送 heartbeat");
-      }
-    }, 10000);
     //沒有id創一個
     if (!sessionID) {
       console.log("沒有id 創建一個")
@@ -79,12 +73,6 @@ export function connectWebSocket(apiUrl) {
         window.ws = null
       }
     }
-    if (data.type === 'ping') {
-      console.log("收到伺服器 ping，回應 pong");
-      ws.send(JSON.stringify({ type: 'pong' }));
-    }
-
-
   }
 
 
@@ -139,13 +127,13 @@ export function updateOpenStatus(status) {
       }))
     };
   }
-  // const elements = document.querySelectorAll('button');
-  // const disc = document.getElementById('discImg')
-  // //只選取可交互的元素
-  // elements.forEach(element => {
-  //   if (element !== open) { // 排除 open 按鈕，其他元素根據狀態禁用或啟用
-  //     element.disabled = !status; // 如果狀態為關閉，禁用所有元素，否則恢復啟用
-  //   }
-  // });
+  const elements = document.querySelectorAll('button');
+  const disc = document.getElementById('discImg')
+  //只選取可交互的元素
+  elements.forEach(element => {
+    if (element !== open) { // 排除 open 按鈕，其他元素根據狀態禁用或啟用
+      element.disabled = !status; // 如果狀態為關閉，禁用所有元素，否則恢復啟用
+    }
+  });
 }
 

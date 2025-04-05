@@ -1,10 +1,10 @@
 import { updateOpenStatus, connectWebSocket } from "./session.js";
-import { setupButton, setupSlider1, setupDisc, setupText } from "./control.js";
+import { setupButton, setupSlider1, setupDisc, setupText,setPlay } from "./control.js";
 import AudioManager from "./audio.js";
 
 
 let apiUrl;
-apiUrl = 'wss://' + window.location.hostname+'/';
+apiUrl = 'ws://' + window.location.hostname+':3000';
 
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
       musicWs.send('playBG');
     }
     else { //開啟狀態
+      
       updateOpenStatus(false);
       console.log('關閉dj台');
       document.body.classList.remove("hide-overlay"); // 顯示遮罩
@@ -83,13 +84,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 
-  connectLocal()
-  connectHA()
+  // connectLocal()
+  // connectHA()
   setupButton()
   setupSlider1()
   setupDisc()
   setupText()
-
+  setPlay()
 })
 
 

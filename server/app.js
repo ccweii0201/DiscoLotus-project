@@ -74,39 +74,23 @@ wss.on('connection', (ws) => {
   let SessionTimeout = null;
 
   //計時
-  // function ResetSessionTimeout() {
-  //   if (SessionTimeout) {
-  //     clearTimeout(SessionTimeout)
-  //   }
-  //   SessionTimeout = setTimeout(() => {
-  //     console.log('過期一分鐘');
-  //     wss.clients.forEach(client => {
-  //       if (client.readyState === WebSocket.OPEN) {
-  //         client.send(JSON.stringify({
-  //           type: 'sessionExpired',
-  //           message: '舊的id已過期'
-  //         }))
-  //       }
-  //     })
-  //     sessionId = null;
-  //   }, 1 * 60 * 1000)
-  //}
-
-  // 設定心跳機制
-  // ws.isAlive = true;  // 標記此連線為活躍的
-  // ws.on('pong', () => {
-  //   ws.isAlive = true; // 收到 pong 訊號時標記為存活
-  // });
-
-  // 設定心跳檢查間隔（每 10 秒執行一次）
-  // const heartbeatInterval = setInterval(() => {
-  //   if (ws.isAlive === false) {
-  //     console.log('客戶端未回應，關閉連線');
-  //     return ws.terminate();
-  //   }
-  //   ws.isAlive = false; // 每次檢查時先標記為 false，等收到 pong 再標記為 true
-  //   ws.ping(); // 發送 ping 訊號
-  // }, 100000);
+  function ResetSessionTimeout() {
+    if (SessionTimeout) {
+      clearTimeout(SessionTimeout)
+    }
+    SessionTimeout = setTimeout(() => {
+      console.log('過期一分鐘');
+      wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify({
+            type: 'sessionExpired',
+            message: '舊的id已過期'
+          }))
+        }
+      })
+      sessionId = null;
+    },  60*1000)
+  }
 
   ws.on('message', (message) => {
     try {
@@ -137,8 +121,10 @@ wss.on('connection', (ws) => {
         ws.send(JSON.stringify({ type: 'sessionUpdate', sessionId: currentSessionId }));
 
         ResetSessionTimeout();
+        console.log('開始計時');
         return; // 結束處理
       }
+
       //unity的字
       if (data.type === 'bgText_345') {
         console.log('收到 bgText_345 文字');
@@ -148,6 +134,7 @@ wss.on('connection', (ws) => {
           console.log('已轉發文字給 Unity:', bgText_345);
         }
       }
+
       //瀑布+平安喜樂
       if (typeof data === 'number') {
         if (data != waterfallLevel) {
@@ -206,7 +193,11 @@ wss.on('connection', (ws) => {
   ws.on('close', () => {
     console.log('Client disconnected');
     currentSessionId = null;
-    SessionTimeout = null;
+    if (SessionTimeout) {
+      console.log('停止計時');
+      clearTimeout(SessionTimeout);
+      SessionTimeout = null;  // 記得清掉
+    }
   });
 })
 
