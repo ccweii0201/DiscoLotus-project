@@ -176,19 +176,19 @@ wss.on('connection', (ws) => {
           }
         }
 
-        if (data === "playBG") {
-          console.log("🎵 播放音樂...");
-          exec('start "" "C:\\Users\\ccwkt\\Project\\DiscoLotus project\\client\\audio\\Untitled.mp3"', (error) => {
-            if (error) console.error(`❌ 播放失敗: ${error.message}`);
-          });
+        // if (data === "playBG") {
+        //   console.log("🎵 播放音樂...");
+        //   exec('start "" "C:\\Users\\ccwkt\\Project\\DiscoLotus project\\client\\audio\\Untitled.mp3"', (error) => {
+        //     if (error) console.error(`❌ 播放失敗: ${error.message}`);
+        //   });
 
-        }
-        if (data === "close") {
-          exec('taskkill /IM "Microsoft.Media.Player.exe" /F', (error) => {
-            if (error) console.error(`❌ 停止音樂失敗: ${error.message}`);
-            else console.log("音樂已停止...");
-          });
-        }
+        // }
+        // if (data === "close") {
+        //   exec('taskkill /IM "Microsoft.Media.Player.exe" /F', (error) => {
+        //     if (error) console.error(`❌ 停止音樂失敗: ${error.message}`);
+        //     else console.log("音樂已停止...");
+        //   });
+        // }
         unityClient.send(data);
       }
     }
