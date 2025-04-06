@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
       AudioManager.playSound("djOn");
-      // musicWs.send('playBG');
+      musicWs.send('playBG');
     }
     else { //開啟狀態
       
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('關閉dj台');
       document.body.classList.remove("hide-overlay"); // 顯示遮罩
       window.ws.send("close");
-      // musicWs.send('close');
+      musicWs.send('close');
       if (ws) {
         ws.close();
         ws = null
