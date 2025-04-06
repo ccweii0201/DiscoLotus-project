@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
       AudioManager.playSound("djOn");
-      musicWs.send('playBG');
             
       updateOpenStatus(true);
     }

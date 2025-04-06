@@ -20,7 +20,7 @@ export function connectWebSocket(apiUrl) {
       // 在這裡發送 bgText_12 訊息
       window.ws.send('bgText_345');
       console.log('bgText_345')
-
+      musicWs.send('playBG');
       setTimeout(() => {
         window.ws.send("open");
       }, 500);
@@ -57,6 +57,7 @@ export function connectWebSocket(apiUrl) {
       updateOpenStatus(false);
       sessionStorage.removeItem('sessionId');
       showSessionMessage('閒置太久，已將您的使用權移除');
+      musicWs.send('close');
       if (window.ws) {
         window.ws.close();
         window.ws = null
@@ -68,6 +69,7 @@ export function connectWebSocket(apiUrl) {
       updateOpenStatus(false);
       sessionStorage.removeItem('sessionId');
       showSessionMessage('使用權已失效，有新的用戶使用');
+      musicWs.send('close');
       if (window.ws) {
         window.ws.close();
         window.ws = null
@@ -76,8 +78,11 @@ export function connectWebSocket(apiUrl) {
   }
 
 
-  window.ws.onclose = function () {
+  window.ws.onclose = function (event) {
     console.log("連線關閉");
+    console.log("關閉代碼:", event.code);
+    console.log("關閉原因:", event.reason);
+    console.log("是否乾淨關閉:", event.wasClean); // true 表示正常關閉
     updateOpenStatus(false);
     sessionStorage.removeItem('sessionId');
     document.body.classList.remove("hide-overlay");
