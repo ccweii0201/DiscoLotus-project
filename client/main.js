@@ -5,8 +5,8 @@ import { state } from "./state.js";
 
 
 let apiUrl;
-apiUrl = 'wss://' + window.location.hostname + '/';
-// apiUrl = 'ws://' + window.location.hostname+':3000';
+// apiUrl = 'wss://' + window.location.hostname + '/';
+apiUrl = 'ws://' + window.location.hostname+':3000';
 
 document.addEventListener('DOMContentLoaded', function () {
   window.isOpne = false //關閉狀態
@@ -24,19 +24,14 @@ document.addEventListener('DOMContentLoaded', function () {
   //開啟/關閉dj台
   open.addEventListener('touchstart', function (e) {
     e.preventDefault();
-
-
-
     if (!isOpne) { //關閉狀態
       console.log('開啟dj台');
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
       AudioManager.playSound("djOn");
-
       updateOpenStatus(true);
     }
     else { //開啟狀態
-
       updateOpenStatus(false);
       console.log('關閉dj台');
       document.body.classList.remove("hide-overlay"); // 顯示遮罩
