@@ -59,22 +59,18 @@
         top: -16%;
         left: 22%;
         position: absolute;
-        
+        pointer-events: none; /* 防止影響點擊 */
     }
 
     #on {
         width: 33%;
         top: 16%;
         left: 31%;
-        /* width: 60%; */
-        /* height: 58%; */
         border-radius: 100%;
         border: 0;
         padding: 0;
         display: block;
         position: absolute;
-        /* top: 8%; */
-        /* left: 1%; */
         background: none;
         mix-blend-mode: normal;
         z-index: 150;
