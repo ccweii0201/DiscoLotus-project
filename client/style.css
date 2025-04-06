@@ -64,7 +64,7 @@
 
     #on {
         width: 33%;
-        height:auto ;
+        height:0%;
         top: 16%;
         left: 31%;
         border-radius: 100%;
@@ -322,7 +322,7 @@
     #on {
         width: 33%;
         top: 16%;
-        height:auto ;
+        height:0%;
         left: 31%;
         border-radius: 100%;
         border: 0;
@@ -575,7 +575,7 @@
     }
 
     #on {
-        height:auto ;
+        height:0%;
         width: 33%;
         top: 16%;
         left: 31%;
@@ -832,10 +832,11 @@
     }
 
     #on {
-        height:auto ;
+        height:0%;
         width: 33%;
         top: 16%;
         left: 31%;
+
         border-radius: 100%;
         border: 0;
         padding: 0;
@@ -1089,7 +1090,7 @@
     }
 
     #on {
-        height:auto ;
+        height:0%;
         width: 33%;
         top: 16%;
         left: 31%;
@@ -1347,7 +1348,7 @@
     }
 
     #on {
-        height:auto ;
+        height:0%;
         width: 60%;
         height: 58%;
         border-radius: 100%;
@@ -1605,7 +1606,7 @@
     }
 
     #on {
-        height:auto ;
+        height:0%;
         width: 33%;
         top: 16%;
         left: 31%;
