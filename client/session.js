@@ -117,6 +117,7 @@ export function updateOpenStatus(status) {
     btn.style.width = "36%"
     btn.style.left = "29%"
     btn.style.top="16%"
+    btn.style.height = "43%"
     window.socket.send(JSON.stringify({
       id:  state.requestid++,
       type: 'call_service',
@@ -130,6 +131,7 @@ export function updateOpenStatus(status) {
     btn.style.width = "36%"
     btn.style.left = "29%"
     btn.style.top="16%"
+    btn.style.height = "43%"
     if (window.socket.readyState === WebSocket.OPEN) {
       window.socket.send(JSON.stringify({
         id: state.requestid++,
