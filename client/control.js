@@ -43,7 +43,7 @@ export function setupButton() {
       } else if (effectType === "different") {
         lights.forEach(light => {
           window.socket.send(JSON.stringify({
-            id: requestId++,
+            id: state.requestid++,
             type: 'call_service',
             domain: 'light',
             service: 'turn_on',
@@ -65,11 +65,11 @@ export function setupButton() {
     if (lightColors[buttonId]) {
       sendLightCommand(lightColors[buttonId]);
     } else if (buttonId === 'function1') {
-      startLightEffect("same", 500, 5000);
+      startLightEffect("same", 500, 6000);
     } else if (buttonId === 'function2') {
-      startLightEffect("different", 500, 5000);
+      startLightEffect("different", 500, 6000);
     } else if (buttonId === 'function3') {
-      startLightEffect("same", 1000, 5000);
+      startLightEffect("same", 1500, 6000);
     }
   }
   //六個功能按鈕切換
