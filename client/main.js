@@ -39,8 +39,8 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('關閉dj台');
       document.body.classList.remove("hide-overlay"); // 顯示遮罩
       musicWs.send('close');
+      window.ws.send("close");
       if (ws) {
-        window.ws.send("close");
         ws.close();
         ws = null
       }
