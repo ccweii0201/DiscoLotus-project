@@ -159,6 +159,9 @@ wss.on('connection', (ws) => {
       if (typeof data === 'string') {
         console.log('收到文字:', data);
         unity_Text = data;
+        if (data === "ping") {
+          console.log("指令已轉發給後端:", data);
+        }
 
         if (data === "open" || data === "close") {
           if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
@@ -176,10 +179,9 @@ wss.on('connection', (ws) => {
             console.log("❌ ESP32 未連線，無法傳送指令");
           }
         }
-        else{
+        
           unityClient.send(data);
-        }
-
+        
         //本地端不要上傳到git
         if (data === "playBG") {
           console.log("🎵 播放音樂...");
