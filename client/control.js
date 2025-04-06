@@ -65,11 +65,11 @@ export function setupButton() {
     if (lightColors[buttonId]) {
       sendLightCommand(lightColors[buttonId]);
     } else if (buttonId === 'function1') {
-      startLightEffect("same", 500, 10000);
+      startLightEffect("same", 500, 5000);
     } else if (buttonId === 'function2') {
-      startLightEffect("different", 500, 10000);
+      startLightEffect("different", 500, 5000);
     } else if (buttonId === 'function3') {
-      startLightEffect("same", 1000, 10000);
+      startLightEffect("same", 1000, 5000);
     }
   }
   //六個功能按鈕切換
@@ -265,9 +265,9 @@ export function setupDisc() {
         lastDirection = 'left';
       }
     } else if (deltaAngle < 0) {
-      if (lastDirection !== 'right') {
-        window.ws.send('right');
-        lastDirection = 'right';
+      if (lastDirection !== 'close') {
+        window.ws.send('close');
+        lastDirection = 'close';
       }
     }
     const btn = document.getElementById('playBtn');
@@ -333,15 +333,16 @@ export function setupText() {
 }
 
 export function setPlay() {
-  let isPlaying = true
+  let isPlaying = true;
   const btn = document.getElementById('playBtn');
   btn.addEventListener('touchstart', function () {
     if (isPlaying) {
       window.musicWs.send('close');
+      isPlaying=false;
     }
     else {
       window.musicWs.send('playBG');
-      isPlaying = false;
+      isPlaying = true;
     }
 
   })

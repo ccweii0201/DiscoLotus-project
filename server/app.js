@@ -180,13 +180,13 @@ wss.on('connection', (ws) => {
 
         // if (data === "playBG") {
         //   console.log("🎵 播放音樂...");
-        //   exec('start "" "C:\\Users\\ccwkt\\Project\\DiscoLotus project\\client\\audio\\Untitled.mp3"', (error) => {
+        //   exec('"C:\\Program Files\\VideoLAN\\VLC\\vlc.exe" --intf dummy --no-video "C:\\Users\\ccwkt\\Project\\DiscoLotus project\\client\\audio\\Untitled.mp3"', (error) => {
         //     if (error) console.error(`❌ 播放失敗: ${error.message}`);
         //   });
 
         // }
-        // if (data === "close") {
-        //   exec('taskkill /IM "Microsoft.Media.Player.exe" /F', (error) => {
+        // else if (data === "close") {
+        //   exec('taskkill /IM "vlc.exe" /F', (error) => {
         //     if (error) console.error(`❌ 停止音樂失敗: ${error.message}`);
         //     else console.log("音樂已停止...");
         //   });
@@ -201,6 +201,14 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     console.log('Client disconnected');
+
+    if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
+      esp32Client.send('close');
+      console.log("📤 指令已轉發給 ESP32");
+    } else {
+      console.log("❌ ESP32 未連線，無法傳送指令");
+    }
+
     currentSessionId = null;
     if (SessionTimeout) {
       console.log('停止計時');
