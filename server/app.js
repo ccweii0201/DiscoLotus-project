@@ -90,7 +90,7 @@ wss.on('connection', (ws) => {
         }
       })
       sessionId = null;
-    }, 60 * 1000)
+    }, 5*60 * 1000)
   }
 
   ws.on('message', (message) => {
@@ -101,6 +101,8 @@ wss.on('connection', (ws) => {
         data = message.toString();  // 解析失敗，當作純文字處理
       }
       console.log('收到訊息:', data);
+
+      ResetSessionTimeout()
 
       // 判斷是否為 session 相關的指令
       if (data.type === 'createNewSessionID') {
