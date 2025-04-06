@@ -116,27 +116,27 @@ export function updateOpenStatus(status) {
   if (status) {
     btn.style.left = "10%"
     btn.style.width = "63%"
-    // window.socket.send(JSON.stringify({
-    //   id:  state.requestid++,
-    //   type: 'call_service',
-    //   domain: 'light',
-    //   service: 'turn_on',
-    //   service_data: { rgb_color: [255, 162, 0] },
-    //   target: { entity_id: lights } //所有裝置
-    // }));
+    window.socket.send(JSON.stringify({
+      id:  state.requestid++,
+      type: 'call_service',
+      domain: 'light',
+      service: 'turn_on',
+      service_data: { rgb_color: [255, 162, 0] },
+      target: { entity_id: lights } //所有裝置
+    }));
   }
   else {
     btn.style.width = "61%"
     btn.style.left = "14%"
-    // if (window.socket.readyState === WebSocket.OPEN) {
-    //   window.socket.send(JSON.stringify({
-    //     id: state.requestid++,
-    //     type: 'call_service',
-    //     domain: 'light',
-    //     service: 'turn_off',
-    //     target: { entity_id: lights } //所有裝置
-    //   }))
-    // };
+    if (window.socket.readyState === WebSocket.OPEN) {
+      window.socket.send(JSON.stringify({
+        id: state.requestid++,
+        type: 'call_service',
+        domain: 'light',
+        service: 'turn_off',
+        target: { entity_id: lights } //所有裝置
+      }))
+    };
   }
   const elements = document.querySelectorAll('button');
   const disc = document.getElementById('discImg')

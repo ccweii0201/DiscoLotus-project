@@ -10,7 +10,6 @@ const http = require('http');
 const port = process.env.PORT || 3000;
 const axios = require("axios");
 const { exec } = require("child_process");
-const player = require('play-sound')();
 
 
 var indexRouter = require('./routes/index');
@@ -180,7 +179,7 @@ wss.on('connection', (ws) => {
         if (data === "ping") {
             console.log("指令已轉發給後端:", data);
         }
-
+        //本地端不要上傳到git
         // if (data === "playBG") {
         //   console.log("🎵 播放音樂...");
         //   exec('"C:\\Program Files\\VideoLAN\\VLC\\vlc.exe" --intf dummy --no-video "C:\\Users\\ccwkt\\Project\\DiscoLotus project\\client\\audio\\Untitled.mp3"', (error) => {
@@ -245,10 +244,21 @@ ws_unity.on('connection', (ws) => {
 })
 
 // WebSocket -> ESP32
+let reconnectInterval = null;
+let maxReconnectAttempts = 5; // 最大重連次數
+let reconnectAttempts = 0;  // 當前重連次數
+
 ws_esp32.on('connection', (ws) => {
-  console.log('ESP32 connected');
+  let heartbeatInterval = null;
+
   esp32Client = ws;
 
+  heartbeatInterval = setInterval(() => {
+    if (ws.readyState === WebSocket.OPEN) {
+      ws.send('ping');
+    }
+  }, 20000);
+  console.log('ESP32 connected');
   ws.on('message', (message) => {
     console.log('收到來自 ESP32 的訊息: ' + message);
   });
@@ -256,9 +266,22 @@ ws_esp32.on('connection', (ws) => {
   ws.on('close', () => {
     console.log('ESP32 disconnected');
     esp32Client = null;
+    handleReconnect();
   });
 });
+function handleReconnect() {
+  if (reconnectAttempts < maxReconnectAttempts) {
+    reconnectAttempts++;
+    console.log(`嘗試重連... 第 ${reconnectAttempts} 次`);
 
+    // 設置重連間隔（增加等待時間）
+    setTimeout(() => {
+      connectWebSocket(); // 重試建立連線
+    }, 5000 * reconnectAttempts); // 每次重連等待時間逐漸增長
+  } else {
+    console.log('達到最大重連次數，停止重連');
+  }
+}
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

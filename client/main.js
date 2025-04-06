@@ -1,10 +1,11 @@
 import { updateOpenStatus, connectWebSocket } from "./session.js";
-import { setupButton, setupSlider1, setupDisc, setupText,setPlay } from "./control.js";
+import { setupButton, setupSlider1, setupDisc, setupText, setPlay } from "./control.js";
 import AudioManager from "./audio.js";
+import { state } from "./state.js";
 
 
 let apiUrl;
-apiUrl = 'wss://' + window.location.hostname+'/';
+apiUrl = 'wss://' + window.location.hostname + '/';
 // apiUrl = 'ws://' + window.location.hostname+':3000';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -12,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.open = document.getElementById('on'); //開關鍵宣告
   window.ws;
   window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
-  window.musicWs= new WebSocket('wss://f141-114-137-233-126.ngrok-free.app '); //當天要記得換
+  window.musicWs = new WebSocket('wss://f141-114-137-233-126.ngrok-free.app '); //當天要記得換
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境
 
 
@@ -31,11 +32,11 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
       AudioManager.playSound("djOn");
-            
+
       updateOpenStatus(true);
     }
     else { //開啟狀態
-      
+
       updateOpenStatus(false);
       console.log('關閉dj台');
       document.body.classList.remove("hide-overlay"); // 顯示遮罩
@@ -54,12 +55,22 @@ document.addEventListener('DOMContentLoaded', function () {
     socket.onopen = function () {
       console.log('與 HA 連接成功');
       socket.send(JSON.stringify({ type: 'auth', access_token: `${API_KEY}` }));
-
+      setInterval(() => {
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({
+            id: state.requestid++,
+            type: 'ping'
+          }));
+        }
+      }, 20000);  // 每20秒ping一次
     };
 
     socket.onmessage = function (event) {
       const data = JSON.parse(event.data);
       console.log('收到訊息:', data);
+      if (data.type === 'pong') {
+        console.log('HA still alive');
+      }
     };
     socket.onclose = function () {
       console.log("燈光連線關閉");
@@ -71,8 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 
-  function connectLocal(){
-    musicWs.onopen=function () {
+  function connectLocal() {
+    musicWs.onopen = function () {
       console.log('與 本地電腦 連接成功');
 
     };
@@ -87,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   connectLocal()
-  // connectHA()
+  connectHA()
   setupButton()
   setupSlider1()
   setupDisc()
