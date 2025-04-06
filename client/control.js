@@ -273,9 +273,9 @@ export function setupDisc() {
     const btn = document.getElementById('playBtn');
     btn.addEventListener('touchstart', function () {
       window.ws.send('close');
-      lastDirection==close;
+      lastDirection == close;
     })
-  
+
     const currentTime = Date.now();
     const timeDiff = currentTime - lastTime;
 
@@ -332,10 +332,18 @@ export function setupText() {
   });
 }
 
-export function setPlay(){
+export function setPlay() {
+  let isPlaying = true
   const btn = document.getElementById('playBtn');
   btn.addEventListener('touchstart', function () {
-    window.musicWs.send('close');
+    if (isPlaying) {
+      window.musicWs.send('close');
+    }
+    else {
+      window.musicWs.send('playBG');
+      isPlaying = false;
+    }
+
   })
 }
 
