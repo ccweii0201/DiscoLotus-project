@@ -6,7 +6,7 @@ export function connectWebSocket(apiUrl) {
   //   console.warn("WebSocket 已經存在，避免重複連線");
   //   return;
   // }
-let heartbeatInterval=null;
+  let heartbeatInterval = null;
   window.ws = new WebSocket(apiUrl);
 
   window.ws.onopen = function () {
@@ -93,6 +93,14 @@ let heartbeatInterval=null;
     document.body.classList.remove("hide-overlay");
     window.ws = null;
     clearInterval(heartbeatInterval);
+    window.socket.send(JSON.stringify({
+      id: state.requestid++,
+      type: 'call_service',
+      domain: 'light',
+      service: 'turn_on',
+      service_data: { rgb_color: [0, 0, 0] },
+      target: { entity_id: lights } //所有裝置
+    }));
   };
   window.ws.onerror = function (error) {
     console.error("錯誤" + error);
@@ -116,31 +124,32 @@ export function updateOpenStatus(status) {
   if (status) {
     btn.style.width = "36%"
     btn.style.left = "29%"
-    btn.style.top="16%"
+    btn.style.top = "16%"
     btn.style.height = "43%"
     window.socket.send(JSON.stringify({
-      id:  state.requestid++,
+      id: state.requestid++,
       type: 'call_service',
       domain: 'light',
       service: 'turn_on',
-      service_data: { rgb_color: [255, 162, 0] },
+      service_data: { rgb_color: [0, 0, 0] },
       target: { entity_id: lights } //所有裝置
     }));
   }
   else {
     btn.style.width = "36%"
     btn.style.left = "29%"
-    btn.style.top="16%"
+    btn.style.top = "16%"
     btn.style.height = "43%"
     if (window.socket.readyState === WebSocket.OPEN) {
       window.socket.send(JSON.stringify({
         id: state.requestid++,
         type: 'call_service',
         domain: 'light',
-        service: 'turn_off',
+        service: 'turn_on',
+        service_data: { rgb_color: [0, 0, 0] },
         target: { entity_id: lights } //所有裝置
       }))
-   };
+    };
   }
   const elements = document.querySelectorAll('button');
   const disc = document.getElementById('discImg')
