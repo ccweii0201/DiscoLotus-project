@@ -5,8 +5,8 @@ import { state } from "./state.js";
 
 
 let apiUrl;
-// apiUrl = 'wss://' + window.location.hostname + '/';
-apiUrl = 'ws://' + window.location.hostname+':3000';
+apiUrl = 'wss://' + window.location.hostname + '/';
+// apiUrl = 'ws://' + window.location.hostname+':3000';
 
 document.addEventListener('DOMContentLoaded', function () {
   window.isOpne = false //關閉狀態
