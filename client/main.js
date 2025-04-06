@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     else { //開啟狀態
       updateOpenStatus(false);
+      sessionStorage.removeItem('sessionId')
       console.log('關閉dj台');
       document.body.classList.remove("hide-overlay"); // 顯示遮罩
       window.ws.send("close");

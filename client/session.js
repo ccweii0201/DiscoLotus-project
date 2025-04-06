@@ -138,7 +138,7 @@ export function updateOpenStatus(status) {
         service: 'turn_off',
         target: { entity_id: lights } //所有裝置
       }))
-    };
+   };
   }
   const elements = document.querySelectorAll('button');
   const disc = document.getElementById('discImg')
