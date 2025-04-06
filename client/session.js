@@ -6,7 +6,7 @@ export function connectWebSocket(apiUrl) {
   //   console.warn("WebSocket 已經存在，避免重複連線");
   //   return;
   // }
-
+let heartbeatInterval=null;
   window.ws = new WebSocket(apiUrl);
 
   window.ws.onopen = function () {
@@ -25,6 +25,11 @@ export function connectWebSocket(apiUrl) {
         window.ws.send("open");
       }, 500);
     }
+    heartbeatInterval = setInterval(() => {
+      if (window.ws.readyState === WebSocket.OPEN) {
+        window.ws.send('ping');
+      }
+    }, 30000); // 30秒
   };
 
 
@@ -86,7 +91,8 @@ export function connectWebSocket(apiUrl) {
     updateOpenStatus(false);
     sessionStorage.removeItem('sessionId');
     document.body.classList.remove("hide-overlay");
-  
+    window.ws = null;
+    clearInterval(heartbeatInterval);
   };
   window.ws.onerror = function (error) {
     console.error("錯誤" + error);

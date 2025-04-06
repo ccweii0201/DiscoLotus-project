@@ -177,6 +177,9 @@ wss.on('connection', (ws) => {
             console.log("❌ ESP32 未連線，無法傳送指令");
           }
         }
+        if (data === "ping") {
+            console.log("指令已轉發給後端:", data);
+        }
 
         // if (data === "playBG") {
         //   console.log("🎵 播放音樂...");
