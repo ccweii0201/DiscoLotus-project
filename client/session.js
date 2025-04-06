@@ -114,8 +114,8 @@ export function updateOpenStatus(status) {
   statusImg.setAttribute('src', `img/dj台(1)_${status ? '開關-開' : '開關-關'}.png`)
   const btn = document.getElementById('on')
   if (status) {
-    btn.style.width = "33%"
-    btn.style.left = "31%"
+    btn.style.width = "36%"
+    btn.style.left = "29%"
     btn.style.top="16%"
     window.socket.send(JSON.stringify({
       id:  state.requestid++,
@@ -127,8 +127,8 @@ export function updateOpenStatus(status) {
     }));
   }
   else {
-    btn.style.width = "33%"
-    btn.style.left = "31%"
+    btn.style.width = "36%"
+    btn.style.left = "29%"
     btn.style.top="16%"
     if (window.socket.readyState === WebSocket.OPEN) {
       window.socket.send(JSON.stringify({
