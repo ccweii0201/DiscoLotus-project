@@ -221,6 +221,7 @@ export function setupDisc() {
 
   const rotateDisc = document.getElementById('discImg');
 
+
   rotateDisc.addEventListener('touchstart', (e) => {
     const sessionId = sessionStorage.getItem('sessionId');
     if (!sessionId) return;
@@ -269,7 +270,12 @@ export function setupDisc() {
         lastDirection = 'right';
       }
     }
-
+    const btn = document.getElementById('playBtn');
+    btn.addEventListener('touchstart', function () {
+      window.ws.send('close');
+      lastDirection==close;
+    })
+  
     const currentTime = Date.now();
     const timeDiff = currentTime - lastTime;
 
@@ -326,16 +332,11 @@ export function setupText() {
   });
 }
 
-export function setPlay() {
-  //關音樂
-
-  //停止旋轉
+export function setPlay(){
   const btn = document.getElementById('playBtn');
   btn.addEventListener('touchstart', function () {
-    window.ws.send('close');
+    window.musicWs.send('close');
   })
-
-
 }
 
 
