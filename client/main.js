@@ -1,5 +1,5 @@
 import { updateOpenStatus, connectWebSocket } from "./session.js";
-import { setupButton, setupSlider1, setupDisc, setupText, setPlay } from "./control.js";
+import { setupButton, setupSlider1, setupDisc, setupText} from "./control.js";
 import AudioManager from "./audio.js";
 import { state } from "./state.js";
 
@@ -99,7 +99,6 @@ document.addEventListener('DOMContentLoaded', function () {
   setupSlider1()
   setupDisc()
   setupText()
-  setPlay()
 })
 
 
