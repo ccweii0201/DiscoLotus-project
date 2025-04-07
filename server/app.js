@@ -247,20 +247,8 @@ ws_unity.on('connection', (ws) => {
 })
 
 // WebSocket -> ESP32
-let reconnectInterval = null;
-let maxReconnectAttempts = 5; // 最大重連次數
-let reconnectAttempts = 0;  // 當前重連次數
-
 ws_esp32.on('connection', (ws) => {
-  let heartbeatInterval = null;
-
-  esp32Client = ws;
-
-  heartbeatInterval = setInterval(() => {
-    if (ws.readyState === WebSocket.OPEN) {
-      ws.send('ping');
-    }
-  }, 20000);
+  
   console.log('ESP32 connected');
   ws.on('message', (message) => {
     console.log('收到來自 ESP32 的訊息: ' + message);
@@ -269,22 +257,8 @@ ws_esp32.on('connection', (ws) => {
   ws.on('close', () => {
     console.log('ESP32 disconnected');
     esp32Client = null;
-    handleReconnect();
   });
 });
-function handleReconnect() {
-  if (reconnectAttempts < maxReconnectAttempts) {
-    reconnectAttempts++;
-    console.log(`嘗試重連... 第 ${reconnectAttempts} 次`);
-
-    // 設置重連間隔（增加等待時間）
-    setTimeout(() => {
-      connectWebSocket(); // 重試建立連線
-    }, 5000 * reconnectAttempts); // 每次重連等待時間逐漸增長
-  } else {
-    console.log('達到最大重連次數，停止重連');
-  }
-}
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
