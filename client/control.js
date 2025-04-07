@@ -265,9 +265,9 @@ export function setupDisc() {
         lastDirection = 'left';
       }
     } else if (deltaAngle < 0) {
-      if (lastDirection !== 'close') {
+      if (lastDirection !== 'disclose') {
         window.ws.send('close');
-        lastDirection = 'close';
+        lastDirection = 'disclose';
       }
     }
     const btn = document.getElementById('playBtn');
