@@ -333,19 +333,19 @@ export function setupText() {
 }
 
 export function setPlay() {
-  let isPlaying = true;
-  const btn = document.getElementById('playBtn');
-  btn.addEventListener('touchstart', function () {
-    if (isPlaying) {
-      window.musicWs.send('close');
-      isPlaying=false;
-    }
-    else {
-      window.musicWs.send('playBG');
-      isPlaying = true;
-    }
+  // let isPlaying = true;
+  // const btn = document.getElementById('playBtn');
+  // btn.addEventListener('touchstart', function () {
+  //   if (isPlaying) {
+  //     window.musicWs.send('close');
+  //     isPlaying=false;
+  //   }
+  //   else {
+  //     window.musicWs.send('playBG');
+  //     isPlaying = true;
+  //   }
 
-  })
+  // })
 }
 
 
