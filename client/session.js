@@ -93,6 +93,7 @@ export function connectWebSocket(apiUrl) {
     sessionStorage.removeItem('sessionId');
     document.body.classList.remove("hide-overlay");
     window.ws = null;
+    musicWs.send('close');
     clearInterval(heartbeatInterval);
     window.socket.send(JSON.stringify({
       id: state.requestid++,
@@ -141,7 +142,6 @@ export function updateOpenStatus(status) {
     btn.style.left = "29%"
     btn.style.top = "16%"
     btn.style.height = "43%"
-    musicWs.send('close');
     if (window.socket.readyState === WebSocket.OPEN) {
       window.socket.send(JSON.stringify({
         id: state.requestid++,
