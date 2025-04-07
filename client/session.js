@@ -75,6 +75,7 @@ export function connectWebSocket(apiUrl) {
       sessionStorage.removeItem('sessionId');
       showSessionMessage('使用權已失效，有新的用戶使用');
       musicWs.send('close');
+      
       if (window.ws) {
         window.ws.close();
         window.ws = null
@@ -140,6 +141,7 @@ export function updateOpenStatus(status) {
     btn.style.left = "29%"
     btn.style.top = "16%"
     btn.style.height = "43%"
+    musicWs.send('close');
     if (window.socket.readyState === WebSocket.OPEN) {
       window.socket.send(JSON.stringify({
         id: state.requestid++,
