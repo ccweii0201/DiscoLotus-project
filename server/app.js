@@ -248,7 +248,9 @@ ws_unity.on('connection', (ws) => {
 
 // WebSocket -> ESP32
 ws_esp32.on('connection', (ws) => {
-  
+
+  esp32Client = ws;
+
   console.log('ESP32 connected');
   ws.on('message', (message) => {
     console.log('收到來自 ESP32 的訊息: ' + message);
