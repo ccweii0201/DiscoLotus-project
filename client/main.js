@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.open = document.getElementById('on'); //開關鍵宣告
   window.ws;
   window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
-  window.musicWs = new WebSocket('wss://4654-114-137-233-126.ngrok-free.app'); //當天要記得換
+  window.musicWs = new WebSocket('wss://3370-211-72-73-67.ngrok-free.app/'); //當天要記得換
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境
 
 
@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('與 HA 連接成功');
       socket.send(JSON.stringify({ type: 'auth', access_token: `${API_KEY}` }));
       setInterval(() => {
-        if (ws.readyState === WebSocket.OPEN) {
-          ws.send(JSON.stringify({
+        if (socket.readyState === WebSocket.OPEN) {
+          socket.send(JSON.stringify({
             id: state.requestid++,
             type: 'ping'
           }));
