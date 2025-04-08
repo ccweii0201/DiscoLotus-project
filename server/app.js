@@ -245,6 +245,10 @@ ws_unity.on('connection', (ws) => {
     console.log('unity disconnected');
   });
 })
+      console.log('Client disconnected');
+      if (unityClient && unityClient.readyState === WebSocket.OPEN) {
+        unityClient.send("BGclose");
+      }
 
 // WebSocket -> ESP32
 ws_esp32.on('connection', (ws) => {
