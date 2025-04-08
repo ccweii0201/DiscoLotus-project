@@ -29,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
       AudioManager.playSound("djOn");
-      updateOpenStatus(true);
     }
     else { //開啟狀態
       updateOpenStatus(false);

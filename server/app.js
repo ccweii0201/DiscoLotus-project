@@ -206,7 +206,7 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     console.log('Client disconnected');
-    // unityClient.send("BGclose");
+     unityClient.send("BGclose");
     if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
       esp32Client.send('close');
       console.log("📤 指令已轉發給 ESP32");

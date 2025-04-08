@@ -270,10 +270,11 @@ export function setupDisc() {
         lastDirection = 'right';
       }
     }
+    //停止轉動(esp32)
     const btn = document.getElementById('playBtn');
     btn.addEventListener('touchstart', function () {
       window.ws.send('close');
-      lastDirection == close;
+      lastDirection = close;
     })
 
     const currentTime = Date.now();

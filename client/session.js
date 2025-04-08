@@ -23,7 +23,7 @@ export function connectWebSocket(apiUrl) {
       musicWs.send('playBG');
       setTimeout(() => {
         window.ws.send("open");
-      }, 500);
+      }, 300);
     }
     heartbeatInterval = setInterval(() => {
       if (window.ws.readyState === WebSocket.OPEN) {
@@ -46,36 +46,38 @@ export function connectWebSocket(apiUrl) {
 
   window.ws.onmessage = function (event) {
     const data = JSON.parse(event.data);
-
+    //獲得id
     if (data.type === 'sessionUpdate') {
       console.log(data)
-
       console.log('獲取新id:', data.sessionId)
       sessionStorage.setItem('sessionId', data.sessionId);
-      updateOpenStatus(true);
+      updateOpenStatus(true); //此時按鈕才可以換
+      window.ws.send("open");
       hideSessionMessage();
     }
-
+    //閒置太久，id過期
     if (data.type === 'sessionExpired') {
       console.log(data)
       console.log('id已失效')
       updateOpenStatus(false);
       sessionStorage.removeItem('sessionId');
-      showSessionMessage('閒置太久，已將您的使用權移除');
+      window.ws.send("close");
       musicWs.send('close');
+      showSessionMessage('閒置太久，已將您的使用權移除');
       if (window.ws) {
         window.ws.close();
         window.ws = null
       }
     }
+    //避免其他使用者使用
     if (data.type === 'sessionUsed') {
       console.log(data);
       console.log('id已失效，有新的使用者出現');
       updateOpenStatus(false);
+      window.ws.send("close");
+      musicWs.send('close');
       sessionStorage.removeItem('sessionId');
       showSessionMessage('使用權已失效，有新的用戶使用');
-      musicWs.send('close');
-      
       if (window.ws) {
         window.ws.close();
         window.ws = null
@@ -142,6 +144,7 @@ export function updateOpenStatus(status) {
     btn.style.left = "29%"
     btn.style.top = "16%"
     btn.style.height = "43%"
+    
     if (window.socket.readyState === WebSocket.OPEN) {
       window.socket.send(JSON.stringify({
         id: state.requestid++,
