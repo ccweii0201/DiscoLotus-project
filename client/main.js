@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.classList.remove("hide-overlay"); // 顯示遮罩
       window.ws.send("close");
       musicWs.send('close');
+      window.ws.send('BGclose');
       if (ws) {
         ws.close();
         ws = null
