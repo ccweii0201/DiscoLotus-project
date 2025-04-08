@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
   //一開始都為關閉狀態(初始化)
   updateOpenStatus(false);
   sessionStorage.removeItem('sessionId') //一開始沒有id
-  musicWs.send('close');
+
 
   //開啟/關閉dj台
   open.addEventListener('touchstart', function (e) {
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function connectLocal() {
     musicWs.onopen = function () {
       console.log('與 本地電腦 連接成功');
-
+      musicWs.send('close');
     };
     musicWs.onclose = function () {
       console.log("本地端連線關閉");
