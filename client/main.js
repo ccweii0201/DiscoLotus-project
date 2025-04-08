@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
   //一開始都為關閉狀態(初始化)
   updateOpenStatus(false);
   sessionStorage.removeItem('sessionId') //一開始沒有id
+  musicWs.send('close');
 
   //開啟/關閉dj台
   open.addEventListener('touchstart', function (e) {
