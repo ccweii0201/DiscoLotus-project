@@ -62,14 +62,6 @@ export function setupButton() {
   }
 
   function handleButtonClick(buttonId) {
-    if (['function1', 'function2', 'function3'].includes(buttonId)) {
-      if (button.disabled) return;  // 防呆
-    
-      button.disabled = true;
-      setTimeout(() => {
-        button.disabled = false;
-      }, 5000);
-    }
 
     if (lightColors[buttonId]) {
       sendLightCommand(lightColors[buttonId]);
@@ -123,7 +115,14 @@ export function setupButton() {
 
       if (currentSrc === activeSrc) {
         img.setAttribute('src', defaultSrc);
-
+        if (['function1', 'function2', 'function3'].includes(buttonId)) {
+          if (button.disabled) return;  // 防呆
+        
+          button.disabled = true;
+          setTimeout(() => {
+            button.disabled = false;
+          }, 5000);
+        }
       } else {
         buttonConfigs.forEach(config => {
           const otherButton = document.getElementById(config.id);
