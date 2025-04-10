@@ -115,7 +115,7 @@ export function setupButton() {
 
       if (currentSrc === activeSrc) {
         img.setAttribute('src', defaultSrc);
-        if (['function1', 'function2', 'function3'].includes(buttonId)) {
+        if (button.className==='method') {
           if (button.disabled) return;  // 防呆
         
           button.disabled = true;
