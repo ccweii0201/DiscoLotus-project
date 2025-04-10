@@ -62,7 +62,14 @@ export function setupButton() {
   }
 
   function handleButtonClick(buttonId) {
-
+    if (button.className==='method') {
+      if (button.disabled) return;  // 防呆
+    
+      button.disabled = true;
+      setTimeout(() => {
+        button.disabled = false;
+      }, 5000);
+    }
     if (lightColors[buttonId]) {
       sendLightCommand(lightColors[buttonId]);
     } else if (buttonId === 'function1') {
@@ -115,14 +122,7 @@ export function setupButton() {
 
       if (currentSrc === activeSrc) {
         img.setAttribute('src', defaultSrc);
-        if (button.className==='method') {
-          if (button.disabled) return;  // 防呆
         
-          button.disabled = true;
-          setTimeout(() => {
-            button.disabled = false;
-          }, 5000);
-        }
       } else {
         buttonConfigs.forEach(config => {
           const otherButton = document.getElementById(config.id);
