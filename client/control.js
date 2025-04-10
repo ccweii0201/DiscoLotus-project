@@ -96,13 +96,15 @@ export function setupButton() {
       touchStarted = true;
       AudioManager.playSound("buttonClick");
       handleButtonClick(buttonId)
-      if (button.className==='method') {
-        if (button.disabled) return;  // 防呆
-        button.disabled = true;
+      if (button.classList.contains('method')) {
+        if (button.classList.contains('disable')) return; 
+      
+        button.classList.add('disable'); 
         setTimeout(() => {
-          button.disabled = false;
+          button.classList.remove('disable'); 
         }, 5000);
       }
+      
     });
     button.addEventListener('touchend', function (e) {
       e.preventDefault(); // 防止觸發點擊事件
