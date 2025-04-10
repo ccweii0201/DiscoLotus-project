@@ -119,6 +119,8 @@ export function setupButton() {
       if (button.disabled) {
         return;
       }
+      if (button.classList.contains('disable')) return; 
+      
       const img = button.querySelector('img');
       const currentSrc = img.getAttribute('src');
 
