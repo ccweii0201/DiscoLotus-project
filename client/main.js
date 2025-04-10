@@ -25,11 +25,17 @@ document.addEventListener('DOMContentLoaded', function () {
   //開啟/關閉dj台
   open.addEventListener('touchstart', function (e) {
     e.preventDefault();
+    if (open.disabled) return;
+
     if (!isOpne) { //關閉狀態
       console.log('開啟dj台');
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
       AudioManager.playSound("djOn");
+      open.disabled = true;
+      setTimeout(() => {
+        open.disabled = false;
+      }, 3000); 
     }
     else { //開啟狀態
       updateOpenStatus(false);

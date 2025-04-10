@@ -62,6 +62,15 @@ export function setupButton() {
   }
 
   function handleButtonClick(buttonId) {
+    if (['function1', 'function2', 'function3'].includes(buttonId)) {
+      if (button.disabled) return;  // 防呆
+    
+      button.disabled = true;
+      setTimeout(() => {
+        button.disabled = false;
+      }, 5000);
+    }
+
     if (lightColors[buttonId]) {
       sendLightCommand(lightColors[buttonId]);
     } else if (buttonId === 'function1') {
