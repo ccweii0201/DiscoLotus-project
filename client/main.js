@@ -32,10 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
       AudioManager.playSound("djOn");
-      open.disabled = true;
-      setTimeout(() => {
-        open.disabled = false;
-      }, 3000); 
     }
     else { //開啟狀態
       updateOpenStatus(false);
