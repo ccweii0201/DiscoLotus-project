@@ -45,8 +45,9 @@ document.addEventListener('DOMContentLoaded', function () {
         ws.close();
         ws = null
       }
-      AudioManager.playSound("djOff");
 
+      AudioManager.playSound("djOff");
+      window.location.reload();
     }
   })
   //HA websocket ->setLight
