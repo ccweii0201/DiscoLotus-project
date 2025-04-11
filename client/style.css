@@ -108,7 +108,7 @@
     .slider_container p{
         font-weight: 900;
         font-family: sans-serif;
-        font-size: xx-small;
+        font-size: medium;
         position: absolute;
         left: 41%;
         color: #5a5a5a;
@@ -128,7 +128,7 @@
 
     #slider1 p {
        
-        top: 5%;
+        top: 2%;
     }
     #lightButton{
         display: grid;
@@ -168,7 +168,15 @@
         object-fit: cover;
         transform-origin: center;
     }
-
+    #disc p{
+        font-weight: 900;
+        font-family: sans-serif;
+        font-size: medium;
+        position: absolute;
+        left:38%;
+        top:17%;
+        color: #5a5a5a;
+    }
     .functionBtn {
         width: 64%;
         background: none;
@@ -183,43 +191,21 @@
     }
 
     #safetybtn {
-        width: 108%;
+        width: 110%;
         filter: drop-shadow(3px 3px 1px rgba(0, 0, 0, 0.5));
         pointer-events: none;
     }
 
     #happy {
-        top: 109%;
+        top: 114%;
         left: 1%;
 
     }
 
     #happybtn {
-        width: 96%;
+        width: 98%;
         filter: drop-shadow(3px 3px 1px rgba(0, 0, 0, 0.5));
         pointer-events: none;
-    }
-    .fakeBtn{
-        position: absolute;
-        pointer-events: none;
-    }
-    #fakeBtn1{
-        width: 9%;
-        top: 26%;
-        left: 5%;
-        z-index: -1;
-    }
-    #fakeBtn2{
-        width: 14%;
-        top: 55%;
-        left: 0%;
-        z-index: -1;
-    }
-    #fakeBtn3{
-        width: 11%;
-        top: 63%;
-        left: 9%;
-        z-index: -1;
     }
     #playBtn{
         position: absolute;
@@ -241,10 +227,10 @@
     #lightText{
         font-weight: 800;
         font-family: sans-serif;
-        font-size: xx-small;
+        font-size: medium;
         position: absolute;
         left: 50%;
-        top: 72%;
+        top: 70%;
         color: #5a5a5a;
         transform: translateX(-50%);
     }

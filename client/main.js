@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.open = document.getElementById('on'); //開關鍵宣告
   window.ws;
   window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
-  window.musicWs = new WebSocket('wss://5e0f-2001-b400-e3ea-f364-6585-674-6e24-f43f.ngrok-free.app'); //當天要記得換
+  window.musicWs = new WebSocket('wss://5afa-211-72-73-67.ngrok-free.app'); //當天要記得換
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境
 
 
