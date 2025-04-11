@@ -62,7 +62,6 @@ export function setupButton() {
   }
 
   function handleButtonClick(buttonId) {
-    
     if (lightColors[buttonId]) {
       sendLightCommand(lightColors[buttonId]);
     } else if (buttonId === 'function1') {
@@ -94,16 +93,10 @@ export function setupButton() {
       const sessionId = sessionStorage.getItem('sessionId');
       if (!sessionId) return;
       touchStarted = true;
+      
       AudioManager.playSound("buttonClick");
       handleButtonClick(buttonId)
-      if (button.classList.contains('method')) {
-        if (button.classList.contains('disable')) return; 
-      
-        button.classList.add('disable'); 
-        setTimeout(() => {
-          button.classList.remove('disable'); 
-        }, 5000);
-      }
+
       
     });
     button.addEventListener('touchend', function (e) {
@@ -119,8 +112,8 @@ export function setupButton() {
       if (button.disabled) {
         return;
       }
-      if (button.classList.contains('disable')) return; 
-      
+      // if (button.classList.contains('disable')) return; 
+
       const img = button.querySelector('img');
       const currentSrc = img.getAttribute('src');
 
