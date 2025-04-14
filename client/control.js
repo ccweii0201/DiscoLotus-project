@@ -180,31 +180,31 @@ export function setupSlider1() {
     if (newLeft > maxLeft) newLeft = maxLeft;
 
     fish.style.left = `${newLeft}px`;
-
+    console.log(newLeft);
     switch (true) {
-      case (newLeft > 115 && newLeft <= 131):
-        window.ws.send('1');
+      case (newLeft > 100 && newLeft <= 118):
+        window.ws.send(JSON.stringify({ type: 'Unity',messages:1 }));
         break;
-      case (newLeft > 131 && newLeft <= 147):
-        window.ws.send('2');
+      case (newLeft > 118 && newLeft <= 136):
+        window.ws.send(JSON.stringify({ type: 'Unity',messages:2 }));
         break;
-      case (newLeft > 147 && newLeft <= 163):
-        window.ws.send('3');
+      case (newLeft > 136 && newLeft <= 154):
+        window.ws.send(JSON.stringify({ type: 'Unity',messages:3 }));
         break;
-      case (newLeft > 163 && newLeft <= 179):
-        window.ws.send('4');
+      case (newLeft > 154 && newLeft <= 172):
+        window.ws.send(JSON.stringify({ type: 'Unity',messages:4 }));
         break;
-      case (newLeft > 179 && newLeft <= 195):
-        window.ws.send('5');
+      case (newLeft > 172 && newLeft <= 190):
+        window.ws.send(JSON.stringify({ type: 'Unity',messages:5 }));
         break;
-      case (newLeft > 195 && newLeft <= 211):
-        window.ws.send('6');
+      case (newLeft > 190 && newLeft <= 208):
+        window.ws.send(JSON.stringify({ type: 'Unity',messages:6 }));
         break;
-      case (newLeft > 211 && newLeft <= 227):
-        window.ws.send('7');
+      case (newLeft > 208 && newLeft <= 226):
+        window.ws.send(JSON.stringify({ type: 'Unity',messages:7 }));
         break;
-      case (newLeft > 227 && newLeft <= 247):
-        window.ws.send('8');
+      case (newLeft > 226 && newLeft <= 247):
+        window.ws.send(JSON.stringify({ type: 'Unity',messages:8 }));
         break;
       default:
         break;
@@ -266,21 +266,21 @@ export function setupDisc() {
     //傳遞給esp32的
     if (deltaAngle > 0) {
       if (lastDirection !== 'left') {
-        window.ws.send('left');
+        window.ws.send(JSON.stringify({ type: 'ESP32',messages:'left' }));
         lastDirection = 'left';
       }
     } else if (deltaAngle < 0) {
       if (lastDirection !== 'right') {
-        window.ws.send('right');
+        window.ws.send(JSON.stringify({ type: 'ESP32',messages:'right' }));
         lastDirection = 'right';
       }
     }
     //停止轉動(esp32)
-    const btn = document.getElementById('playBtn');
-    btn.addEventListener('touchstart', function () {
-      window.ws.send('close');
-      lastDirection = close;
-    })
+    // const btn = document.getElementById('playBtn');
+    // btn.addEventListener('touchstart', function () {
+    //   window.ws.send('close');
+    //   lastDirection = close;
+    // })
 
     const currentTime = Date.now();
     const timeDiff = currentTime - lastTime;
@@ -311,8 +311,8 @@ export function setupText() {
     touchStarted = true;
     AudioManager.playSound("buttonClick");
 
-    console.log("傳遞平安")
-    window.ws.send('平安');
+    console.log("傳遞平安");
+    window.ws.send(JSON.stringify({ type: 'Unity',messages:'平安' }));
   });
   safety.addEventListener('touchend', function (e) {
 
@@ -328,7 +328,7 @@ export function setupText() {
       AudioManager.playSound("buttonClick");
     }
     console.log("傳遞喜樂")
-    window.ws.send('喜樂');
+    window.ws.send(JSON.stringify({ type: 'Unity',messages:'喜樂' }));
   });
   happy.addEventListener('touchend', function (e) {
 

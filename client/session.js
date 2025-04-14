@@ -18,12 +18,12 @@ export function connectWebSocket(apiUrl) {
       window.ws.send(JSON.stringify({ type: 'createNewSessionID' }));
 
       // 在這裡發送 bgText_12 訊息
-      window.ws.send('bgText_345');
-      console.log('bgText_345')
-      musicWs.send('playBG');
-      setTimeout(() => {
-        window.ws.send("open");
-      }, 300);
+      // window.ws.send('bgText_345');
+      // console.log('bgText_345')
+      // musicWs.send('playBG');
+      // setTimeout(() => {
+      //   window.ws.send("open");
+      // }, 300);
     }
     heartbeatInterval = setInterval(() => {
       if (window.ws.readyState === WebSocket.OPEN) {
@@ -52,7 +52,7 @@ export function connectWebSocket(apiUrl) {
       console.log('獲取新id:', data.sessionId)
       sessionStorage.setItem('sessionId', data.sessionId);
       updateOpenStatus(true); //此時按鈕才可以換
-      window.ws.send("open");
+      // window.ws.send("open");
       hideSessionMessage();
     }
     //閒置太久，id過期
@@ -61,8 +61,8 @@ export function connectWebSocket(apiUrl) {
       console.log('id已失效')
       updateOpenStatus(false);
       sessionStorage.removeItem('sessionId');
-      window.ws.send("close");
-      musicWs.send('close');
+      window.ws.send(JSON.stringify({ type: 'ALL', messages: 'close' }));
+      // musicWs.send('close');
       showSessionMessage('閒置太久，已將您的使用權移除');
       if (window.ws) {
         window.ws.close();
@@ -75,7 +75,7 @@ export function connectWebSocket(apiUrl) {
       console.log('id已失效，有新的使用者出現');
       updateOpenStatus(false);
       window.ws.send("close");
-      musicWs.send('close');
+      // musicWs.send('close');
       sessionStorage.removeItem('sessionId');
       showSessionMessage('使用權已失效，有新的用戶使用');
       if (window.ws) {
@@ -95,7 +95,7 @@ export function connectWebSocket(apiUrl) {
     sessionStorage.removeItem('sessionId');
     document.body.classList.remove("hide-overlay");
     window.ws = null;
-    musicWs.send('close');
+    // musicWs.send('close');
     clearInterval(heartbeatInterval);
     window.socket.send(JSON.stringify({
       id: state.requestid++,
@@ -126,35 +126,35 @@ export function updateOpenStatus(status) {
   statusImg.setAttribute('src', `img/dj台(1)_${status ? '開關-開' : '開關-關'}.png`)
   const btn = document.getElementById('on')
   if (status) {
-    btn.style.width = "36%"
-    btn.style.left = "29%"
-    btn.style.top = "16%"
-    btn.style.height = "43%"
-    window.socket.send(JSON.stringify({
-      id: state.requestid++,
-      type: 'call_service',
-      domain: 'light',
-      service: 'turn_on',
-      service_data: { rgb_color: [0, 0, 0] },
-      target: { entity_id: lights } //所有裝置
-    }));
+    btn.style.width = "41%"
+    btn.style.left = "30%"
+    btn.style.top = "10%"
+    btn.style.height = "70%"
+    // window.socket.send(JSON.stringify({
+    //   id: state.requestid++,
+    //   type: 'call_service',
+    //   domain: 'light',
+    //   service: 'turn_on',
+    //   service_data: { rgb_color: [0, 0, 0] },
+    //   target: { entity_id: lights } //所有裝置
+    // }));
   }
   else {
-    btn.style.width = "36%"
-    btn.style.left = "29%"
-    btn.style.top = "16%"
-    btn.style.height = "43%"
-    
-    if (window.socket.readyState === WebSocket.OPEN) {
-      window.socket.send(JSON.stringify({
-        id: state.requestid++,
-        type: 'call_service',
-        domain: 'light',
-        service: 'turn_on',
-        service_data: { rgb_color: [0, 0, 0] },
-        target: { entity_id: lights } //所有裝置
-      }))
-    };
+    btn.style.width = "41%"
+    btn.style.left = "30%"
+    btn.style.top = "10%"
+    btn.style.height = "70%"
+
+    // if (window.socket.readyState === WebSocket.OPEN) {
+    //   window.socket.send(JSON.stringify({
+    //     id: state.requestid++,
+    //     type: 'call_service',
+    //     domain: 'light',
+    //     service: 'turn_on',
+    //     service_data: { rgb_color: [0, 0, 0] },
+    //     target: { entity_id: lights } //所有裝置
+    //   }))
+    // };
   }
   const elements = document.querySelectorAll('button');
   const disc = document.getElementById('discImg')

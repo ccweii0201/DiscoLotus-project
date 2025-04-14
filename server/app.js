@@ -101,13 +101,14 @@ wss.on('connection', (ws) => {
       }
       console.log('收到訊息:', data);
 
-      ResetSessionTimeout()
+      // ResetSessionTimeout()
 
       // 判斷是否為 session 相關的指令
       if (data.type === 'createNewSessionID') {
         console.log("create ID");
         const newSessionId = uuidv4();  // 生成新 UUID
         currentSessionId = newSessionId;
+        currentSessionHolder = ws;
 
         // 廣播給舊使用者，讓他們的 ID 失效
         wss.clients.forEach(client => {
@@ -120,72 +121,80 @@ wss.on('connection', (ws) => {
         });
 
         console.log('New Session ID:', currentSessionId);
+        //傳遞id
         ws.send(JSON.stringify({ type: 'sessionUpdate', sessionId: currentSessionId }));
-
+        //傳遞開始給esp32、unity
+        if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
+          esp32Client.send("open");
+          console.log('已轉發文字給 esp32: 運轉馬達');
+        }
+        else {
+          console.log("ESP32 未連線，無法傳送指令:運轉馬達");
+        }
+        if (unityClient && unityClient.readyState === WebSocket.OPEN) {
+          unityClient.send("bgText_345");
+          console.log('已轉發文字給 Unity: bgText_345');
+        }
+        else {
+          console.log("Unity 未連線，無法傳送指令:bgText_345");
+        }
         ResetSessionTimeout();
         console.log('開始計時');
         return; // 結束處理
       }
 
       //unity的字
-      if (data.type === 'bgText_345') {
-        console.log('收到 bgText_345 文字');
-        let displayText = 'third forth fifth'; // 設置對應的文字
-        if (unityClient && unityClient.readyState === WebSocket.OPEN) {
-          unityClient.send(bgText_345);
-          console.log('已轉發文字給 Unity:', bgText_345);
-        }
-      }
-
       //瀑布+平安喜樂
-      if (typeof data === 'number') {
-        if (data != waterfallLevel) {
-          console.log('收到數字:', data);
-          waterfallLevel = data;
-          console.log("更新", waterfallLevel);
-          // **將收到的訊息轉發給 Unity**
-          if (unityClient && unityClient.readyState === WebSocket.OPEN) {
-            unityClient.send(waterfallLevel);
-            console.log('已轉發給 Unity:', waterfallLevel);
+      if (data.type === 'Unity') {
+        if (typeof data.messages === 'number') {
+          if (data.messages != waterfallLevel) {
+            console.log('收到數字:', data.messages);
+            waterfallLevel = data.messages;
+            console.log("更新", waterfallLevel);
+            // **將收到的訊息轉發給 Unity**
+            if (unityClient && unityClient.readyState === WebSocket.OPEN) {
+              unityClient.send(waterfallLevel);
+              console.log('已轉發給 Unity:', waterfallLevel);
+            }
+            else {
+              console.log("Unity 未連線，無法傳送指令", waterfallLevel);
+            }
+          }
+          else {
+            console.log("原本的num", data.messages);
           }
         }
         else {
-          console.log("原本的num", waterfallLevel);
+          console.log('收到非數字訊息，忽略:', data.messages);
         }
-      }
-      else {
-        console.log('收到非數字訊息，忽略:', data);
-      }
-      if (typeof data === 'string') {
-        console.log('收到文字:', data);
-        unity_Text = data;
-        if (data === "ping") {
-          console.log("指令已轉發給後端:", data);
-        }
-
-        if (data === "open" || data === "close") {
-          if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
-            esp32Client.send(data);
-            console.log("📤 指令已轉發給 ESP32:", data);
-          } else {
-            console.log("❌ ESP32 未連線，無法傳送指令");
+        if (typeof data.messages === 'string') {
+          if (unityClient && unityClient.readyState === WebSocket.OPEN) {
+            unityClient.send(data.messages);
+            console.log('已轉發文字給 Unity:', data.messages);
+          }
+          else {
+            console.log("Unity 未連線，無法傳送指令", data.messages);
           }
         }
-        if (data === "right" || data === "left") {
-          if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
-            esp32Client.send(data);
-            console.log("📤 指令已轉發給 ESP32:", data);
-          } else {
-            console.log("❌ ESP32 未連線，無法傳送指令");
-          }
-        }
-        
-        unityClient.send(data);
-        
-        //本地端不要上傳到git
-
-
       }
+      //send to ESP32
+      if (data.type === 'ESP32') {
+        if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
+          esp32Client.send(data.messages);
+          console.log("指令已轉發給 ESP32:", data.messages);
+        } else {
+          console.log("ESP32 未連線，無法傳送指令", data.messages);
+        }
+      }
+
+
+
+      if (data === "ping") {
+        console.log("指令已轉發給後端:", data);
+      }
+
+
+
     }
     catch (error) {
       console.error('錯誤', error);
@@ -194,26 +203,42 @@ wss.on('connection', (ws) => {
 
   ws.on('close', () => {
     console.log('Client disconnected');
-    if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
-      esp32Client.send('close');
-      console.log("📤 指令已轉發給 ESP32");
-    } else {
-      console.log("❌ ESP32 未連線，無法傳送指令");
-    }
 
-    currentSessionId = null;
-    if (SessionTimeout) {
-      console.log('停止計時');
-      clearTimeout(SessionTimeout);
-      SessionTimeout = null;  // 記得清掉
+    if (ws === currentSessionHolder) {
+      console.log("是目前有效 session，執行關閉");
+      if (unityClient && unityClient.readyState === WebSocket.OPEN) {
+        unityClient.send("BGclose");
+      }
+      else {
+        console.log("未連線，無法傳送指令:BGclose");
+      }
+
+      if (esp32Client && esp32Client.readyState === WebSocket.OPEN) {
+        esp32Client.send('close');
+        console.log("指令已轉發給 ESP32");
+      } else {
+        console.log("未連線，無法傳送指令:關閉馬達");
+      }
+      currentSessionId = null;
+
+      if (SessionTimeout) {
+        console.log('停止計時');
+        clearTimeout(SessionTimeout);
+        SessionTimeout = null;  // 記得清掉
+      }
     }
-  });
+    else{
+      console.log("不是目前 session，用戶斷線但不關閉設備");
+    }
+  })
 })
 
-//websocket ->unity
+// websocket ->unity
+
 ws_unity.on('connection', (ws) => {
   console.log('unity connected');
   unityClient = ws;
+
   const heartbeat = setInterval(() => {
     if (ws.readyState === WebSocket.OPEN) {
       console.log('發送 ping');
@@ -232,16 +257,12 @@ ws_unity.on('connection', (ws) => {
     console.log('unity disconnected');
   });
 })
-      console.log('Client disconnected');
-      if (unityClient && unityClient.readyState === WebSocket.OPEN) {
-        unityClient.send("BGclose");
-      }
 
 // WebSocket -> ESP32
+let esp32Timeout = null;
 ws_esp32.on('connection', (ws) => {
 
   esp32Client = ws;
-
   console.log('ESP32 connected');
   ws.on('message', (message) => {
     console.log('收到來自 ESP32 的訊息: ' + message);

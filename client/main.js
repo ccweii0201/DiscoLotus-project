@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
   window.isOpne = false //關閉狀態
   window.open = document.getElementById('on'); //開關鍵宣告
   window.ws;
-  window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
-  window.musicWs = new WebSocket('wss://9680-218-32-46-141.ngrok-free.app'); //當天要記得換
+  // window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
+  // window.musicWs = new WebSocket('wss://9680-218-32-46-141.ngrok-free.app'); //當天要記得換
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境
 
 
@@ -31,23 +31,23 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('開啟dj台');
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
-      AudioManager.playSound("djOn");
+      // AudioManager.playSound("djOn");
     }
     else { //開啟狀態
       updateOpenStatus(false);
       sessionStorage.removeItem('sessionId')
       console.log('關閉dj台');
       document.body.classList.remove("hide-overlay"); // 顯示遮罩
-      window.ws.send("close");
-      musicWs.send('close');
-      window.ws.send('BGclose');
-      if (ws) {
-        ws.close();
-        ws = null
+      //手動關閉時觸發
+      // musicWs.send('close');
+      if (window.ws) {
+        window.ws.close();
+        window.ws = null
       }
 
-      AudioManager.playSound("djOff");
+      // AudioManager.playSound("djOff");
       window.location.reload();
+      console.log('重整網頁')
     }
   })
   //HA websocket ->setLight
@@ -98,13 +98,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 
-  connectLocal()
-  connectHA()
-  setupButton()
+  // connectLocal()
+  // connectHA()
+  // setupButton()
   setupSlider1()
   setupDisc()
   setupText()
 })
+
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden") {
+    // 使用者切換 App 或滑掉
+    if (ws && ws.readyState === WebSocket.OPEN) {
+      console.log("使用者離開畫面，關閉 WebSocket");
+      ws.close();
+    }
+  }
+});
 
 
 

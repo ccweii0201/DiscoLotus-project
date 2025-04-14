@@ -1,37 +1,75 @@
-
-/* iphone 7/8/13/15 375*667*/
+#rotate-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000ee;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    padding-top: 40vh;
+    display: none;
+  }
+  @media screen and (orientation: landscape) {
+    #rotate-warning {
+      display: block;
+    }
+  
+    body > *:not(#rotate-warning) {
+      display: none !important;
+    }
+  }
 @media (max-width: 480px) {
+
+
     #Instructions {
-        height: 100px;
+        height: 75px;
         float: left;
-        width: 39%;
+        width: 34%;
         position: relative;
     }
 
-    body {
-        width: auto;
+    html, body {
         margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden; 
+        touch-action: manipulation;
+        overscroll-behavior: none; 
+        -webkit-user-select: none; 
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+    }
+    body {
         background-image: url(img/BG-01.jpg);
-        background-size: 125%;
+        background-size: cover; /* 避免拉大圖超出範圍 */
+        background-position: center;
+        background-repeat: no-repeat;
     }
 
     body::before {
-        content: "";
+        content: ""; 
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         z-index: 100;
-        background: rgba(0, 0, 0, 0.8); 
+        background: rgba(0, 0, 0, 0.8);
 
         /* 遮罩圓形區域 */
-        mask-image: radial-gradient(circle 60px at 21% 6%, rgba(0,0,0,0) 30%, rgba(0,0,0,1) 50%);
+        mask-image: radial-gradient(circle 60px at 17% 5%, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 1) 50%);
     }
 
     body.hide-overlay::before {
-        opacity: 0;  /* 讓遮罩漸漸隱藏 */
-        pointer-events: none; /* 防止影響點擊 */
+        opacity: 0;
+        /* 讓遮罩漸漸隱藏 */
+        pointer-events: none;
+        /* 防止影響點擊 */
     }
 
     #sessionMessage {
@@ -44,8 +82,8 @@
         background: rgba(255, 0, 0, 0.8);
         padding: 15px 20px;
         border-radius: 5px;
-        z-index: 200; 
-        display: none; 
+        z-index: 200;
+        display: none;
     }
 
     #open_bg {
@@ -53,18 +91,27 @@
         height: 100%;
     }
 
-    #open_bg img {
-        width: 58%;
+    #open_bgImg {
+        width: 66%;
         height: auto;
-        top: -16%;
-        left: 22%;
+        top: -23%;
+        left: 13%;
         position: absolute;
-        pointer-events: none; /* 防止影響點擊 */
+        pointer-events: none;
+    }
+
+    #play {
+        width: 11.5%;
+        left: 11.5%;
+        top: 2.3%;
+        pointer-events: none;
+        position: fixed;
+        z-index: 151;
     }
 
     #on {
         width: 33%;
-        height:0%;
+        height: 0%;
         top: 16%;
         left: 31%;
         border-radius: 100%;
@@ -77,7 +124,7 @@
         z-index: 150;
     }
 
-    #on img {
+    #onImg {
         width: 100%;
 
         pointer-events: none;
@@ -96,41 +143,46 @@
         clear: both;
         height: auto;
         touch-action: none;
-        margin-bottom: 8%;
     }
 
     .slider_container {
-        width: 60%;
-        height: 100px;
+        width: 100%;
+        height: 75px;
         float: right;
-        margin-bottom: 10%;
+        /* margin-bottom: 10%; */
+        border: #5a5a5a;
+        clear: both;
+        position: relative;
     }
-    .slider_container p{
+
+    .slider_container p {
         font-weight: 900;
-        font-family: sans-serif;
-        font-size: medium;
+        font-family: DFKai-sb;
+        font-size: x-large;
         position: absolute;
         left: 41%;
         color: #5a5a5a;
     }
 
-    #slider1 img{
-        left: 36%;
-        width: 62%;
+    #slider1 img {
+        left: 32%;
+        width: 66%;
         position: absolute;
         user-select: none;
         touch-action: none;
     }
 
     #slider1 img {
-        top: 9%;
+        top: 8%;
     }
 
     #slider1 p {
-       
-        top: 2%;
+        position: absolute;
+        left: 5%;
+        /* top: 10%; */
     }
-    #lightButton{
+
+    #lightButton {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         width: 88%;
@@ -162,52 +214,63 @@
 
 
     #discImg {
-        width: 97%;
+        width: 99%;
 
         height: auto;
         object-fit: cover;
         transform-origin: center;
     }
-    #disc p{
-        font-weight: 900;
-        font-family: sans-serif;
-        font-size: medium;
+
+    #disc p {
+        font-weight: 700;
+        font-family: DFKai-sb;
+        font-size: large;
         position: absolute;
-        left:38%;
-        top:17%;
-        color: #5a5a5a;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        top: 23%;
+        color: #f84646;
+        margin: 0;
     }
+
+    #functionBtn {
+        float: right;
+        height: 75px;
+        width: 65%;
+        position: relative;
+    }
+
     .functionBtn {
-        width: 64%;
+        width: 63%;
         background: none;
         border: 0;
+        padding: 0;
         position: absolute;
-        
     }
 
     #safety {
-        top: 76%;
-        left: 1%;
+        /* top: 20%; */
+        left: -11%;
     }
 
     #safetybtn {
-        width: 110%;
+        width: 92%;
         filter: drop-shadow(3px 3px 1px rgba(0, 0, 0, 0.5));
         pointer-events: none;
     }
 
     #happy {
-        top: 118%;
-        left: 1%;
-
+        /* top: 20%; */
+        left: 38%;
     }
 
     #happybtn {
-        width: 98%;
+        width: 81.5%;
         filter: drop-shadow(3px 3px 1px rgba(0, 0, 0, 0.5));
         pointer-events: none;
     }
-    #playBtn{
+
+    #playBtn {
         position: absolute;
         width: 17%;
         height: 7%;
@@ -216,15 +279,13 @@
         background: none;
         border: 0;
     }
-    #playBtn img{
+
+    #playBtn img {
         width: 100%;
         pointer-events: none;
     }
-    svg{
-        position: absolute;
-        top: 75%;
-    }
-    #lightText{
+
+    #lightText {
         font-weight: 800;
         font-family: sans-serif;
         font-size: medium;
@@ -234,11 +295,12 @@
         color: #5a5a5a;
         transform: translateX(-50%);
     }
-    #slider1 #waterfall_fish{
+
+    #slider1 #waterfall_fish {
         width: 32%;
-        z-index:50;
+        z-index: 50;
         position: absolute;
-        top: 8%;
+        top: 3%;
         left: 47%;
     }
 }

@@ -1,62 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no" >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="style.css">
     <title>CoLian</title>
 </head>
+
 <body>
     <div class="container">
         <div id="overlay">
             <div id="sessionMessage"></div>
-    <div class="container">
-        <div id="Instructions">
-            <div  id="open_bg">
-                <img src="img/dj台-17.png" alt="">
-                <button id="on"><img src="img/dj台(1)_開關-關.png" alt="開關"></button>
-            </div>
-            <div id="functionBtn">
+            <div class="container">
+                <div id="Instructions">
+                    <div id="open_bg">
+                        <img src="img/dj台-17.png" alt="" id="open_bgImg">
+                        <button id="on"><img src="img/dj台(1)_開關-關.png" alt="開關" id="onImg"></button>
+                        <img src="img/dj台(1)-16.png" alt="" id="play">
+                    </div>
+                </div>
+                <div id="functionBtn">
                     <button id="safety" class="functionBtn">
                         <img src="img/dj台(1)-15.png" alt="" id="safetybtn">
                     </button>
-                    <button id="happy"  class="functionBtn">
+                    <button id="happy" class="functionBtn">
                         <img src="img/dj台(1)-14.png" alt="" id="happybtn">
                     </button>
-            </div>  
-        </div>
-        <div class="slider_container">
-            <div id="slider1" class="slider">
-                <p>瀑布水量</p>
-                <img src="img/dj台(1)-18.png" alt="" id="slider_BG">
-                <img src="img/dj台-滑桿2.png" alt="" id="waterfall_fish">
+                </div>
+                <div class="slider_container">
+                    <div id="slider1" class="slider">
+                        <p>瀑布水量</p>
+                        <img src="img/dj台(1)-18.png" alt="" id="slider_BG">
+                        <img src="img/dj台-滑桿2.png" alt="" id="waterfall_fish">
+                    </div>
+                </div>
+                <div id="disc">
+                    <p>蓮花旋轉方向</p>
+                    <img src="img/dj台(1)_dj盤.png" alt="" id="discImg">
+                </div>
+                <p id="lightText">燈光顏色</p>
+
+                <div id="lightButton">
+                    <!-- <button id="greenlight" class="lightColor"><img src="img/dj台(1)-20.png" alt=""
+                            class="light"></button>
+                    <button id="pinklight" class="lightColor"><img src="img/dj台(1)-21.png" alt=""
+                            class="light"></button>
+                    <button id="yellowlight" class="lightColor"><img src="img/dj台(1)-22.png" alt=""
+                            class="light"></button>
+                    <button id="function1" class="method"><img src="img/dj台(1)-23.png" alt=""></button>
+                    <button id="function2" class="method"><img src="img/dj台(1)-24.png" alt=""></button>
+                    <button id="function3" class="method"><img src="img/dj台(1)-25.png" alt=""></button> -->
+                </div>
             </div>
         </div>
-        <div id="disc">
-            <p>蓮花開關</p>
-            <img src="img/dj台(1)_dj盤.png" alt="" id="discImg">
-            <button id="playBtn">  <img src="img/dj台(1)-16.png" alt="" > </button>
-          
-        </div>
-        <p id="lightText">燈光顏色</p>
-        <svg width="375" height="30" viewBox="0 0 375 30">
-            <path d="M 80,90 V 20 Q 80,10 90,10 H 290 Q 300,10 300,20 V 90" 
-                  stroke="gray" stroke-width="2.5" 
-                  fill="none" stroke-linecap="round"/>
-        </svg>
-        
-        
-        
-        
-        <div id="lightButton">
-            <button id="greenlight" class="lightColor"><img src="img/dj台(1)-20.png" alt="" class="light"></button>
-            <button id="pinklight" class="lightColor"><img src="img/dj台(1)-21.png" alt="" class="light"></button>
-            <button id="yellowlight" class="lightColor"><img src="img/dj台(1)-22.png" alt=""  class="light"></button>
-            <button id="function1" class="method"><img src="img/dj台(1)-23.png" alt=""></button>
-            <button id="function2" class="method"><img src="img/dj台(1)-24.png" alt=""></button>
-            <button id="function3" class="method"><img src="img/dj台(1)-25.png" alt="" ></button>
-        </div>
     </div>
-    <script src="main.js"  type="module"  ></script>
+
+    <div id="rotate-warning">請將裝置轉為直式模式</div>
+
+    <script src="main.js" type="module"></script>
 </body>
+
 </html>
