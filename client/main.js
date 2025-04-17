@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // connectLocal()
   // connectHA()
-  // setupButton()
+  setupButton()
   setupSlider1()
   setupDisc()
   setupText()
