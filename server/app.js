@@ -250,6 +250,7 @@ ws_unity.on('connection', (ws) => {
     console.log('收到訊息: ' + message);
     if (message === 'pong') {
       ws.send('ping'); // 客戶端發送 ping，伺服器回應 pong
+      console.log('收到unity的pong');
     }
   })
 

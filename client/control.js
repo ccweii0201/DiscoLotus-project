@@ -3,6 +3,9 @@ import { state } from "./state.js";
 
 //button樣式
 export function setupButton() {
+
+  let currentLightIndex = 0;
+
   //燈光顏色(與按鈕id同名)
   const lightColors = {
     greenlight: [0, 255, 0],
@@ -35,41 +38,71 @@ export function setupButton() {
       target: { entity_id: lights } //所有裝置
     }));
   }
-  // 燈光模式
-  function startLightEffect(effectType, intervalTime, duration) {
-    const interval = setInterval(() => {
-      if (effectType === "same") {
-        sendLightCommand(getRandomColor());
-      } else if (effectType === "different") {
-        lights.forEach(light => {
-          window.socket.send(JSON.stringify({
-            id: state.requestid++,
-            type: 'call_service',
-            domain: 'light',
-            service: 'turn_on',
-            service_data: { rgb_color: getRandomColor() },
-            target: { entity_id: light }
-          }));
-        });
+  // 燈光模式 >隨機一色、隨機三色、單一燈炮
+  function startLightEffect(effectType) {
+    if (effectType === "same") {
+      sendLightCommand(getRandomColor());
+    }
+    else if (effectType === "different") {
+      lights.forEach(light => {
+        window.socket.send(JSON.stringify({
+          id: state.requestid++,
+          type: 'call_service',
+          domain: 'light',
+          service: 'turn_on',
+          service_data: { rgb_color: getRandomColor() },
+          target: { entity_id: light }
+        }));
+      });
+    }
+    else if (effectType === "onlyone") {
+      const lightToTurnOn = lights[currentLightIndex];
+      const otherLights = lights.filter((_, i) => i !== currentLightIndex);
 
-      }
-    }, intervalTime);
+      // 開啟燈泡
+      window.socket.send(JSON.stringify({
+        id: requestId++,
+        type: 'call_service',
+        domain: 'light',
+        service: 'turn_on',
+        service_data: { rgb_color: getRandomColor() },
+        target: { entity_id: lightToTurnOn }
+      }));
 
-    setTimeout(() => {
-      clearInterval(interval);
-      console.log(`${effectType} 閃爍停止`);
-    }, duration);
+      // 關閉燈泡
+      otherLights.forEach(light => {
+        window.socket.send(JSON.stringify({
+          id: requestId++,
+          type: 'call_service',
+          domain: 'light',
+          service: 'turn_off',
+          target: { entity_id: light }
+        }));
+      });
+
+      currentLightIndex = (currentLightIndex + 1) % lights.length;
+    }
   }
 
   function handleButtonClick(buttonId) {
     if (lightColors[buttonId]) {
       sendLightCommand(lightColors[buttonId]);
+      if(buttonId='greenlight'){
+        window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'green' }));
+      }
+      else if(buttonId='pinklight'){
+        window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'pink' }));
+      }
+      else if(buttonId='yellowlight'){
+        window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'yellow' }));
+      }
     } else if (buttonId === 'function1') {
-      startLightEffect("same", 500, 6000);
+      window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'random' }));
+      startLightEffect("same");
     } else if (buttonId === 'function2') {
-      startLightEffect("different", 500, 6000);
+      startLightEffect("different");
     } else if (buttonId === 'function3') {
-      startLightEffect("same", 1500, 6000);
+      startLightEffect("onlyone");
     }
   }
   //六個功能按鈕切換
@@ -93,11 +126,11 @@ export function setupButton() {
       const sessionId = sessionStorage.getItem('sessionId');
       if (!sessionId) return;
       touchStarted = true;
-      
+
       AudioManager.playSound("buttonClick");
       handleButtonClick(buttonId)
 
-      
+
     });
     button.addEventListener('touchend', function (e) {
       e.preventDefault(); // 防止觸發點擊事件
@@ -119,7 +152,7 @@ export function setupButton() {
 
       if (currentSrc === activeSrc) {
         img.setAttribute('src', defaultSrc);
-        
+
       } else {
         buttonConfigs.forEach(config => {
           const otherButton = document.getElementById(config.id);
@@ -183,28 +216,28 @@ export function setupSlider1() {
     console.log(newLeft);
     switch (true) {
       case (newLeft > 100 && newLeft <= 118):
-        window.ws.send(JSON.stringify({ type: 'Unity',messages:1 }));
+        window.ws.send(JSON.stringify({ type: 'Unity', messages: 1 }));
         break;
       case (newLeft > 118 && newLeft <= 136):
-        window.ws.send(JSON.stringify({ type: 'Unity',messages:2 }));
+        window.ws.send(JSON.stringify({ type: 'Unity', messages: 2 }));
         break;
       case (newLeft > 136 && newLeft <= 154):
-        window.ws.send(JSON.stringify({ type: 'Unity',messages:3 }));
+        window.ws.send(JSON.stringify({ type: 'Unity', messages: 3 }));
         break;
       case (newLeft > 154 && newLeft <= 172):
-        window.ws.send(JSON.stringify({ type: 'Unity',messages:4 }));
+        window.ws.send(JSON.stringify({ type: 'Unity', messages: 4 }));
         break;
       case (newLeft > 172 && newLeft <= 190):
-        window.ws.send(JSON.stringify({ type: 'Unity',messages:5 }));
+        window.ws.send(JSON.stringify({ type: 'Unity', messages: 5 }));
         break;
       case (newLeft > 190 && newLeft <= 208):
-        window.ws.send(JSON.stringify({ type: 'Unity',messages:6 }));
+        window.ws.send(JSON.stringify({ type: 'Unity', messages: 6 }));
         break;
       case (newLeft > 208 && newLeft <= 226):
-        window.ws.send(JSON.stringify({ type: 'Unity',messages:7 }));
+        window.ws.send(JSON.stringify({ type: 'Unity', messages: 7 }));
         break;
       case (newLeft > 226 && newLeft <= 247):
-        window.ws.send(JSON.stringify({ type: 'Unity',messages:8 }));
+        window.ws.send(JSON.stringify({ type: 'Unity', messages: 8 }));
         break;
       default:
         break;
@@ -266,12 +299,12 @@ export function setupDisc() {
     //傳遞給esp32的
     if (deltaAngle > 0) {
       if (lastDirection !== 'left') {
-        window.ws.send(JSON.stringify({ type: 'ESP32',messages:'left' }));
+        window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'left' }));
         lastDirection = 'left';
       }
     } else if (deltaAngle < 0) {
       if (lastDirection !== 'right') {
-        window.ws.send(JSON.stringify({ type: 'ESP32',messages:'right' }));
+        window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'right' }));
         lastDirection = 'right';
       }
     }
@@ -312,7 +345,7 @@ export function setupText() {
     AudioManager.playSound("buttonClick");
 
     console.log("傳遞平安");
-    window.ws.send(JSON.stringify({ type: 'Unity',messages:'平安' }));
+    window.ws.send(JSON.stringify({ type: 'Unity', messages: '平安' }));
   });
   safety.addEventListener('touchend', function (e) {
 
@@ -328,7 +361,7 @@ export function setupText() {
       AudioManager.playSound("buttonClick");
     }
     console.log("傳遞喜樂")
-    window.ws.send(JSON.stringify({ type: 'Unity',messages:'喜樂' }));
+    window.ws.send(JSON.stringify({ type: 'Unity', messages: '喜樂' }));
   });
   happy.addEventListener('touchend', function (e) {
 
