@@ -87,15 +87,7 @@ export function setupButton() {
   function handleButtonClick(buttonId) {
     if (lightColors[buttonId]) {
       sendLightCommand(lightColors[buttonId]);
-      if(buttonId='greenlight'){
-        window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'green' }));
-      }
-      else if(buttonId='pinklight'){
-        window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'pink' }));
-      }
-      else if(buttonId='yellowlight'){
-        window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'yellow' }));
-      }
+        window.ws.send(JSON.stringify({ type: 'ESP32', messages: `${buttonId}` }));
     } else if (buttonId === 'function1') {
       window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'random' }));
       startLightEffect("same");
