@@ -87,7 +87,7 @@ export function setupButton() {
   function handleButtonClick(buttonId) {
     if (lightColors[buttonId]) {
       sendLightCommand(lightColors[buttonId]);
-        window.ws.send(JSON.stringify({ type: 'ESP32', messages: `${buttonId}` }));
+        window.ws.send(JSON.stringify({ type: 'ESP32', messages: buttonId }));
     } else if (buttonId === 'function1') {
       window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'random' }));
       startLightEffect("same");
