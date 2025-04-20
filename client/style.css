@@ -215,56 +215,56 @@
     #greenlight p{
         font-weight: bold;
         font-family: DFKai-sb;
-        font-size: medium;
+        font-size: x-large;
         color: white;
         position: absolute;
-        top: 0;
-        left: 10%;
+        top: -8%;
+        left: 8%;
     }
     #pinklight p{
         font-weight: bold;
-        font-size: medium;
+        font-size:  x-large;
         font-family: DFKai-sb;
         color: white;
         position: absolute;
-        top: 0;
-        left: 43%;
+        top: -8%;
+        left: 41%;
     }
     #yellowlight p{
         font-weight: bold;
-        font-size: medium;
+        font-size:  x-large;
         font-family: DFKai-sb;
         color: white;
         position: absolute;
-        top: 0;
-        left: 77%;
+        top: -8%;
+        left: 75%;
     }
     #function1 p{
         font-weight: bold;
-        font-size: medium;
+        font-size:  x-large;
         font-family: DFKai-sb;
         color: white;
         position: absolute;
-        top: 50%;
-        left: 10%;
+        top: 42%;
+        left: 8%;
     }
     #function2 p{
         font-weight: bold;
-        font-size: medium;
+        font-size:  x-large;
         font-family: DFKai-sb;
         color: white;
         position: absolute;
-        top: 50%;
-        left: 43%;
+        top: 42%;
+        left: 41%;
     }
     #function3 p{
         font-weight: bold;
-        font-size: medium;
+        font-size:  x-large;
         font-family: DFKai-sb;
         color: white;
         position: absolute;
-        top: 50%;
-        left: 77%;
+        top: 42%;
+        left: 75%;
     }
 
     #discImg {

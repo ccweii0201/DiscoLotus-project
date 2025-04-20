@@ -153,12 +153,26 @@ export function setupButton() {
           const otherP = otherButton.querySelector('p');
           if (config.id === buttonId) {
             img.setAttribute('src', activeSrc);
-            btnp.style.left=''
-            btnp.style.top='8%'
+            if (buttonId === 'greenlight' || buttonId === 'pinklight' || buttonId === 'yellowlight') {
+              // btnp.style.left = ''
+              btnp.style.top = '-4%'
+            }
+            else {
+              // btnp.style.left = ''
+              btnp.style.top = '44%'
+            }
           } else {
             otherImg.setAttribute('src', config.defaultSrc);
-            otherP.style.display = 'block'
+            if (config.id === 'greenlight' || config.id === 'pinklight' || config.id === 'yellowlight') {
+              // btnp.style.left = ''
+              otherP.style.top = '-8%'
+            }
+            else {
+              // btnp.style.left = ''
+              otherP.style.top = '42%'
+            }
             // img.style.width = "78%"
+
           }
         });
       }

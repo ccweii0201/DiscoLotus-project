@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.isOpne = false //關閉狀態
   window.open = document.getElementById('on'); //開關鍵宣告
   window.ws;
-  // window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
+  window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
   window.musicWs = new WebSocket('wss://585f-220-132-58-239.ngrok-free.app'); //當天要記得換
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境
 
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('開啟dj台');
       document.body.classList.add("hide-overlay");
       connectWebSocket(apiUrl);
-      // AudioManager.playSound("djOn");
+      AudioManager.playSound("djOn");
     }
     else { //開啟狀態
       updateOpenStatus(false);
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
         window.ws = null
       }
 
-      // AudioManager.playSound("djOff");
+      AudioManager.playSound("djOff");
       window.location.reload();
       console.log('重整網頁')
     }
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   connectLocal()
-  // connectHA()
+  connectHA()
   setupButton()
   setupSlider1()
   setupDisc()
