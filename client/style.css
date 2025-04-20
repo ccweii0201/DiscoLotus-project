@@ -52,7 +52,7 @@
     }
 
     body::before {
-        content: ""; 
+        /* content: "";  */
         position: fixed;
         top: 0;
         left: 0;
@@ -199,7 +199,7 @@
         padding: 0;
         cursor: pointer;
         height: auto;
-        width: 65%;
+        width: 82%;
         margin-bottom: 4%;
     }
 
@@ -209,9 +209,63 @@
         pointer-events: none;
         object-fit: contain;
         display: block;
+        position: relative;
         filter: drop-shadow(5px 4px 4px rgba(0, 0, 0, 0.5));
     }
-
+    #greenlight p{
+        font-weight: bold;
+        font-family: DFKai-sb;
+        font-size: medium;
+        color: white;
+        position: absolute;
+        top: 0;
+        left: 10%;
+    }
+    #pinklight p{
+        font-weight: bold;
+        font-size: medium;
+        font-family: DFKai-sb;
+        color: white;
+        position: absolute;
+        top: 0;
+        left: 43%;
+    }
+    #yellowlight p{
+        font-weight: bold;
+        font-size: medium;
+        font-family: DFKai-sb;
+        color: white;
+        position: absolute;
+        top: 0;
+        left: 77%;
+    }
+    #function1 p{
+        font-weight: bold;
+        font-size: medium;
+        font-family: DFKai-sb;
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 10%;
+    }
+    #function2 p{
+        font-weight: bold;
+        font-size: medium;
+        font-family: DFKai-sb;
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 43%;
+    }
+    #function3 p{
+        font-weight: bold;
+        font-size: medium;
+        font-family: DFKai-sb;
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 77%;
+    }
 
     #discImg {
         width: 99%;
@@ -291,7 +345,7 @@
         font-size: medium;
         position: absolute;
         left: 50%;
-        top: 70%;
+        top: 73%;
         color: #5a5a5a;
         transform: translateX(-50%);
     }
@@ -303,4 +357,5 @@
         top: 3%;
         left: 47%;
     }
+
 }

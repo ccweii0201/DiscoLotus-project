@@ -5,15 +5,15 @@ import { state } from "./state.js";
 
 
 let apiUrl;
-apiUrl = 'wss://' + window.location.hostname + '/';
-// apiUrl = 'ws://' + window.location.hostname+':3000';
+// apiUrl = 'wss://' + window.location.hostname + '/';
+apiUrl = 'ws://' + window.location.hostname+':3000';
 
 document.addEventListener('DOMContentLoaded', function () {
   window.isOpne = false //關閉狀態
   window.open = document.getElementById('on'); //開關鍵宣告
   window.ws;
   // window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
-  // window.musicWs = new WebSocket('wss://9680-218-32-46-141.ngrok-free.app'); //當天要記得換
+  window.musicWs = new WebSocket('wss://585f-220-132-58-239.ngrok-free.app'); //當天要記得換
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境
 
 
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log('關閉dj台');
       document.body.classList.remove("hide-overlay"); // 顯示遮罩
       //手動關閉時觸發
-      // musicWs.send('close');
+      musicWs.send('close');
       if (window.ws) {
         window.ws.close();
         window.ws = null
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 
-  // connectLocal()
+  connectLocal()
   // connectHA()
   setupButton()
   setupSlider1()
@@ -112,6 +112,7 @@ document.addEventListener("visibilitychange", () => {
     if (ws && ws.readyState === WebSocket.OPEN) {
       console.log("使用者離開畫面，關閉 WebSocket");
       ws.close();
+      musicWs.send('close');
     }
   }
 });

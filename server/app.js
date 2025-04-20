@@ -227,7 +227,7 @@ wss.on('connection', (ws) => {
         SessionTimeout = null;  // 記得清掉
       }
     }
-    else{
+    else {
       console.log("不是目前 session，用戶斷線但不關閉設備");
     }
   })

@@ -142,7 +142,7 @@ export function setupButton() {
 
       const img = button.querySelector('img');
       const currentSrc = img.getAttribute('src');
-
+      const btnp = button.querySelector('p');
       if (currentSrc === activeSrc) {
         img.setAttribute('src', defaultSrc);
 
@@ -150,11 +150,14 @@ export function setupButton() {
         buttonConfigs.forEach(config => {
           const otherButton = document.getElementById(config.id);
           const otherImg = otherButton.querySelector('img');
+          const otherP = otherButton.querySelector('p');
           if (config.id === buttonId) {
             img.setAttribute('src', activeSrc);
-
+            btnp.style.left=''
+            btnp.style.top='8%'
           } else {
             otherImg.setAttribute('src', config.defaultSrc);
+            otherP.style.display = 'block'
             // img.style.width = "78%"
           }
         });

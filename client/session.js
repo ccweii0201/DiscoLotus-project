@@ -20,7 +20,7 @@ export function connectWebSocket(apiUrl) {
       // 在這裡發送 bgText_12 訊息
       // window.ws.send('bgText_345');
       // console.log('bgText_345')
-      // musicWs.send('playBG');
+       musicWs.send('playBG');
       // setTimeout(() => {
       //   window.ws.send("open");
       // }, 300);
