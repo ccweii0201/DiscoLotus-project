@@ -194,7 +194,7 @@ export function setupSlider1() {
 
   //抓取範圍
   const trackRect = track.getBoundingClientRect(); // 軌道的範圍
-  const minLeft = trackRect.left - 20; // 軌道的最左邊
+  const minLeft = trackRect.left-20; // 軌道的最左邊
   const maxLeft = trackRect.right - fish.offsetWidth; // 軌道的最右邊
 
 
@@ -204,6 +204,7 @@ export function setupSlider1() {
     isDragging = true;
     startX = e.touches[0].clientX;
     initialLeft = fish.offsetLeft;
+    console.log(initialLeft)
     fish.src = gifSrc;
     isPlaying = true;
     AudioManager.playSound("sliderMove");
@@ -211,10 +212,7 @@ export function setupSlider1() {
   container.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
 
-
-
     e.preventDefault();
-
 
     const deltaX = (e.touches[0].clientX - startX) / 1.8;
     let newLeft = initialLeft + deltaX;
