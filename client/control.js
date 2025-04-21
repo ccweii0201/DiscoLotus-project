@@ -93,8 +93,10 @@ export function setupButton() {
       window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'random' }));
       startLightEffect("same");
     } else if (buttonId === 'function2') {
+      window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'random2' }));
       startLightEffect("different");
     } else if (buttonId === 'function3') {
+      window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'random3' }));
       startLightEffect("onlyone");
     }
   }
