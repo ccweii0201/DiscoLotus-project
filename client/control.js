@@ -181,47 +181,48 @@ export function setupButton() {
 }
 
 export function setupSlider1() {
-  //slider滑動 ->瀑布速度
-  const container = document.getElementById('slider1'); // 滑動區域
+  const container = document.getElementById('slider1');
   const track = document.getElementById('slider_BG');
   const fish = document.getElementById('waterfall_fish');
   let isDragging = false;
-  let startX = 0; // 手指觸碰時的座標
-  let initialLeft = 0; // 圖片最初的left值
-  let gifSrc = "img/fish.gif";  // GIF 圖片
-  let staticSrc = "img/dj台-滑桿2.png";  // GIF 第一幀的靜態圖片
+  let startX = 0;
+  let initialLeft = 0;
+  let gifSrc = "img/fish.gif";
+  let staticSrc = "img/dj台-滑桿2.png";
   let isPlaying = true;
 
-  //抓取範圍
-  const trackRect = track.getBoundingClientRect(); // 軌道的範圍
-  const minLeft = trackRect.left-20; // 軌道的最左邊
-  const maxLeft = trackRect.right - fish.offsetWidth; // 軌道的最右邊
-
+  // ✅ 限制滑動範圍
+  const minLeft = 100;
+  const maxLeft = 247;
 
   container.addEventListener('touchstart', (e) => {
-    const sessionId = sessionStorage.getItem('sessionId')
+    const sessionId = sessionStorage.getItem('sessionId');
     if (!sessionId) return;
+
     isDragging = true;
     startX = e.touches[0].clientX;
-    initialLeft = fish.offsetLeft;
-    console.log(initialLeft)
+
+    // ✅ 正確抓 left（避免手機跳0px）
+    initialLeft = parseFloat(window.getComputedStyle(fish).left);
+
     fish.src = gifSrc;
     isPlaying = true;
     AudioManager.playSound("sliderMove");
   });
+
   container.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
-
     e.preventDefault();
 
     const deltaX = (e.touches[0].clientX - startX) / 1.8;
     let newLeft = initialLeft + deltaX;
 
+    // ✅ 限制在 100 ~ 247 之間
     if (newLeft < minLeft) newLeft = minLeft;
     if (newLeft > maxLeft) newLeft = maxLeft;
 
     fish.style.left = `${newLeft}px`;
-    console.log(newLeft);
+
     switch (true) {
       case (newLeft > 100 && newLeft <= 118):
         window.ws.send(JSON.stringify({ type: 'Unity', messages: 1 }));
@@ -251,12 +252,13 @@ export function setupSlider1() {
         break;
     }
   });
+
   container.addEventListener('touchend', () => {
     fish.src = staticSrc;
     isPlaying = false;
     isDragging = false;
     AudioManager.pauseSound("sliderMove");
-  })
+  });
 }
 
 export function setupDisc() {
