@@ -102,6 +102,7 @@ wss.on('connection', (ws) => {
       console.log('收到訊息:', data);
 
       // ResetSessionTimeout()
+      ResetSessionTimeout()
 
       // 判斷是否為 session 相關的指令
       if (data.type === 'createNewSessionID') {
