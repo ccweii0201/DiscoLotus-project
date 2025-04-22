@@ -52,7 +52,7 @@
     }
 
     body::before {
-        /* content: "";  */
+        content: ""; 
         position: fixed;
         top: 0;
         left: 0;
@@ -190,7 +190,7 @@
         position: absolute;
         left: 52%;
         transform: translateX(-50%);
-        top: 80%;
+        top: 78%;
     }
 
     #lightButton button {
@@ -199,13 +199,13 @@
         padding: 0;
         cursor: pointer;
         height: auto;
-        width: 82%;
+        width: 75%;
         margin-bottom: 4%;
     }
 
     #lightButton img {
-        max-width: 88%;
-        max-height: 88%;
+        max-width: 100%;
+        max-height:100%;
         pointer-events: none;
         object-fit: contain;
         display: block;
@@ -219,7 +219,7 @@
         color: white;
         position: absolute;
         top: -8%;
-        left: 8%;
+        left: 9%;
     }
     #pinklight p{
         font-weight: bold;
@@ -228,7 +228,7 @@
         color: white;
         position: absolute;
         top: -8%;
-        left: 41%;
+        left: 42%;
     }
     #yellowlight p{
         font-weight: bold;
@@ -237,7 +237,7 @@
         color: white;
         position: absolute;
         top: -8%;
-        left: 75%;
+        left: 76%;
     }
     #function1 p{
         font-weight: bold;
@@ -246,7 +246,7 @@
         color: white;
         position: absolute;
         top: 42%;
-        left: 8%;
+        left: 9%;
     }
     #function2 p{
         font-weight: bold;
@@ -255,7 +255,7 @@
         color: white;
         position: absolute;
         top: 42%;
-        left: 41%;
+        left: 42%;
     }
     #function3 p{
         font-weight: bold;
@@ -264,7 +264,7 @@
         color: white;
         position: absolute;
         top: 42%;
-        left: 75%;
+        left: 76%;
     }
 
     #discImg {
@@ -345,7 +345,7 @@
         font-size: medium;
         position: absolute;
         left: 50%;
-        top: 73%;
+        top: 72%;
         color: #5a5a5a;
         transform: translateX(-50%);
     }
