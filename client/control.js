@@ -256,7 +256,7 @@ export function setupSlider1() {
 
   container.addEventListener('touchmove', (e) => {
     if (!isDragging) return;
-    e.preventDefault();
+    // e.preventDefault();
 
     const deltaX = (e.touches[0].clientX - startX) / 1.8;
     let newLeft = initialLeft + deltaX;
