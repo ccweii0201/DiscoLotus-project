@@ -113,8 +113,10 @@ export function setupButton() {
     toggleButtonImg(config.id, config.defaultSrc, config.activeSrc, buttonConfigs);
   });
   function toggleButtonImg(buttonId, defaultSrc, activeSrc, buttonConfigs) {
+    let lastActiveId = null; // 新增這個變數
     const button = document.getElementById(buttonId);
     let touchStarted = false;
+    
     // 處理觸摸事件(手機)
     button.addEventListener('touchstart', function (e) {
       e.preventDefault(); // 防止觸發點擊事件
@@ -145,6 +147,17 @@ export function setupButton() {
       const img = button.querySelector('img');
       const currentSrc = img.getAttribute('src');
       const btnp = button.querySelector('p');
+
+      
+      if (lastActiveId === buttonId && currentSrc === activeSrc) {
+        return;
+      }
+  
+      // 紀錄目前按下的按鈕 ID
+      lastActiveId = buttonId;
+      
+      const isPinkOrYellow = buttonId === 'pinklight' || buttonId === 'yellowlight';
+
       if (currentSrc === activeSrc) {
         img.setAttribute('src', defaultSrc);
 
@@ -155,23 +168,52 @@ export function setupButton() {
           const otherP = otherButton.querySelector('p');
           if (config.id === buttonId) {
             img.setAttribute('src', activeSrc);
-            if (buttonId === 'greenlight' || buttonId === 'pinklight' || buttonId === 'yellowlight') {
-              // btnp.style.left = ''
+            if (buttonId === 'greenlight') {
               btnp.style.top = '-4%'
+            }
+            else if (buttonId === 'pinklight') {
+              btnp.style.top = '-1%'
+              btnp.style.left = '43%'
+            }
+            else if (buttonId === 'yellowlight') {
+              btnp.style.top = '-1%'
             }
             else {
               // btnp.style.left = ''
-              btnp.style.top = '44%'
+              btnp.style.top = '43%'
             }
           } else {
             otherImg.setAttribute('src', config.defaultSrc);
-            if (config.id === 'greenlight' || config.id === 'pinklight' || config.id === 'yellowlight') {
+            if (config.id === 'greenlight') {
               // btnp.style.left = ''
-              otherP.style.top = '-8%'
+              otherP.style.top = isPinkOrYellow ? '-2%' : '-7%';
+              // otherP.style.top = '-7%'
             }
+            else if (config.id === 'pinklight') {
+              otherP.style.left= '42%';
+              otherP.style.top = isPinkOrYellow ? '-2%' : '-7%';
+              // otherP.style.top = '-7%'
+              // btnp.style.left = '43%'
+            }
+            else if (config.id === 'yellowlight') {
+              otherP.style.top = isPinkOrYellow ? '-2%' : '-7%';
+              // btnp.style.left = '76%'
+            }
+            else if (config.id === 'function1') {
+              otherP.style.top = isPinkOrYellow ? '49%' : '44%';
+              // otherP.style.top = '44%'
+              // btnp.style.left = '76%'
+            }
+            else if (config.id === 'function2') {
+              otherP.style.top = isPinkOrYellow ? '49%' : '44%';
+              // otherP.style.top = '44%'
+              // btnp.style.left = '76%'
+            }
+            
             else {
+              otherP.style.top = isPinkOrYellow ? '49%' : '44%';
               // btnp.style.left = ''
-              otherP.style.top = '42%'
+              // otherP.style.top = '44%'
             }
             // img.style.width = "78%"
 
