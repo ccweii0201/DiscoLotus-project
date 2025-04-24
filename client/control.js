@@ -246,7 +246,6 @@ export function setupSlider1() {
     isDragging = true;
     startX = e.touches[0].clientX;
 
-    // ✅ 正確抓 left（避免手機跳0px）
     initialLeft = parseFloat(window.getComputedStyle(fish).left);
 
     fish.src = gifSrc;
