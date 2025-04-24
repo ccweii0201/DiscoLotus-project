@@ -242,15 +242,15 @@ ws_unity.on('connection', (ws) => {
 
   const heartbeat = setInterval(() => {
     if (ws.readyState === WebSocket.OPEN) {
-      console.log('發送 ping');
-      ws.ping(); // 向客戶端發送 ping 訊息
+      console.log('發送 pong給unity');
+      ws.pong(); // 向客戶端發送 pong 訊息
     }
   }, heartbeatInterval);
 
   ws.on('message', (message) => {
     console.log('收到訊息: ' + message);
-    if (message === 'ping') {
-      ws.send('pong'); // 客戶端發送 ping，伺服器回應 pong
+    if (message === 'pong') {
+      ws.send('ping'); // 客戶端發送 ping，伺服器回應 pong
       console.log('收到unity的ping');
     }
   })
