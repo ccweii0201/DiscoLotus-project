@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.open = document.getElementById('on'); //開關鍵宣告
   window.ws;
   window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
-  window.musicWs = new WebSocket('wss://ab62-111-235-228-48.ngrok-free.app'); //當天要記得換
+  window.musicWs = new WebSocket('wss://da4b-114-137-120-187.ngrok-free.app'); //當天要記得換
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境
 
 
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   connectLocal()
-  connectHA()
+  // connectHA()
   setupButton()
   setupSlider1()
   setupDisc()

@@ -4,100 +4,99 @@ import { state } from "./state.js";
 //button樣式
 export function setupButton() {
 
-  let currentLightIndex = 0;
+  // let currentLightIndex = 0;
 
-  //燈光顏色(與按鈕id同名)
-  const lightColors = {
-    greenlight: [0, 255, 0],
-    pinklight: [255, 0, 136],
-    yellowlight: [255, 162, 0]
-  };
+  // //燈光顏色(與按鈕id同名)
+  // const lightColors = {
+  //   greenlight: [0, 255, 0],
+  //   pinklight: [255, 0, 136],
+  //   yellowlight: [255, 162, 0]
+  // };
   //隨機顏色
-  function getRandomColor() {
-    return [
-      Math.floor(Math.random() * 256), // R
-      Math.floor(Math.random() * 256), // G
-      Math.floor(Math.random() * 256)  // B
-    ];
-  }
+  // function getRandomColor() {
+  //   return [
+  //     Math.floor(Math.random() * 256), // R
+  //     Math.floor(Math.random() * 256), // G
+  //     Math.floor(Math.random() * 256)  // B
+  //   ];
+  // }
   // //燈泡裝置
-  const lights = [
-    "light.spotlights_green",
-    "light.spotlights_6c1c",
-    "light.spotlights_9eac"
-  ];
+  // const lights = [
+  //   "light.spotlights_green",
+  //   "light.spotlights_6c1c",
+  //   "light.spotlights_9eac"
+  // ];
   //發送訊息(websocket)
-  function sendLightCommand(rgbColor) {
-    console.log("Sending color command:", rgbColor, "to lights:", lights);
-    window.socket.send(JSON.stringify({
-      id: state.requestid++,
-      type: 'call_service',
-      domain: 'light',
-      service: 'turn_on',
-      service_data: { rgb_color: rgbColor },
-      target: { entity_id: lights } //所有裝置
-    }));
-  }
+  // function sendLightCommand(rgbColor) {
+  //   console.log("Sending color command:", rgbColor, "to lights:", lights);
+  //   window.socket.send(JSON.stringify({
+  //     id: state.requestid++,
+  //     type: 'call_service',
+  //     domain: 'light',
+  //     service: 'turn_on',
+  //     service_data: { rgb_color: rgbColor },
+  //     target: { entity_id: lights } //所有裝置
+  //   }));
+  // }
   // 燈光模式 >隨機一色、隨機三色、單一燈炮
-  function startLightEffect(effectType) {
-    if (effectType === "same") {
-      sendLightCommand(getRandomColor());
-    }
-    else if (effectType === "different") {
-      lights.forEach(light => {
-        window.socket.send(JSON.stringify({
-          id: state.requestid++,
-          type: 'call_service',
-          domain: 'light',
-          service: 'turn_on',
-          service_data: { rgb_color: getRandomColor() },
-          target: { entity_id: light }
-        }));
-      });
-    }
-    else if (effectType === "onlyone") {
-      const lightToTurnOn = lights[currentLightIndex];
-      const otherLights = lights.filter((_, i) => i !== currentLightIndex);
+  // function startLightEffect(effectType) {
+  //   if (effectType === "same") {
+  //     sendLightCommand(getRandomColor());
+  //   }
+  //   else if (effectType === "different") {
+  //     lights.forEach(light => {
+  //       window.socket.send(JSON.stringify({
+  //         id: state.requestid++,
+  //         type: 'call_service',
+  //         domain: 'light',
+  //         service: 'turn_on',
+  //         service_data: { rgb_color: getRandomColor() },
+  //         target: { entity_id: light }
+  //       }));
+  //     });
+  //   }
+  //   else if (effectType === "onlyone") {
+  //     const lightToTurnOn = lights[currentLightIndex];
+  //     const otherLights = lights.filter((_, i) => i !== currentLightIndex);
 
-      // 開啟燈泡
-      window.socket.send(JSON.stringify({
-        id: requestId++,
-        type: 'call_service',
-        domain: 'light',
-        service: 'turn_on',
-        service_data: { rgb_color: getRandomColor() },
-        target: { entity_id: lightToTurnOn }
-      }));
+  //     // 開啟燈泡
+  //     window.socket.send(JSON.stringify({
+  //       id: requestId++,
+  //       type: 'call_service',
+  //       domain: 'light',
+  //       service: 'turn_on',
+  //       service_data: { rgb_color: getRandomColor() },
+  //       target: { entity_id: lightToTurnOn }
+  //     }));
 
-      // 關閉燈泡
-      otherLights.forEach(light => {
-        window.socket.send(JSON.stringify({
-          id: requestId++,
-          type: 'call_service',
-          domain: 'light',
-          service: 'turn_off',
-          target: { entity_id: light }
-        }));
-      });
+  //     // 關閉燈泡
+  //     otherLights.forEach(light => {
+  //       window.socket.send(JSON.stringify({
+  //         id: requestId++,
+  //         type: 'call_service',
+  //         domain: 'light',
+  //         service: 'turn_off',
+  //         target: { entity_id: light }
+  //       }));
+  //     });
 
-      currentLightIndex = (currentLightIndex + 1) % lights.length;
-    }
-  }
+  //     currentLightIndex = (currentLightIndex + 1) % lights.length;
+  //   }
+  // }
 
   function handleButtonClick(buttonId) {
     if (lightColors[buttonId]) {
-      console.log(buttonId);
       window.ws.send(JSON.stringify({ type: 'ESP32', messages: buttonId }));
-      sendLightCommand(lightColors[buttonId]);
+      // sendLightCommand(lightColors[buttonId]);
     } else if (buttonId === 'function1') {
       window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'random' }));
-      startLightEffect("same");
+      // startLightEffect("same");
     } else if (buttonId === 'function2') {
       window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'random2' }));
-      startLightEffect("different");
+      // startLightEffect("different");
     } else if (buttonId === 'function3') {
       window.ws.send(JSON.stringify({ type: 'ESP32', messages: 'random3' }));
-      startLightEffect("onlyone");
+      // startLightEffect("onlyone");
     }
   }
   //六個功能按鈕切換
