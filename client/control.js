@@ -6,12 +6,12 @@ export function setupButton() {
 
   // let currentLightIndex = 0;
 
-  // //燈光顏色(與按鈕id同名)
-  // const lightColors = {
-  //   greenlight: [0, 255, 0],
-  //   pinklight: [255, 0, 136],
-  //   yellowlight: [255, 162, 0]
-  // };
+  //燈光顏色(與按鈕id同名)
+  const lightColors = {
+    greenlight: [0, 255, 0],
+    pinklight: [255, 0, 136],
+    yellowlight: [255, 162, 0]
+  };
   //隨機顏色
   // function getRandomColor() {
   //   return [
