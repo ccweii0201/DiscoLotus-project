@@ -20,7 +20,7 @@ export function connectWebSocket(apiUrl) {
       // 在這裡發送 bgText_12 訊息
       // window.ws.send('bgText_345');
       // console.log('bgText_345')
-       musicWs.send('playBG');
+      //  musicWs.send('playBG');
       // setTimeout(() => {
       //   window.ws.send("open");
       // }, 300);
@@ -62,7 +62,7 @@ export function connectWebSocket(apiUrl) {
       updateOpenStatus(false);
       sessionStorage.removeItem('sessionId');
       window.ws.send(JSON.stringify({ type: 'ALL', messages: 'close' }));
-      musicWs.send('close');
+      // musicWs.send('close');
       showSessionMessage('閒置太久，已將您的使用權移除');
       if (window.ws) {
         window.ws.close();
@@ -75,7 +75,7 @@ export function connectWebSocket(apiUrl) {
       console.log('id已失效，有新的使用者出現');
       updateOpenStatus(false);
       window.ws.send("close");
-      musicWs.send('close');
+      // musicWs.send('close');
       sessionStorage.removeItem('sessionId');
       showSessionMessage('使用權已失效，有新的用戶使用');
       if (window.ws) {
@@ -95,7 +95,7 @@ export function connectWebSocket(apiUrl) {
     sessionStorage.removeItem('sessionId');
     document.body.classList.remove("hide-overlay");
     window.ws = null;
-    musicWs.send('close');
+    // musicWs.send('close');
     clearInterval(heartbeatInterval);
     window.socket.send(JSON.stringify({
       id: state.requestid++,
