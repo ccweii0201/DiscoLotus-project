@@ -113,6 +113,7 @@ document.addEventListener("visibilitychange", () => {
       console.log("使用者離開畫面，關閉 WebSocket");
       ws.close();
       musicWs.send('close');
+      // musicWs.send('close');
     }
   }
 });
