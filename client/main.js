@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
   window.open = document.getElementById('on'); //開關鍵宣告
   window.ws;
   // window.socket = new WebSocket('wss://jgbvvy4fejhkfodvo163d86ppqvfptpj.ui.nabu.casa/api/websocket');
-  window.musicWs = new WebSocket('wss://da4b-114-137-120-187.ngrok-free.app'); //當天要記得換
+  // window.musicWs = new WebSocket('wss://da4b-114-137-120-187.ngrok-free.app'); //當天要記得換
   // window.socket = new WebSocket('ws://127.0.0.1:8123/api/websocket'); //測試環境
 
 
@@ -83,22 +83,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
   }
 
-  function connectLocal() {
-    musicWs.onopen = function () {
-      console.log('與 本地電腦 連接成功');
-      musicWs.send('close');
-    };
-    musicWs.onclose = function () {
-      console.log("本地端連線關閉");
-      musicWs = null;
-    };
-    musicWs.onerror = function (error) {
-      console.error('播放音樂WebSocket 錯誤:', error);
-    };
+  // function connectLocal() {
+  //   musicWs.onopen = function () {
+  //     console.log('與 本地電腦 連接成功');
+  //     musicWs.send('close');
+  //   };
+  //   musicWs.onclose = function () {
+  //     console.log("本地端連線關閉");
+  //     musicWs = null;
+  //   };
+  //   musicWs.onerror = function (error) {
+  //     console.error('播放音樂WebSocket 錯誤:', error);
+  //   };
 
-  }
+  // }
 
-  connectLocal()
+  // connectLocal()
   // connectHA()
   setupButton()
   setupSlider1()
